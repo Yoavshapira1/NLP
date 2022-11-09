@@ -1,0 +1,1037 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass heb-article
+\begin_preamble
+\usepackage{culmus}
+
+% Convert the Lyx colors into more pleasent colors:
+\usepackage{xcolor}
+\definecolor{blue}{RGB}{14,107,217}
+\definecolor{green}{RGB}{0,158,40}
+\definecolor{red}{RGB}{235,16,16}
+\definecolor{brown}{RGB}{164,66,0}
+\definecolor{orange}{RGB}{231,135,26}
+\definecolor{purple}{RGB}{94,53,177}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language hebrew
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1cm
+\topmargin 2cm
+\rightmargin 1cm
+\bottommargin 3cm
+\headheight 0cm
+\headsep 0cm
+\footskip 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation 0bp
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Box Doublebox
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Title
+)
+\numeric on
+67658
+\numeric off
+( 
+\begin_inset Formula $NLP$
+\end_inset
+
+
+\family roman
+\series medium
+\shape up
+\size largest
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+| תרגיל
+\family roman
+\series medium
+\shape up
+\size largest
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+*1
+\end_layout
+
+\begin_layout Author
+יואב שפירא| ת"ז:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+312492838
+\family roman
+\series medium
+\shape up
+\size large
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+& נדב פוקס| ת"ז:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+206073108
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+1
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+2
+\end_layout
+
+\begin_layout Subsection*
+)א(
+\end_layout
+
+\begin_layout Standard
+נגדיר 
+\begin_inset Formula $markov\ LM$
+\end_inset
+
+ מסדר 
+\begin_inset Formula $k=1$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+לכל מילה 
+\begin_inset Formula $\omega_{j}\in WORDS\cup\{START,STOP\}$
+\end_inset
+
+ )כאן 
+\begin_inset Formula $WORDS$
+\end_inset
+
+ הוא מאגר המילים שבקורפוס(, נגדיר:
+\begin_inset Formula 
+\[
+\mathbb{P}(\omega_{j})=\frac{\{\#\omega_{j}\}}{|WORDS|}
+\]
+
+\end_inset
+
+כלומר ההסתברות של כל מילה להופיע, היא לפי השכיחות שלה.
+ במודל הזה, ההסתברות לקבל את המשפט 
+\begin_inset Formula $(\omega_{1}...\omega_{n})$
+\end_inset
+
+ היא:
+\begin_inset Formula 
+\[
+\mathbb{P}(\omega_{1}...\omega_{n})=\prod_{i=1}^{n}\mathbb{P}(\omega_{i})
+\]
+
+\end_inset
+
+נתון שכל המילים מופיעות בהסתברות גדולה מ
+\numeric on
+0
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ולכן לא נבצע 
+\begin_inset Formula $smoothing$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+)זהו מודל מאוד מעפן, שבו כנראה המשפט 
+\begin_inset Formula $the\ the\,the\ the$
+\end_inset
+
+ הוא די סביר(.
+\begin_inset Newline newline
+\end_inset
+
+במקרה שלנו, בין המילים 
+\begin_inset Formula $where$
+\end_inset
+
+ ו
+\begin_inset Formula $were$
+\end_inset
+
+, תיבחר המילה שנפוצה יותר בקורפוס, ללא שום קשר להקשר שלה במשפט.
+\begin_inset Newline newline
+\end_inset
+
+לדוגמא עבור המשפט 
+\begin_inset Formula $He\ went\ where\ there\ where\ more\!\ opportunities$
+\end_inset
+
+, נקבל תיקון נכון מהאלגוריתם עבור המופע הראשון של 
+\begin_inset Formula $where$
+\end_inset
+
+, רק במקרה שבו המילה 
+\begin_inset Formula $where$
+\end_inset
+
+ מופיעה יותר פעמים מהמילה 
+\begin_inset Formula $were$
+\end_inset
+
+ בקורפוס.
+ נקבל תיקון נכון עבור המופע השני של 
+\begin_inset Formula $where$
+\end_inset
+
+, במקרה ההפוך שבו 
+\begin_inset Formula $were$
+\end_inset
+
+ מופיעה יותר פעמים.
+\begin_inset Newline newline
+\end_inset
+
+תיקון נכון לשני המופעים, יוכל להתקבל רק בעזרת הגדרה הסתברותית חדשה של המודל:
+ עבור שתי מילים 
+\begin_inset Formula $\omega_{i},\omega_{j}$
+\end_inset
+
+ כך שמתקיים 
+\begin_inset Formula $\mathbb{P}(\omega_{i})=\mathbb{P}(\omega_{j})$
+\end_inset
+
+, תבחר באקראי או את 
+\begin_inset Formula $\omega_{i}$
+\end_inset
+
+או את 
+\begin_inset Formula $\omega_{j}$
+\end_inset
+
+.
+ כך, אם יש קורפוס שבו כמות המופעים של 
+\begin_inset Formula $where$
+\end_inset
+
+ שווה לכמות המופעים של 
+\begin_inset Formula $were$
+\end_inset
+
+, יכול להיות שנקבל תיקון נכון עבור שני המופעים פשוט 
+\begin_inset Formula $by\ chance$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsection*
+)ב(
+\end_layout
+
+\begin_layout Standard
+בדומה, נגדיר 
+\begin_inset Formula $markov\ LM$
+\end_inset
+
+ מסדר 
+\begin_inset Formula $k=2$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+לכל צמד מילים 
+\begin_inset Formula $\omega_{j},\omega_{i}\in WORDS\cup\{START,STOP\}$
+\end_inset
+
+ נגדיר:
+\begin_inset Formula 
+\[
+\mathbb{P}(\omega_{j}|\omega_{i})=\frac{\{\#(\omega_{i}\omega_{j})\}}{|WORDS|^{2}}
+\]
+
+\end_inset
+
+כלומר ההסתברות של כל מילה להופיע, תלויה במילה שלפניה ולמעשה אנחנו בודקים
+ את כל הצמדים בקורפוס, ומוצאים את השכיחות שלהם.
+ במודל הזה, ההסתברות לקבל את המשפט 
+\begin_inset Formula $(\omega_{1}...\omega_{n})$
+\end_inset
+
+ היא:
+\begin_inset Formula 
+\[
+\mathbb{P}(\omega_{1}...\omega_{n})=\prod_{i=1}^{n}\mathbb{P}(\omega_{i}|\omega_{i-1})
+\]
+
+\end_inset
+
+המודל הזה יותר טוב מהמודל הקודם כי הוא לוקח בחשבון את ההקשר של המילים, ולכן
+ למשל הגיוני שהוא יחזה ש
+\begin_inset Formula $went\ were$
+\end_inset
+
+ יהיה פחות סביר מאשר 
+\begin_inset Formula $went\ where$
+\end_inset
+
+, ובצדק.
+\begin_inset Newline newline
+\end_inset
+
+כאן נתון לנו שכל מילה מופיעה יותר מפעם אחת בקורפוס, אבל לא נתון לנו את זה
+ על כל הצמדים של המילים.
+ לכן, אם נשאיר את המודל כמו שהוא, אכן יכול להיות מצב שבו ההסתברות 
+\begin_inset Formula $\mathbb{P}(\omega_{1}...\omega_{n})=0$
+\end_inset
+
+, כי יכול להיות שקיים 
+\begin_inset Formula $i\leq n$
+\end_inset
+
+ כך ש 
+\begin_inset Formula $\mathbb{P}(\omega_{i}|\omega_{i-1})=0$
+\end_inset
+
+ )למשל, אם הצירוף 
+\begin_inset Formula $went\ were$
+\end_inset
+
+ בכלל לא הופיעה בקורפוס, משפט שיכיל את הצמד הזה יקבל סבירות
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+0
+\numeric off
+(.
+ זו אכן בעיה.
+\begin_inset Newline newline
+\end_inset
+
+אבל כמו שראינו אפשר לעשות מניפולציות על פונקציות ההסתברות על מנת לגרום לכך
+ שלכל 
+\begin_inset Formula $i$
+\end_inset
+
+ יתקיים 
+\begin_inset Formula $\mathbb{P}(\omega_{i}|\omega_{i-1})>0$
+\end_inset
+
+, לדוגמא בעזרת 
+\begin_inset Formula $back-off\ model$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+3
+\end_layout
+
+\begin_layout Subsection*
+)א(
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+טענה: 
+\series default
+
+\begin_inset Formula 
+\[
+\sum_{c=2}^{c_{max}}cN_{c}=N-N_{1}
+\]
+
+\end_inset
+
+
+\series bold
+הוכחה: 
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+לכל 
+\begin_inset Formula $c$
+\end_inset
+
+, מוגדר ש 
+\begin_inset Formula $N_{c}$
+\end_inset
+
+ הוא מספר המילים 
+\series bold
+הייחודיות 
+\series default
+שמופיעות בקרופוס 
+\begin_inset Formula $c$
+\end_inset
+
+ פעמים.
+ כדי לספור את כל מופעי המילים האלה בסה
+\begin_inset Quotes erd
+\end_inset
+
+כ, נצטרך לחשב את 
+\begin_inset Formula $cN_{c}$
+\end_inset
+
+.
+ לכן סכימה על כל 
+\begin_inset Formula $c$
+\end_inset
+
+ תתן לנו את סך כל מופעי המילים עבור כל 
+\begin_inset Formula $c$
+\end_inset
+
+, כלומר את כל הקורפוס:
+\begin_inset Formula 
+\[
+\sum_{c=1}^{c_{max}}cN_{c}=N
+\]
+
+\end_inset
+
+ומכאן ש
+\begin_inset Formula 
+\[
+\sum_{c=2}^{c_{max}}cN_{c}=N-1N_{1}=N-N_{1}
+\]
+
+\end_inset
+
+אנחנו מתבקשים למצוא את 
+\begin_inset Formula $\sum_{c=1}^{c_{max}}\mathbb{P}\left(\omega_{j}|\{\#\omega_{j}\}=c\right)$
+\end_inset
+
+.
+ נשים לב שלא התבקשנו עבור 
+\begin_inset Formula $c=0$
+\end_inset
+
+, אלא התבקשנו עבור כל המילים שכן מופיעות בקורפוס.
+ 
+\begin_inset Newline newline
+\end_inset
+
+מההגדרה ידוע שהסיכוי לבחור מילה ספציפית שמופיעה 
+\begin_inset Formula $c$
+\end_inset
+
+ פעמים הוא:
+\begin_inset Formula 
+\[
+\forall\omega_{j}:\ \ \mathbb{P}\left(\omega_{j}|\{\#\omega_{j}\}=c\right)=\frac{(c+1)N_{c+1}}{N_{c}N}
+\]
+
+\end_inset
+
+לכן, הסיכוי לבחור מילה כלשהי שמופיעה 
+\begin_inset Formula $c$
+\end_inset
+
+ פעמים צריך להיות מוכפל ב
+\begin_inset Formula $N_{c}$
+\end_inset
+
+, כי יש 
+\begin_inset Formula $N_{c}$
+\end_inset
+
+ מילים שונות כאלו:
+\begin_inset Formula 
+\[
+\forall c:\ \ \mathbb{P}\left(\omega_{j}|\{\#\omega_{j}\}=c\right)=\frac{(c+1)N_{c+1}}{N_{c}N}\cdot N_{c}=\frac{(c+1)N_{c+1}}{N}
+\]
+
+\end_inset
+
+נסכום על כל 
+\begin_inset Formula $c\geq1$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\sum_{c=1}^{c_{max}}\frac{(c+1)N_{c+1}}{N} & =\sum_{c=1}^{c_{max}-1}\frac{(c+1)N_{c+1}}{N}+\frac{(c_{max}+1)N_{c_{max}+1}}{N}\\
+ & \overset{_{1}}{=}\sum_{c=1}^{c_{max}-1}\frac{(c+1)N_{c+1}}{N}\overset{_{2}}{=}\sum_{c=2}^{c_{max}}\frac{cN_{c}}{N}\overset{_{3}}{=}\frac{N-N_{1}}{N}\\
+ & \overset{_{4}}{=}1-\frac{N_{1}}{N}=1-\mathbb{P}_{unseen}
+\end{align*}
+
+\end_inset
+
+
+\numeric on
+1
+\numeric off
+: נתון שלכל 
+\begin_inset Formula $c>c_{max}$
+\end_inset
+
+ מתקיים כי 
+\begin_inset Formula $N_{c}=0$
+\end_inset
+
+ ולכן בפרט 
+\begin_inset Formula $N_{c_{max}+1}=0$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\numeric on
+2
+\numeric off
+: אינדוקס מחדש של הסיגמא.
+\begin_inset Newline newline
+\end_inset
+
+
+\numeric on
+3
+\numeric off
+: מטענת העזר.
+\begin_inset Newline newline
+\end_inset
+
+
+\numeric on
+4
+\numeric off
+: מעבר ישיר לתוצאת הדרושה.
+\end_layout
+
+\begin_layout Subsection*
+)ב(
+\end_layout
+
+\begin_layout Standard
+תהי מילה כלשהי שמופיעה 
+\begin_inset Formula $c$
+\end_inset
+
+ פעמים ע
+\begin_inset Quotes erd
+\end_inset
+
+י 
+\begin_inset Formula $\omega_{c}$
+\end_inset
+
+.
+ ההסתברות לבחור את 
+\begin_inset Formula $\omega_{c}$
+\end_inset
+
+ עם שיטת 
+\begin_inset Formula $add-1$
+\end_inset
+
+ היא:
+\begin_inset Formula 
+\[
+\mathbb{P}_{add-1}(\omega_{c})=\frac{c+1}{\sum_{c=1}^{c_{max}}\left(c+1\right)}
+\]
+
+\end_inset
+
+מכיוון ש
+\begin_inset Formula $N$
+\end_inset
+
+ הוא כלל המילים, מתקיים 
+\begin_inset Formula $\sum_{c=1}^{c_{max}}c=N$
+\end_inset
+
+, ולכן 
+\begin_inset Formula 
+\[
+\mathbb{P}_{add-1}(\omega_{c})=\frac{c+1}{2N}
+\]
+
+\end_inset
+
+לעומת זאת, ה
+\begin_inset Formula $MLE$
+\end_inset
+
+ נתון ע
+\begin_inset Quotes erd
+\end_inset
+
+י השכיחות של המילה בקורפוס.
+ כלומר:
+\begin_inset Formula 
+\[
+MLE(\omega_{c})=\frac{c}{N}
+\]
+
+\end_inset
+
+בהינתן ש
+\begin_inset Formula $N$
+\end_inset
+
+ קבוע, קל לראות שעבור 
+\begin_inset Formula $c=1$
+\end_inset
+
+ ה
+\begin_inset Formula $MLE$
+\end_inset
+
+ וה
+\begin_inset Formula $add-1$
+\end_inset
+
+ שווים.
+ עבור 
+\begin_inset Formula $c=0$
+\end_inset
+
+ יוצא שה
+\begin_inset Formula $MLE$
+\end_inset
+
+ ערכו קטן מאשר 
+\begin_inset Formula $add-1$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\mathbb{P}_{add-1}(\omega_{0})=\frac{1}{2N}>0=MLE(\omega_{0})
+\]
+
+\end_inset
+
+עבור 
+\begin_inset Formula $c=2$
+\end_inset
+
+ יוצא שערך ה
+\begin_inset Formula $MLE$
+\end_inset
+
+ גדול יותר מה
+\begin_inset Formula $add-1$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\mathbb{P}_{add-1}(\omega_{2})=\frac{3}{2N}<\frac{2}{N}=MLE(\omega_{2})
+\]
+
+\end_inset
+
+ברור שגם ה
+\begin_inset Formula $MLE$
+\end_inset
+
+ וגם 
+\begin_inset Formula $add-1$
+\end_inset
+
+ הם ליניאריים ובפרט מונוטוניים ממש ולכן קיבלנו שיש סף יחיד 
+\begin_inset Formula $\mu=1$
+\end_inset
+
+ שמקיים את הדרוש.
+\end_layout
+
+\begin_layout Subsection*
+)ג(
+\end_layout
+
+\begin_layout Standard
+נראה שני מקרים בהם התכונה מהסעיף הקודמת לא מתקיימת לגבי 
+\begin_inset Formula $good-smoothing$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Enumerate
+מקרה בו לכל 
+\begin_inset Formula $c$
+\end_inset
+
+ מתקיים שערך ה
+\begin_inset Formula $MLE(\omega_{c})$
+\end_inset
+
+ גבוה יותר: אם כל המילים בקורפוס הופיעו בדיוק פעם אחת.
+ במקרה כזה, 
+\begin_inset Formula $c_{max}=1$
+\end_inset
+
+, ולכן 
+\begin_inset Formula $N_{c+1}=0$
+\end_inset
+
+.
+ מכאן ש
+\begin_inset Formula $\mathbb{P}_{good-smoothing}(\omega_{c})=0$
+\end_inset
+
+ בעוד ש
+\begin_inset Formula $MLE(\omega_{c})=\frac{1}{N}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+מקרה הפוך: בקורפוס שבו עבור כל 
+\begin_inset Formula $c<c_{max}$
+\end_inset
+
+ מתקיים 
+\begin_inset Formula $N_{c}=1$
+\end_inset
+
+ כלומר כל 
+\begin_inset Formula $type$
+\end_inset
+
+ של מילים מכיל מילה יחידה בלבד.
+ במקרה כזה מתקיים 
+\begin_inset Formula $\forall_{i,j\leq c_{max}}:\ \ N_{i}=N_{j}$
+\end_inset
+
+, ולכן:
+\begin_inset Formula 
+\[
+\forall c:\ \ \mathbb{P}_{good-smoothing}(\omega_{c})=\frac{(c+1)N_{c+1}}{N_{c}N}=\frac{c+1}{N}>\frac{c}{N}=MLE(\omega_{c})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
