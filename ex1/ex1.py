@@ -25,10 +25,6 @@ def process_word(word):
 def insert_word_to_uni():
     pass
 
-
-
-
-
 def increase_counter(dict, val):
     try:
         dict[val] += 1
@@ -37,6 +33,6 @@ def increase_counter(dict, val):
 
 
 
-
 if __name__ == "__main__":
     ############# YOAV WAS HERE
+    process_data_set()
