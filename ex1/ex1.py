@@ -1,6 +1,9 @@
 import spacy
 from datasets import load_dataset
 
+# TODO: Yoav: Object for word, insert word into dictionary, maybe build probabilty density function
+# TODO: Nadav: Process doc, Process word
+
 main_dic = dict()
 
 def process_data_set():
