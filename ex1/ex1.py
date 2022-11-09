@@ -19,11 +19,21 @@ def process_data_set():
 def process_word(word):
     pass
 
+def insert_word_to_uni():
+    pass
+
+
+
+
+
 def increase_counter(dict, val):
     try:
         dict[val] += 1
     except:
         dict[val] = 1
+
+
+
 
 if __name__ == "__main__":
     d = {}
