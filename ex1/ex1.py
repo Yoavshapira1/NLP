@@ -100,15 +100,32 @@ def add_word_to_bi_gram_dict(first, second):
 def process_data_set():
     nlp = spacy.load("en_core_web_sm")
     dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
-    i = 0
+
     for text in dataset["text"]:
+        j = 0
+        print("\n new text")
         doc = nlp(text)
-        print(doc.text)
-        print()
-        i += 1
-        if i == 5:
-            break
-    return nlp
+
+        while j < len(doc) and not doc[j].is_alpha:
+            j += 1
+
+        if j < len(doc):
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    TO DO   insert START
+            pass
+
+
+        while j < len(doc):
+            # to do add_word_to_main_dict(doc[j].lemma)
+            k = j + 1
+            while k < len(doc):
+                if doc[k].is_alpha:
+                    # to do add_word_to_bi_gram_dict(doc[j].lemma, doc[k].lemma)
+                    print(doc[j].text + ":  " + doc[k].text)
+                    break
+                k += 1
+            j = k
+
+    print("!!!!!!!!!!!!!!!!!!!!!     EEEEEEEEEEEEEEEEEEEENNNNNNNNNNNNNNNNNNDDDDDDDDDDDDDD !!!!!!!!!!!!!!!!!!!!!!!!!")
 
 def process_word(word):
     pass
@@ -160,3 +177,5 @@ if __name__ == "__main__":
         word.max_bi_gram_counter = w["max_bi_gram_counter"]
         word.str_of_max_bi_gram_counter = w["str_of_max_bi_gram_counter"]
         data[w["word"]] = word
+
+    process_data_set()
