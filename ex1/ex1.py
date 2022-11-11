@@ -92,7 +92,7 @@ def increase_uni_gram(word):
 def increase_bi_gram(first, second):
     """ Increments the counter of the bigram (first, second)
     NOTICE that 'first' must be in the main_dict, hence:
-    ***THIS FUNCTION CAN ONLY BE CALLED AFTER add_word_to_main_dict(first)***"""
+    ***THIS FUNCTION CAN ONLY BE CALLED AFTER increase_uni_gram(first)***"""
     main_dict[first].increase_bigram_counter(second)
 
 
@@ -120,21 +120,25 @@ def process_data_set():
                 k += 1
             j = k
 
+
 def increase_counter(dict, val):
     try:
         dict[val] += 1
     except:
         dict[val] = 1
 
+
 def sentence_to_string_list(str):
     str = "START " + str + " STOP"
     stripped = ' '.join(x for x in str.split(" ") if x.isalpha())
     return stripped.split()
 
+
 def save_data(data_dict):
     # encode
     with open('data.json', 'w') as fp:
         json.dump(data_dict, fp, indent=4, cls=WordEncoder)
+
 
 def load_data(file_path):
     # decode
