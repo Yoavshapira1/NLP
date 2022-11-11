@@ -100,11 +100,7 @@ def add_word_to_bi_gram_dict(first, second):
 def process_data_set():
     nlp = spacy.load("en_core_web_sm")
     dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
-    i = 0
     for text in dataset["text"]:
-        i+=1
-        if i >50:
-            break
         j = 0
         doc = nlp(text)
 
@@ -125,9 +121,6 @@ def process_data_set():
                     break
                 k += 1
             j = k
-
-def process_word(word):
-    pass
 
 def increase_counter(dict, val):
     try:
@@ -170,19 +163,4 @@ if __name__ == "__main__":
     # save main_dict as a JSON file!! So we don't need to run this code again
 
     process_data_set()
-
-    # JSON encoding & decoding example
-    # encode
-    with open('main_dict.json', 'w') as fp:
-        json.dump(main_dict, fp, indent=4, cls=WordEncoder)
-
-    # decode
-    with open('main_dict.json', 'r') as fp:
-        data = json.load(fp)
-    for w in data.values():
-        word = Word(w["word"])
-        word.uni_gram_counter = w["uni_gram_counter"]
-        word.bi_gram_counters = w["bi_gram_counters"]
-        word.max_bi_gram_counter = w["max_bi_gram_counter"]
-        word.str_of_max_bi_gram_counter = w["str_of_max_bi_gram_counter"]
-        data[w["word"]] = word
+    save_data(main_dict)
