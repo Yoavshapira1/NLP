@@ -3,10 +3,8 @@ from datasets import load_dataset
 import numpy as np
 import json
 from json import JSONEncoder
-
 nlp = spacy.load("en_core_web_sm")
 
-# TODO: Nadav: Process doc, Process word
 
 class Word:
 
@@ -83,7 +81,7 @@ class WordEncoder(JSONEncoder):
 main_dict = dict()
 
 
-def add_word_to_main_dict(word):
+def increase_uni_gram(word):
     """ Increments the counter of a single word from the corpus"""
     try:
         main_dict[word].increase_unigram_counter()
@@ -91,12 +89,11 @@ def add_word_to_main_dict(word):
         main_dict[word] = Word(word)
 
 
-def add_word_to_bi_gram_dict(first, second):
+def increase_bi_gram(first, second):
     """ Increments the counter of the bigram (first, second)
     NOTICE that 'first' must be in the main_dict, hence:
     ***THIS FUNCTION CAN ONLY BE CALLED AFTER add_word_to_main_dict(first)***"""
     main_dict[first].increase_bigram_counter(second)
-
 
 
 def process_data_set():
@@ -110,15 +107,15 @@ def process_data_set():
 
         if j < len(doc):
             start = nlp('START')[0].lemma_
-            add_word_to_main_dict(start)
-            add_word_to_bi_gram_dict(start, doc[j].lemma_)
+            increase_uni_gram(start)
+            increase_bi_gram(start, doc[j].lemma_)
 
         while j < len(doc):
-            add_word_to_main_dict(doc[j].lemma_)
+            increase_uni_gram(doc[j].lemma_)
             k = j + 1
             while k < len(doc):
                 if doc[k].is_alpha:
-                    add_word_to_bi_gram_dict(doc[j].lemma_, doc[k].lemma_)
+                    increase_bi_gram(doc[j].lemma_, doc[k].lemma_)
                     break
                 k += 1
             j = k
@@ -154,28 +151,48 @@ def load_data(file_path):
 
 
 if __name__ == "__main__":
-    # Psudo code *after processing*:
+    # Psudeo code
     #
     # - for every document D:
-    #     - add "START" at beginning and "STOP" at the end
+    #     - add "START" at beginning
     #     - for every consecutive words W1, W2:
     #         add_word_to_main_dict(W1)
     #         add_word_to_bi_gram_dict(W1, W2)
-    # save main_dict as a JSON file!! So we don't need to run this code again
 
     # process_data_set()
     # save_data(main_dict)
     data = load_data('data.json')
 
+    sentences = ["Brad Pitt was born in Oklahoma", "The actor was born in USA"]
+    M = 0
+    # Q3
+    print("Q U E S T I O N    3")
+    perp_pow = 0
+    for s in sentences:
+        doc = nlp("START" + s)
+        prob = 0
+        for i in range(len(doc) - 1):
+            prob += data[doc[i].lemma_].bi_prob(doc[i + 1].lemma_)
+        perp_pow += prob
+        M += len(s)
+        print("Probability of the sentence: %s, is %f" % (s, prob))
+    perplexity = np.power(np.e, -(perp_pow / M))
+    print("The perplexity: %f" % perplexity)
 
-    doc = nlp("START Brad Pitt was born in Oklahoma")
-    sum = 0
-    for i in range(len(doc) - 1):
-        sum += data[doc[i].lemma_].bi_prob(doc[i+1].lemma_)
-    print(sum)
+    # Q4
+    print("Q U E S T I O N    4")
+    perp_pow = 0
+    for s in sentences:
+        doc = nlp("START" + s)
+        prob = 0
+        for i in range(len(doc) - 1):
+            bi_gram_prob = data[doc[i].lemma_].bi_prob(doc[i + 1].lemma_)
+            if bi_gram_prob > np.inf:
+                prob += 2/3 * bi_gram_prob
+            else:
+                prob += 1/3 * data[doc[i + 1].lemma_].uni_prob()
+        perp_pow += prob
+        print("Probability of the sentence: %s, is %f" % (s, prob))
+    perplexity = np.power(np.e, -(perp_pow / M))
+    print("Q4: The perplexity: %f" % perplexity)
 
-    doc = nlp("START The actor was born in USA")
-    sum = 0
-    for i in range(len(doc) - 1):
-        sum += data[doc[i].lemma_].bi_prob(doc[i + 1].lemma_)
-    print(sum)
