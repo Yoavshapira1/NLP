@@ -4,6 +4,8 @@ import numpy as np
 import json
 from json import JSONEncoder
 
+nlp = spacy.load("en_core_web_sm")
+
 # TODO: Nadav: Process doc, Process word
 
 class Word:
@@ -36,7 +38,7 @@ class Word:
         try:
             return np.log(self.bi_gram_counters[word] / self.uni_gram_counter)
         except KeyError:
-            return 0
+            return -np.inf
 
     def MLE(self) -> str:
         """ Return the most likelihood word to appear after self.word"""
@@ -98,7 +100,6 @@ def add_word_to_bi_gram_dict(first, second):
 
 
 def process_data_set():
-    nlp = spacy.load("en_core_web_sm")
     dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
     for text in dataset["text"]:
         j = 0
@@ -162,5 +163,19 @@ if __name__ == "__main__":
     #         add_word_to_bi_gram_dict(W1, W2)
     # save main_dict as a JSON file!! So we don't need to run this code again
 
-    process_data_set()
-    save_data(main_dict)
+    # process_data_set()
+    # save_data(main_dict)
+    data = load_data('data.json')
+
+
+    doc = nlp("START Brad Pitt was born in Oklahoma")
+    sum = 0
+    for i in range(len(doc) - 1):
+        sum += data[doc[i].lemma_].bi_prob(doc[i+1].lemma_)
+    print(sum)
+
+    doc = nlp("START The actor was born in USA")
+    sum = 0
+    for i in range(len(doc) - 1):
+        sum += data[doc[i].lemma_].bi_prob(doc[i + 1].lemma_)
+    print(sum)
