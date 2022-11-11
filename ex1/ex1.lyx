@@ -243,6 +243,10 @@ status open
 
 \end_layout
 
+\begin_layout Part*
+חלק תאורטי
+\end_layout
+
 \begin_layout Section*
 שאלה
 \family roman
@@ -270,6 +274,132 @@ status open
 \noun default
 \color inherit
 1
+\end_layout
+
+\begin_layout Standard
+ראשית נראה שההסתברות ליצור רצף מילים 
+\begin_inset Formula $w_{1},w_{2}....$
+\end_inset
+
+ שלא נגמר במילה 
+\begin_inset Formula $stop$
+\end_inset
+
+ כלומר לא נגמר אף פעם, שואפת ל-
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+0
+\numeric off
+.
+ ההסתברות זו מחושבת על ידי:
+\begin_inset Formula 
+\[
+\prod_{i=0}^{\infty}p((w_{i}\neq stop)|w_{i-1})=\prod_{i=0}^{\infty}(1-p(stop|w_{i-1})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+משום שאוצר המילים שלנו הוא סופי, קיימת 
+\begin_inset Formula $\widehat{w}$
+\end_inset
+
+ כך שהטרנזקציה 
+\begin_inset Formula $p(stop|\widehat{w})$
+\end_inset
+
+ מינימלית וגם גדולה מ-
+\numeric on
+0
+\numeric off
+ ולכן מתקיים:
+\begin_inset Formula 
+\[
+\prod_{i=0}^{\infty}(1-p(stop|w_{i})\leq\prod_{i=0}^{\infty}(1-p(stop|\widehat{w})=\prod_{i=0}^{\infty}C\longrightarrow^{*}0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+* משום שלכל קבוע 
+\begin_inset Formula $0\leq C<1$
+\end_inset
+
+ מתקיים 
+\begin_inset Formula $\prod_{i=0}^{\infty}C\longrightarrow0$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+לכן אם ההסתברות של כל המשפטים האינסופיים שואפת ל-
+\numeric on
+0
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ ההסתברות המשלימה היא שההסתברות של כל המשפטים הסופיים שואפת ל-
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+1
+\numeric off
+.
 \end_layout
 
 \begin_layout Section*
@@ -1006,6 +1136,578 @@ MLE(\omega_{c})=\frac{c}{N}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+4
+\end_layout
+
+\begin_layout Subsubsection*
+א( 
+\end_layout
+
+\begin_layout Standard
+מודל 
+\begin_inset Formula $trigram$
+\end_inset
+
+ נתון ע
+\begin_inset Quotes erd
+\end_inset
+
+י נוסחת ההסתברות הבאה:
+\begin_inset Formula 
+\[
+\mathbb{P}\left(\omega_{j}|\omega_{j-1},\omega_{j-2}\right)=\prod_{j=1}^{n}\mathbb{P}\left(\omega_{j}|\omega_{j-1},\omega_{j-2}\right)
+\]
+
+\end_inset
+
+המודל הזה מניח שכל מילה איננה תלויה במילה ה
+\numeric on
+3
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+שמופיעה לפניה, אלא רק בשתיים שלפניה.
+\end_layout
+
+\begin_layout Subsubsection*
+ב(
+\end_layout
+
+\begin_layout Standard
+דוגמא בעברית: צורת רבים או מול צורת יחיד: המילה 
+\begin_inset Quotes eld
+\end_inset
+
+כלבים
+\begin_inset Quotes erd
+\end_inset
+
+ מופיעה באותה השלשה עם הפועל 
+\begin_inset Quotes eld
+\end_inset
+
+נובח
+\begin_inset Quotes erd
+\end_inset
+
+ ולכן המודל יפרש את הצורה נכונה:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Quotes eld
+\end_inset
+
+יש 
+\series bold
+כלבים
+\series default
+ שלא 
+\series bold
+נובחים
+\series default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+דוגמא באנגלית: המילה 
+\begin_inset Formula $dog$
+\end_inset
+
+ מופיעה בצורת יחיד בתוך אותה שלשה עם הפועל 
+\begin_inset Formula $bark$
+\end_inset
+
+, ולכן המודל יפרש את הצורה נכונה:
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+In israel, a 
+\series bold
+dog
+\series default
+ only bark
+\series bold
+s
+\series default
+ at list one time a day.
+\end_layout
+
+\begin_layout Subsubsection*
+ג(
+\end_layout
+
+\begin_layout Standard
+דוגמא בעברית: המילה 
+\begin_inset Quotes eld
+\end_inset
+
+כלבים
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\series bold
+לא 
+\series default
+מופיעה באותה השלשה עם הפועל 
+\begin_inset Quotes eld
+\end_inset
+
+נובח
+\begin_inset Quotes erd
+\end_inset
+
+ ולכן המודל יפרש את הצורה לא נכונה:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Quotes eld
+\end_inset
+
+יש 
+\series bold
+כלבים 
+\series default
+גדולים שלא 
+\series bold
+נובחים
+\series default
+.
+ נצטרך כאן מודל 
+\begin_inset Formula $4$
+\end_inset
+
+-גרמי.
+\begin_inset Newline newline
+\end_inset
+
+דוגמא באנגלית: המילה 
+\begin_inset Formula $dog$
+\end_inset
+
+ 
+\series bold
+לא 
+\series default
+מופיעה באותה שלשה עם הפועל 
+\begin_inset Formula $bark$
+\end_inset
+
+, ולכן המודל לא יפרש את הצורה נכונה )כאן נצטרך מודל
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+6-
+\numeric off
+גרמי(
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+In israel, a 
+\series bold
+dog
+\series default
+ that have vocal cords, bark
+\series bold
+s
+\series default
+ atlist one time a day.
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+5
+\end_layout
+
+\begin_layout Standard
+האישה שישבה על כיסא עץ שקד נפל ממנו.
+\end_layout
+
+\begin_layout Standard
+האישה שישבה על כיסא עץ שקד גדול נפל ממנו.
+\end_layout
+
+\begin_layout Standard
+האישה שישבה על כיסא עץ שקד גדול כמעט נפל ממנו.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+דוגמאות אלו מראות שלא משנה כמה תגדיל את מודל מרקוב הוא לא יצליח לתפוס את
+ כל השפה משום שתמיד יהיה קיים משפט שנצטרך יותר תלויות כדי לעבד את כולו.
+\end_layout
+
+\begin_layout Part*
+חלק פרקטי
+\end_layout
+
+\begin_layout Subsection*
+)א(
+\end_layout
+
+\begin_layout Standard
+מצורף קוד
+\end_layout
+
+\begin_layout Subsection*
+)ב(
+\end_layout
+
+\begin_layout Standard
+לאחר אימון המודל הביגראמי, הוא השלים את המשפט כך:
+\begin_inset Formula 
+\[
+I\ have\ a\ house\ in\ the
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+)ג(
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\mathbb{P}\left(Brad\ Pitt\ was\ born\ in\ Oklahoma\right)=-\infty
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\mathbb{P}\left(The\ actor\ was\ born\ in\ USA\right)=-29.74
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+סהכ בשני המשפטים יש
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+12
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+מילים.
+ אז ה
+\begin_inset Formula $perplexity$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+e^{-l}\ ,\ l=\frac{1}{12}\left(-\infty-29.74\right)=-\infty
+\]
+
+\end_inset
+
+ולכן 
+\begin_inset Formula 
+\[
+perplexity=e^{-(-\infty)}=\infty
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+)ד(*********** ל ה ש ל י ם
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\mathbb{P}\left(Brad\ Pitt\ was\ born\ in\ Oklahoma\right)=-\infty
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\mathbb{P}\left(The\ actor\ was\ born\ in\ USA\right)=-29.74
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+סהכ בשני המשפטים יש
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+12
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+מילים.
+ אז ה
+\begin_inset Formula $perplexity$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+e^{-l}\ ,\ l=\frac{1}{12}\left(-\infty-29.74\right)=-\infty
+\]
+
+\end_inset
+
+ולכן 
+\begin_inset Formula 
+\[
+perplexity=e^{-(-\infty)}=\infty
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+)א(
 \end_layout
 
 \end_body

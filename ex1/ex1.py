@@ -96,29 +96,29 @@ def increase_bi_gram(first, second):
     main_dict[first].increase_bigram_counter(second)
 
 
-def process_data_set():
-    dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
-    for text in dataset["text"]:
-        j = 0
-        doc = nlp(text)
-
-        while j < len(doc) and not doc[j].is_alpha:
-            j += 1
-
-        if j < len(doc):
-            start = nlp('START')[0].lemma_
-            increase_uni_gram(start)
-            increase_bi_gram(start, doc[j].lemma_)
-
-        while j < len(doc):
-            increase_uni_gram(doc[j].lemma_)
-            k = j + 1
-            while k < len(doc):
-                if doc[k].is_alpha:
-                    increase_bi_gram(doc[j].lemma_, doc[k].lemma_)
-                    break
-                k += 1
-            j = k
+# def process_data_set():
+#     dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
+#     for text in dataset["text"]:
+#         j = 0
+#         doc = nlp(text)
+#
+#         while j < len(doc) and not doc[j].is_alpha:
+#             j += 1
+#
+#         if j < len(doc):
+#             start = nlp('START')[0].lemma_
+#             increase_uni_gram(start)
+#             increase_bi_gram(start, doc[j].lemma_)
+#
+#         while j < len(doc):
+#             increase_uni_gram(doc[j].lemma_)
+#             k = j + 1
+#             while k < len(doc):
+#                 if doc[k].is_alpha:
+#                     increase_bi_gram(doc[j].lemma_, doc[k].lemma_)
+#                     break
+#                 k += 1
+#             j = k
 
 
 def increase_counter(dict, val):
@@ -165,7 +165,7 @@ if __name__ == "__main__":
 
     # process_data_set()
     # save_data(main_dict)
-    data = load_data('data.json')
+    data = load_data("data.json")
 
     sentences = ["Brad Pitt was born in Oklahoma", "The actor was born in USA"]
     M = 0
