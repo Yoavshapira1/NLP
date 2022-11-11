@@ -124,6 +124,25 @@ def sentence_to_string_list(str):
     stripped = ' '.join(x for x in str.split(" ") if x.isalpha())
     return stripped.split()
 
+def save_data(data_dict):
+    # encode
+    with open('data.json', 'w') as fp:
+        json.dump(data_dict, fp, indent=4, cls=WordEncoder)
+
+def load_data(file_path):
+    # decode
+    with open(file_path, 'r') as fp:
+        data = json.load(fp)
+    for w in data.values():
+        word = Word(w["word"])
+        word.uni_gram_counter = w["uni_gram_counter"]
+        word.bi_gram_counters = w["bi_gram_counters"]
+        word.max_bi_gram_counter = w["max_bi_gram_counter"]
+        word.str_of_max_bi_gram_counter = w["str_of_max_bi_gram_counter"]
+        data[w["word"]] = word
+    return data
+
+
 if __name__ == "__main__":
     # Psudo code *after processing*:
     #
@@ -145,18 +164,5 @@ if __name__ == "__main__":
         add_word_to_main_dict(W1)
         add_word_to_bi_gram_dict(W1, W2)
 
-    # JSON encoding & decoding example
-    # encode
-    with open('main_dict.json', 'w') as fp:
-        json.dump(main_dict, fp, indent=4, cls=WordEncoder)
 
-    # decode
-    with open('main_dict.json', 'r') as fp:
-        data = json.load(fp)
-    for w in data.values():
-        word = Word(w["word"])
-        word.uni_gram_counter = w["uni_gram_counter"]
-        word.bi_gram_counters = w["bi_gram_counters"]
-        word.max_bi_gram_counter = w["max_bi_gram_counter"]
-        word.str_of_max_bi_gram_counter = w["str_of_max_bi_gram_counter"]
-        data[w["word"]] = word
+
