@@ -1,0 +1,685 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass heb-article
+\begin_preamble
+\usepackage{culmus}
+
+% Convert the Lyx colors into more pleasent colors:
+\usepackage{xcolor}
+\definecolor{blue}{RGB}{14,107,217}
+\definecolor{green}{RGB}{0,158,40}
+\definecolor{red}{RGB}{235,16,16}
+\definecolor{brown}{RGB}{164,66,0}
+\definecolor{orange}{RGB}{231,135,26}
+\definecolor{purple}{RGB}{94,53,177}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language hebrew
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1cm
+\topmargin 2cm
+\rightmargin 1cm
+\bottommargin 3cm
+\headheight 0cm
+\headsep 0cm
+\footskip 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation 0bp
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Box Doublebox
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Title
+)
+\numeric on
+67658
+\numeric off
+( 
+\begin_inset Formula $NLP$
+\end_inset
+
+
+\family roman
+\series medium
+\shape up
+\size largest
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+| תרגיל
+\family roman
+\series medium
+\shape up
+\size largest
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+2
+\end_layout
+
+\begin_layout Author
+יואב שפירא| ת"ז:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+312492838
+\family roman
+\series medium
+\shape up
+\size large
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+& נדב פוקס| ת"ז:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+206073108
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+1
+\end_layout
+
+\begin_layout Subsection*
+)א(
+\end_layout
+
+\begin_layout Subsection*
+)ב(
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+2
+\end_layout
+
+\begin_layout Standard
+כדי להתמודד עם השינוי המהותי באלגוריתם, ניתן הגדרה נוספת על כל שכבה: במקום
+ את חלקי הדיבר 
+\begin_inset Formula $\left(POS\right)$
+\end_inset
+
+ האפשריים, כל שכבה תכיל צמדים של חלקי דיבר ומילים, כלומר:
+\begin_inset Newline newline
+\end_inset
+
+נגדיר את 
+\begin_inset Formula $C=K\times V$
+\end_inset
+
+, כלומר קבוצת כל הזוגות של מילה אפשרית וחלק דיבר.
+ נסמן כל זוג כזה ע
+\begin_inset Quotes erd
+\end_inset
+
+י
+\begin_inset Formula 
+\[
+c_{i}=(y,x)\in C\ for\ i\in\{1...|K||V|\}\ \ (x\in V,y\in K)
+\]
+
+\end_inset
+
+ונגדיר את הגישה לערכים שהוא מכיל ע
+\begin_inset Quotes erd
+\end_inset
+
+י אינדקס תחתון:
+\begin_inset Formula 
+\[
+c_{i}=\left(c_{i_{y}},c_{i_{x}}\right)
+\]
+
+\end_inset
+
+כעת לכל 
+\begin_inset Formula $k\leq n$
+\end_inset
+
+: נגדיר את השכבה 
+\begin_inset Formula $S_{k}$
+\end_inset
+
+, ע
+\begin_inset Quotes erd
+\end_inset
+
+י כל הצמדים האפשריים של 
+\begin_inset Formula $x\in V$
+\end_inset
+
+ ושל 
+\begin_inset Formula $y\in K$
+\end_inset
+
+, כלומר לכל 
+\begin_inset Formula $k$
+\end_inset
+
+ נגדיר 
+\begin_inset Formula $S_{k}=C$
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+בצורה כזו האלגוריתם עובד 
+\series bold
+בדיוק 
+\series default
+באותה צורה כמו שלמדנו, )ועל הדרך אוסף גם את הרצף של המילים ולא רק חלקי הדיבר(,
+ רק שזמן הריצה שלו הוא 
+\begin_inset Formula $O\left(n\cdot(|K||V|)^{4}\right)$
+\end_inset
+
+, בעקבות הגדלת כמות העלים בכל שכבה.
+ 
+\begin_inset Newline newline
+\end_inset
+
+פורמלית:
+\end_layout
+
+\begin_layout Standard
+נוסיף עוד סימון לטובת נוחות קריאה; לכל 
+\begin_inset Formula $i\in\{1...n\}$
+\end_inset
+
+, נסמן עלה גנרי בשכבה כלשהי ע
+\begin_inset Quotes erd
+\end_inset
+
+י 
+\begin_inset Formula $c_{k}\in S_{k}=C$
+\end_inset
+
+.
+ אז המשך האלגוריתם מוגדר ע
+\begin_inset Quotes erd
+\end_inset
+
+י:
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\lang english
+Initialize: 
+\series default
+Set 
+\begin_inset Formula $S_{-2}=S_{-1}=S_{0}=\{*\},\ S_{k}=C\ for\ \left\{ k=1...n\right\} $
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\lang english
+Algorithm:
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+For 
+\begin_inset Formula $k=1...n$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+
+\lang english
+For 
+\begin_inset Formula $c_{k-2},c_{k-1},c_{k}$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\pi\left(k,c_{k-2},c_{k-1},c_{k}\right)=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+Max_{c_{k-3}}\left\{ \pi\left(k-1,c_{k-3},c_{k-2},c_{k-1}\right)\times q\left(c_{k_{y}}|c_{k-3_{y}},c_{k-2_{y}},c_{k-1_{y}}\right)\times e\left(c_{k_{x}}|c_{k_{y}}\right)\right\} 
+\]
+
+\end_inset
+
+ 
+\begin_inset Formula 
+\[
+bp\left(k,c_{k-2},c_{k-1},c_{k}\right)=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+argMax_{c_{k-3}}\left\{ \pi\left(k-1,c_{k-3},c_{k-2},c_{k-1}\right)\times q\left(c_{k_{y}}|c_{k-3_{y}},c_{k-2_{y}},c_{k-1_{y}}\right)\times e\left(c_{k_{x}}|c_{k_{y}}\right)\right\} 
+\]
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Set 
+\begin_inset Formula $c_{n-2},c_{n-1},c_{n}=argMax_{(c_{n-2},c_{n-1},c_{n})}\left\{ \pi\left(n,c_{n-2},c_{n-1},c_{n}\right)\times q\left(STOP|c_{n-2_{y}},c_{n-1_{y}},c_{n_{y}}\right)\right\} $
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+For 
+\begin_inset Formula $k=\{n-3...1\}$
+\end_inset
+
+: 
+\begin_inset space \space{}
+\end_inset
+
+Set 
+\begin_inset Formula $c_{k}=bp\left(k+3,c_{k+1},c_{k+2},c_{k+3}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Return the sequence 
+\begin_inset Formula $c_{1}...c_{n}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+3
+\end_layout
+
+\begin_layout Subsection*
+)א(
+\end_layout
+
+\begin_layout Subsection*
+)ב(
+\end_layout
+
+\begin_layout Subsection*
+)ג(
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+4
+\end_layout
+
+\begin_layout Subsection*
+)א(
+\end_layout
+
+\begin_layout Subsection*
+)ב(
+\end_layout
+
+\begin_layout Subsection*
+)ג(
+\end_layout
+
+\begin_layout Section*
+שאלה
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+5
+\end_layout
+
+\begin_layout Subsection*
+)א(
+\end_layout
+
+\begin_layout Subsection*
+)ב(
+\end_layout
+
+\begin_layout Subsection*
+)ג(
+\end_layout
+
+\end_body
+\end_document
