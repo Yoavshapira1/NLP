@@ -5,12 +5,19 @@ nltk.download('brown')
 # TODO: Yoav: Ojbects, save & load data, Viterbi
 # TODO NADAVS: prepare training set
 
-def increase_uni_gram(dict, word):
+def add_word(dict, word):
     """ Increments the counter of a single word to a given dictionary"""
     try:
         dict[word].increase_unigram_counter()
     except KeyError:
         dict[word] = Word(word)
+
+def add_tag(dict, tag):
+    """ Increments the counter of a single word to a given dictionary"""
+    try:
+        dict[tag].increase_unigram_counter()
+    except KeyError:
+        dict[tag] = Tag(word)
 
 
 if __name__ == "__main__":
@@ -20,8 +27,8 @@ if __name__ == "__main__":
     tag_sent = [str(i % 3) for i in range(len(sent))]
 
     for word, tag in zip(sent, tag_sent):
-        increase_uni_gram(words, word)
-        increase_uni_gram(tags, tag)
+        add_word(words, word)
+        add_tag(tags, tag)
         # add tag to Word
         words[word].increase_bigram_counter(tag)
 
