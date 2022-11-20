@@ -3,7 +3,7 @@ from datasets import load_dataset
 import numpy as np
 import json
 from json import JSONEncoder
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load('en_core_web_sm')
 
 
 class Word:
@@ -96,29 +96,29 @@ def increase_bi_gram(first, second):
     main_dict[first].increase_bigram_counter(second)
 
 
-# def process_data_set():
-#     dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
-#     for text in dataset["text"]:
-#         j = 0
-#         doc = nlp(text)
-#
-#         while j < len(doc) and not doc[j].is_alpha:
-#             j += 1
-#
-#         if j < len(doc):
-#             start = nlp('START')[0].lemma_
-#             increase_uni_gram(start)
-#             increase_bi_gram(start, doc[j].lemma_)
-#
-#         while j < len(doc):
-#             increase_uni_gram(doc[j].lemma_)
-#             k = j + 1
-#             while k < len(doc):
-#                 if doc[k].is_alpha:
-#                     increase_bi_gram(doc[j].lemma_, doc[k].lemma_)
-#                     break
-#                 k += 1
-#             j = k
+def process_data_set():
+    dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
+    for text in dataset["text"]:
+        j = 0
+        doc = nlp(text)
+
+        while j < len(doc) and not doc[j].is_alpha:
+            j += 1
+
+        if j < len(doc):
+            start = nlp('START')[0].lemma_
+            increase_uni_gram(start)
+            increase_bi_gram(start, doc[j].lemma_)
+
+        while j < len(doc):
+            increase_uni_gram(doc[j].lemma_)
+            k = j + 1
+            while k < len(doc):
+                if doc[k].is_alpha:
+                    increase_bi_gram(doc[j].lemma_, doc[k].lemma_)
+                    break
+                k += 1
+            j = k
 
 
 def increase_counter(dict, val):
@@ -126,12 +126,6 @@ def increase_counter(dict, val):
         dict[val] += 1
     except:
         dict[val] = 1
-
-
-def sentence_to_string_list(str):
-    str = "START " + str + " STOP"
-    stripped = ' '.join(x for x in str.split(" ") if x.isalpha())
-    return stripped.split()
 
 
 def save_data(data_dict):
@@ -153,20 +147,7 @@ def load_data(file_path):
         data[w["word"]] = word
     return data
 
-
-if __name__ == "__main__":
-    # Psudeo code
-    #
-    # - for every document D:
-    #     - add "START" at beginning
-    #     - for every consecutive words W1, W2:
-    #         add_word_to_main_dict(W1)
-    #         add_word_to_bi_gram_dict(W1, W2)
-
-    # process_data_set()
-    # save_data(main_dict)
-    data = load_data("data.json")
-
+def questions_ex1(data):
     sentences = ["Brad Pitt was born in Oklahoma", "The actor was born in USA"]
     M = 0
     # Q3
@@ -192,11 +173,28 @@ if __name__ == "__main__":
         for i in range(len(doc) - 1):
             bi_gram_prob = data[doc[i].lemma_].bi_prob(doc[i + 1].lemma_)
             if bi_gram_prob > np.inf:
-                prob += 2/3 * bi_gram_prob
+                prob += 2 / 3 * bi_gram_prob
             else:
-                prob += 1/3 * data[doc[i + 1].lemma_].uni_prob()
+                prob += 1 / 3 * data[doc[i + 1].lemma_].uni_prob()
         perp_pow += prob
         print("Probability of the sentence: %s, is %f" % (s, prob))
     perplexity = np.power(np.e, -(perp_pow / M))
     print("Q4: The perplexity: %f" % perplexity)
+
+
+if __name__ == "__main__":
+    # Psudeo code
+    #
+    # - for every document D:
+    #     - add "START" at beginning
+    #     - for every consecutive words W1, W2:
+    #         add_word_to_main_dict(W1)
+    #         add_word_to_bi_gram_dict(W1, W2)
+
+    process_data_set()
+    # save_data(main_dict)
+    # data = load_data("data.json")
+    data = main_dict
+
+    questions_ex1(data)
 
