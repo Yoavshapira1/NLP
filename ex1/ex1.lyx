@@ -1593,7 +1593,7 @@ perplexity=e^{-(-\infty)}=\infty
 \end_layout
 
 \begin_layout Subsection*
-)ד(*********** ל ה ש ל י ם
+)ד(
 \end_layout
 
 \begin_layout Enumerate
@@ -1607,7 +1607,7 @@ perplexity=e^{-(-\infty)}=\infty
 \begin_layout Enumerate
 \begin_inset Formula 
 \[
-\mathbb{P}\left(Brad\ Pitt\ was\ born\ in\ Oklahoma\right)=-\infty
+\mathbb{P}\left(Brad\ Pitt\ was\ born\ in\ Oklahoma\right)=-36.18
 \]
 
 \end_inset
@@ -1618,7 +1618,7 @@ perplexity=e^{-(-\infty)}=\infty
 \begin_layout Enumerate
 \begin_inset Formula 
 \[
-\mathbb{P}\left(The\ actor\ was\ born\ in\ USA\right)=-29.74
+\mathbb{P}\left(The\ actor\ was\ born\ in\ USA\right)=-31.04
 \]
 
 \end_inset
@@ -1628,86 +1628,18 @@ perplexity=e^{-(-\infty)}=\infty
 
 \end_deeper
 \begin_layout Enumerate
-סהכ בשני המשפטים יש
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\xout off
-\uuline off
-\uwave off
-\noun off
-\color none
- 
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\numeric on
-\bar default
-\strikeout default
-\xout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
-12
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\numeric off
-\bar no
-\strikeout off
-\xout off
-\uuline off
-\uwave off
-\noun off
-\color none
- 
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\bar default
-\strikeout default
-\xout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
-מילים.
- אז ה
 \begin_inset Formula $perplexity$
 \end_inset
 
-:
+: 
 \begin_inset Formula 
 \[
-e^{-l}\ ,\ l=\frac{1}{12}\left(-\infty-29.74\right)=-\infty
-\]
-
-\end_inset
-
-ולכן 
-\begin_inset Formula 
-\[
-perplexity=e^{-(-\infty)}=\infty
+perplexity=e^{\frac{-(-36.18-31.04)}{12}}=271.11
 \]
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection*
-)א(
 \end_layout
 
 \end_body
