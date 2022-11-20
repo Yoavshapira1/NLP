@@ -80,7 +80,6 @@ class WordEncoder(JSONEncoder):
 
 main_dict = dict()
 
-
 def increase_uni_gram(word):
     """ Increments the counter of a single word from the corpus"""
     try:
