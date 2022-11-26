@@ -65,9 +65,13 @@ class Word(WordAbs):
     def corpus_size(self, val):
         type(self)._corpus_size += 1
 
+    def __init__(self, word):
+        super().__init__(word)
+        self.str_of_max_bi_gram_counter = "NN"
+
     def increase_unigram_counter(self) -> None:
         self.uni_gram_counter += 1
-        if self.word != "start":
+        if not self.word in ["*", "STOP"]:
             self.corpus_size += 1
 
 
@@ -78,7 +82,7 @@ class Tag(WordAbs):
 
 class WordEncoder(JSONEncoder):
     def default(self, obj):
-        if issubclass(type(obj), Word):
+        if issubclass(type(obj), WordAbs):
             return obj.__dict__
         else:
             super().default(obj)
