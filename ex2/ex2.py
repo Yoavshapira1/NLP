@@ -50,14 +50,16 @@ def add_word(dict, word, type):
         dict[word] = Word(word) if type == Word else Tag(word)
 
 
+def process_sentence(sentence):
+    for w in sentence:
+        w[1] = w[1].replace("*", "").replace("+", "").replace("-", "")
+    return sentence
+
 def process_data_set():
+    # same process for training & test
     data = nltk.corpus.brown.tagged_sents(categories='news')
     training_data = data[:int(0.9 * len(data))]
     test_data = data[int(0.9 * len(data)):]
-
-    # for sentence in data:
-    #     print(sentence)
-    # print(len(data))
 
     words = {}
     tags = {}
@@ -81,6 +83,10 @@ def process_data_set():
             j += 1
         i += 1
 
+    tags_set = set(tags.keys())
+    tags_set.remove("START")
+    tags_set.remove("STOP")
+    return words, words["START"].corpus_size, tags, list(tags_set), test_data
 
 
 def gen_transitions(tags_set, tags_dict, S):
@@ -102,18 +108,18 @@ def viterbi(words_dict, corpus_size, tags_dict, tags_set, sentence : list):
     pi = np.c_[first_col, np.array([-np.inf] * (S*N)).reshape(S, N)]
     bp = pi.copy()
     for k in range(1, N+1):
-
         word = sentence[k-1]
         prev_col = pi[:,k-1]
         for j in range(S):
             tag = tags_set[j]
             mult_prev_col = (prev_col * trans_mat[:,j]) * words_dict[word].bi_prob(tag)
             pi[k,j] = np.max(mult_prev_col)
-            bp[k,j] = tags_set[np.argmax(mult_prev_col)]
-    pi[:,-1] * stop_prob
+            bp[k,j] = np.argmax(mult_prev_col)
+    last_tag = tags_set[np.argmax(pi[:,-1] * stop_prob)]
 
 if __name__ == "__main__":
-    process_data_set()
+    words, corpus_size, tags, tags_set, test_data = process_data_set()
     # Vietrby inference
-    # viterbi(words, corpus_size, tags, tags_set, sentence=build_example_sentence()[0][1:-1])
+    s1 = process_sentence(test_data[0])
+    viterbi(words, corpus_size, tags, tags_set, sentence=s1)
 
