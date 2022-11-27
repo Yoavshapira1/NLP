@@ -1,8 +1,6 @@
 import json
-
 import nltk
 import numpy as np
-
 from Word import *
 nltk.download('brown')
 
@@ -52,9 +50,7 @@ def add_word(dict, word, type):
         dict[word] = Word(word) if type == Word else Tag(word)
 
 
-
 def process_data_set():
-
     data = nltk.corpus.brown.tagged_sents(categories='news')
     training_data = data[:int(0.9 * len(data))]
     test_data = data[int(0.9 * len(data)):]
@@ -84,7 +80,8 @@ def process_data_set():
                 tags[tag].increase_bigram_counter(next_tag)
             j += 1
         i += 1
-    print(tags.values())
+
+
 
 def gen_transitions(tags_set, tags_dict, S):
     trans_mat = np.empty(shape=(S,S))
@@ -113,11 +110,10 @@ def viterbi(words_dict, corpus_size, tags_dict, tags_set, sentence : list):
             mult_prev_col = (prev_col * trans_mat[:,j]) * words_dict[word].bi_prob(tag)
             pi[k,j] = np.max(mult_prev_col)
             bp[k,j] = tags_set[np.argmax(mult_prev_col)]
-    exit()
     pi[:,-1] * stop_prob
 
 if __name__ == "__main__":
     process_data_set()
     # Vietrby inference
-    viterbi(words, corpus_size, tags, tags_set, sentence=build_example_sentence()[0][1:-1])
+    # viterbi(words, corpus_size, tags, tags_set, sentence=build_example_sentence()[0][1:-1])
 
