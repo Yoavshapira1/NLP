@@ -20,11 +20,13 @@ def add_tag(dict, tag):
     except KeyError:
         dict[tag] = Tag(tag)
 
+
+
 def process_data_set():
 
     data = nltk.corpus.brown.tagged_sents(categories='news')
-    training_data = data[:0.9 * len(data)]
-    test_data = data[0.9 * len(data):]
+    training_data = data[:int(0.9 * len(data))]
+    test_data = data[int(0.9 * len(data)):]
 
     # for sentence in data:
     #     print(sentence)
@@ -35,10 +37,10 @@ def process_data_set():
 
     i = 0
     while i < len(training_data):
-        sentence = [("START", "")] + data[i] + [("STOP", "")]
+        sentence = [("START", "START")] + data[i] + [("STOP", "STOP")]
         j = 0
         while j < len(sentence) - 1:
-            word, tag = sentence[j][0], sentence[j][1]
+            word, tag = sentence[j][0], sentence[j][1].replace("*", "").replace("+", "").replace("-", "")
             add_word(words, word)
             add_tag(tags, tag)
 
@@ -46,9 +48,10 @@ def process_data_set():
             words[word].increase_bigram_counter(tag)
 
             # add prev tag to Tag
-            tags[tag].increase_bigram_counter(sentence[j-1][1])
+            tags[tag].increase_bigram_counter(sentence[j-1][1].replace("*", "").replace("+", "").replace("-", ""))
             j += 1
         i += 1
+    print(tags.values())
 
 
 if __name__ == "__main__":
