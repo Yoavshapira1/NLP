@@ -58,8 +58,9 @@ def process_sentence(sentence):
 def process_data_set():
     # same process for training & test
     data = nltk.corpus.brown.tagged_sents(categories='news')
-    training_data = data[:int(0.9 * len(data))]
-    test_data = data[int(0.9 * len(data)):]
+    idx = int(0.9 * len(data))
+    training_data = data[:idx]
+    test_data = data[idx:]
 
     words = {}
     tags = {}
@@ -129,6 +130,7 @@ if __name__ == "__main__":
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
     # Vietrby inference
     s1 = process_sentence(train_data[0])
+    print(train_data)
     s1 = [w[0] for w in s1]
     print(s1)
     print(viterbi(words, corpus_size, tags, tags_set, sentence=s1))
