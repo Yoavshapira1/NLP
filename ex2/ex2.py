@@ -137,8 +137,58 @@ def viterbi(words_dict, corpus_size, tags_dict, tags_set, sentence : list):
 
 if __name__ == "__main__":
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
-    # Vietrby inference
-    sentence = process_sentence(train_data[0])
-    sent_words = [w[0] for w in sentence]
-    sent_tags = [w[1] for w in sentence]
-    viterbi(words, corpus_size, tags, tags_set, sentence=sent_words)
+    # # Vietrby inference
+    # sentence = process_sentence(train_data[0])
+    # sent_words = [w[0] for w in sentence]
+    # sent_tags = [w[1] for w in sentence]
+    # print(sent_tags)
+    # print(viterbi(words, corpus_size, tags, tags_set, sentence=sent_words))
+
+    # b
+    known_words_counter = 0
+    known_words_predicted_counter = 0
+    unknown_words_counter = 0
+    unknown_words_predicted_counter = 0
+    for sentence in test_data:
+        sentence = process_sentence(sentence)
+        sent_words = [w[0] for w in sentence]
+        sent_tags = [w[1] for w in sentence]
+        for i in range(len(sent_words)):
+            prediction = 0
+            try:
+                prediction = words[sent_words[i]].MLE()
+                known_words_counter += 1
+                if prediction == sent_tags[i]:
+                    known_words_predicted_counter += 1
+
+            except KeyError:
+                prediction = "NN"
+                unknown_words_counter += 1
+                if prediction == sent_tags[i]:
+                    unknown_words_predicted_counter += 1
+
+    print("known words error rate:  " + str(1 - known_words_predicted_counter/known_words_counter))
+    print("unknown words error rate:  " + str(1 - unknown_words_predicted_counter / unknown_words_counter))
+    print("overall error rate:  " + str(1 - ((known_words_predicted_counter + unknown_words_predicted_counter)/
+                                        (known_words_counter + unknown_words_counter))))
+
+    # c
+    viterbi_predicted_result = 0
+    for sentence in test_data:
+        sentence = process_sentence(sentence)
+        sent_words = [w[0] for w in sentence]
+        sent_tags = [w[1] for w in sentence]
+        viterbi_result = viterbi(words, corpus_size, tags, tags_set, sentence=sent_words)
+        for i in range(len(sent_words)):
+            if sent_tags[i] == viterbi_result[i]:
+                viterbi_predicted_result += 1
+
+    print("viterbi error rate:  " + str(1 - (viterbi_predicted_result/(known_words_predicted_counter +
+                                                                  unknown_words_predicted_counter))))
+
+
+
+
+
+
+

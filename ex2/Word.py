@@ -82,7 +82,7 @@ class Word(WordAbs):
 
     def increase_unigram_counter(self) -> None:
         self.uni_gram_counter += 1
-        if not self.word in ["*", "STOP"]:
+        if not self.word in ["START", "STOP"]:
             self.corpus_size += 1
 
 
