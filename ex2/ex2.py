@@ -145,6 +145,7 @@ if __name__ == "__main__":
     # print(viterbi(words, corpus_size, tags, tags_set, sentence=sent_words))
 
     # b
+    # TODO: result a bit defferent from result in group
     known_words_counter = 0
     known_words_predicted_counter = 0
     unknown_words_counter = 0
@@ -173,6 +174,7 @@ if __name__ == "__main__":
                                         (known_words_counter + unknown_words_counter))))
 
     # c
+    # TODO: fix exeption for key error to return 'NN'
     viterbi_predicted_result = 0
     for sentence in test_data:
         sentence = process_sentence(sentence)
