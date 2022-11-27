@@ -48,7 +48,8 @@ def process_data_set():
             words[word].increase_bigram_counter(tag)
 
             # add prev tag to Tag
-            tags[tag].increase_bigram_counter(sentence[j-1][1].replace("*", "").replace("+", "").replace("-", ""))
+            prev_tag = sentence[j-1][1].replace("*", "").replace("+", "").replace("-", "")
+            tags[prev_tag].increase_bigram_counter(tag)
             j += 1
         i += 1
     print(tags.values())
