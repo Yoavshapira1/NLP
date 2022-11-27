@@ -19,14 +19,14 @@ class WordAbs:
 
     def uni_prob(self, corpus_size) -> float:
         """ Return the uni-gram probability"""
-        return np.log(self.uni_gram_counter / corpus_size)
+        return self.uni_gram_counter / corpus_size
 
     def bi_prob(self, word : str) -> float:
         """ Return the probability of a given string to appear after self.word"""
         try:
-            return np.log(self.bi_gram_counters[word] / self.uni_gram_counter)
+            return self.bi_gram_counters[word] / self.uni_gram_counter
         except KeyError:
-            return -np.inf
+            return 0
 
     def MLE(self) -> str:
         """ Return the most likelihood word to appear after self.word"""

@@ -90,48 +90,35 @@ def training():
 
 
 def gen_transitions(tags_set, tags_dict, S):
-    t_matrix = np.empty(shape=(S,S))
+    trans_mat = np.empty(shape=(S,S))
+    start_prob, stop_prob = np.empty(shape=(S,1)), np.empty(shape=(S,1))
     for i in range(S):
         for j in range(S):
-            t_matrix[i,j] = tags_dict[tags_set[i]].bi_prob(tags_set[j])
-    return t_matrix
+            trans_mat[i,j] = tags_dict[tags_set[i]].bi_prob(tags_set[j])
+        start_prob[i] = tags_dict["*"].bi_prob(tags_set[i])
+        stop_prob[i] = tags_dict[tags_set[i]].bi_prob("STOP")
+    return start_prob, trans_mat, stop_prob
 
 
 def viterbi(words_dict, corpus_size, tags_dict, tags_set, sentence : list):
     N = len(sentence)
     S = len(tags_set)
-    trans_mat = gen_transitions(tags_set, tags_dict, S)
-
-    # pi & bp are matrices in the shape: (S, N+1), hold the viterbi graph representation:
-    #        ______________N+1_________________
-    #       |                                  |
-
-    #    /  [*, -inf, -inf .  .  .  .  .  -inf]
-    #   /   [  .  .                           ]
-    #  /    [  .          .                   ]
-    # S     [  .                .             ]
-    #  \    [  .                        .     ]
-    #   \   [  .                            . ]
-    #    \  [*, -inf, -inf .  .  .  .  .  -inf]
-
-    graph = np.array([-np.inf] * (S*N)).reshape(S, N)
-    pi = np.c_[np.ones(shape=(S,)), graph]
+    start_prob, trans_mat, stop_prob = gen_transitions(tags_set, tags_dict, S)
+    first_col = start_prob * np.array([words_dict[sentence[0]].bi_prob(i) for i in tags_set]).reshape(S,1)
+    pi = np.c_[first_col, np.array([-np.inf] * (S*N)).reshape(S, N)]
     bp = pi.copy()
-    for k in range(1, N):
-        word = sentence[k]
+    for k in range(1, N+1):
+
+        word = sentence[k-1]
         prev_col = pi[:,k-1]
         for j in range(S):
             tag = tags_set[j]
             mult_prev_col = (prev_col * trans_mat[:,j]) * words_dict[word].bi_prob(tag)
-            print(word)
-            print(tag)
-            print(tags_set)
-            print(prev_col)
-            print(trans_mat[:,j])
-            print(mult_prev_col)
-            exit()
-            tag = tags_set[j]
-            pass
+            pi[k,j] = np.max(mult_prev_col)
+            bp[k,j] = tags_set[np.argmax(mult_prev_col)]
+    exit()
+    pi[:,-1] * stop_prob
+
 
 
 if __name__ == "__main__":
@@ -145,5 +132,5 @@ if __name__ == "__main__":
     # words, corpus_size, tags, tags_set = load_data("words.json", "tags.json")
 
     # Vietrby inference
-    viterbi(words, corpus_size, tags, tags_set, sentence=build_example_sentence()[0])
+    viterbi(words, corpus_size, tags, tags_set, sentence=build_example_sentence()[0][1:-1])
 
