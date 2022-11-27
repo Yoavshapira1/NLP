@@ -89,49 +89,56 @@ def process_data_set():
     return words, words["START"].corpus_size, tags, list(tags_set), test_data, training_data
 
 
-def gen_transitions(tags_set, tags_dict, S):
-    trans_mat = np.empty(shape=(S,S))
+def calc_probabiliteis(tags_set, tags_dict, words_dict, sentence, S, N):
+    transitions, emissions = np.empty(shape=(S,S)), np.empty(shape=(S,N))
     start_prob, stop_prob = np.zeros(shape=(S,1)), np.zeros(shape=(S,1))
+
+    # prepare transitions matrix
     for i in range(S):
         for j in range(S):
-            trans_mat[i,j] = tags_dict[tags_set[i]].bi_prob(tags_set[j])
+            transitions[i,j] = tags_dict[tags_set[i]].bi_prob(tags_set[j])
         start_prob[i] = tags_dict["START"].bi_prob(tags_set[i])
         stop_prob[i] = tags_dict[tags_set[i]].bi_prob("STOP")
-    return start_prob, trans_mat, stop_prob
+
+    # prepare emissions matrix
+    for i in range(N):
+        word = sentence[i]
+        for j in range(S):
+            tag = tags_set[j]
+            emissions[j,i] = words_dict[word].bi_counter(tag) / tags_dict[tag].uni_counter()
+
+    return start_prob.reshape(S,1), transitions, stop_prob.reshape(S,1), emissions
 
 
 def viterbi(words_dict, corpus_size, tags_dict, tags_set, sentence : list):
     N = len(sentence)
     S = len(tags_set)
-    start_prob, trans_mat, stop_prob = gen_transitions(tags_set, tags_dict, S)
-    first_col = start_prob * np.array([words_dict[sentence[0]].bi_prob(i) for i in tags_set]).reshape(S,1)
+    start_prob, transition_mat, stop_prob, emissions =\
+        calc_probabiliteis(tags_set, tags_dict, words_dict, sentence, S, N)
     pi = np.array([-np.inf] * (S*N)).reshape(S, N)
     bp = pi.copy()
     for k in range(N):
-        word = sentence[k]
-        prev_col = first_col if k == 0 else pi[:,k-1]
+        prev_col = start_prob if k == 0 else pi[:,k-1].reshape(S,1)
+        emission_vec = emissions[:,k].reshape(S,1)
         for j in range(S):
-            tag = tags_set[j]
-            trans_vec = trans_mat[:,j].reshape(S,1)
-            mult_prev_col = (prev_col * trans_vec) * words_dict[word].bi_prob(tag)
+            transition_vec = transition_mat[:,j].reshape(S,1)
+            mult_prev_col = (prev_col * transition_vec) * emission_vec
             pi[j,k] = np.max(mult_prev_col)
             bp[j,k] = np.argmax(mult_prev_col)
-    result_tags_idx = np.empty(shape=(N))
-    last_tag = np.argmax(pi[:,-1] * stop_prob)
+    result_tags_idx = np.zeros(shape=(N))
+    last_tag = int(np.argmax(pi[:,-1].reshape(S,1) * stop_prob))
     result_tags_idx[-1] = last_tag
     for k in range(N-2, 0, -1):
-        last_tag = bp[result_tags_idx[last_tag], k+1]
+        last_tag = int(bp[last_tag, k+1])
         result_tags_idx[k] = last_tag
 
-    return [tags_set[i] for i in result_tags_idx]
+    return [tags_set[int(i)] for i in result_tags_idx]
 
 
 if __name__ == "__main__":
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
     # Vietrby inference
-    s1 = process_sentence(train_data[0])
-    print(train_data)
-    s1 = [w[0] for w in s1]
-    print(s1)
-    print(viterbi(words, corpus_size, tags, tags_set, sentence=s1))
-
+    sentence = process_sentence(train_data[0])
+    sent_words = [w[0] for w in sentence]
+    sent_tags = [w[1] for w in sentence]
+    viterbi(words, corpus_size, tags, tags_set, sentence=sent_words)

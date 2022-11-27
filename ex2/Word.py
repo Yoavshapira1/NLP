@@ -17,9 +17,20 @@ class WordAbs:
     def increase_unigram_counter(self):
         raise NotImplementedError("increase_unigram_counter must ve implemented")
 
+    def uni_counter(self) -> int:
+        """ Return the uni-gram probability"""
+        return self.uni_gram_counter
+
     def uni_prob(self, corpus_size) -> float:
         """ Return the uni-gram probability"""
         return self.uni_gram_counter / corpus_size
+
+    def bi_counter(self, word : str) -> int:
+        """ Return the uni-gram probability"""
+        try:
+            return self.bi_gram_counters[word]
+        except KeyError:
+            return 0
 
     def bi_prob(self, word : str) -> float:
         """ Return the probability of a given string to appear after self.word"""
