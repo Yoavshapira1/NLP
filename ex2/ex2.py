@@ -6,19 +6,11 @@ nltk.download('brown')
 # TODO NADAVS: prepare training set
 
 
-def add_word(dict, word):
-    """ Increments the counter of a single word to a given dictionary"""
+def add_word(dict, word, type):
     try:
         dict[word].increase_unigram_counter()
     except KeyError:
-        dict[word] = Word(word)
-
-def add_tag(dict, tag):
-    """ Increments the counter of a single word to a given dictionary"""
-    try:
-        dict[tag].increase_unigram_counter()
-    except KeyError:
-        dict[tag] = Tag(tag)
+        dict[word] = Word(word) if type == Word else Tag(word)
 
 
 
@@ -41,8 +33,8 @@ def process_data_set():
         j = 0
         while j < len(sentence) - 1:
             word, tag = sentence[j][0], sentence[j][1].replace("*", "").replace("+", "").replace("-", "")
-            add_word(words, word)
-            add_tag(tags, tag)
+            add_word(dict=words, word=word, type=Word)
+            add_word(dict=tags, word=tag, type=Tag)
 
             #add tag to Word
             words[word].increase_bigram_counter(tag)
