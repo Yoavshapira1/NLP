@@ -1,0 +1,811 @@
+{
+    "START": {
+        "word": "START",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "suppose": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "suppose"
+    },
+    "suppose": {
+        "word": "suppose",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "you": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "you"
+    },
+    "you": {
+        "word": "you",
+        "uni_gram_counter": 10,
+        "bi_gram_counters": {
+            "need": 4,
+            "if": 2,
+            "miss": 2,
+            "should": 2
+        },
+        "max_bi_gram_counter": 4,
+        "str_of_max_bi_gram_counter": "need"
+    },
+    "need": {
+        "word": "need",
+        "uni_gram_counter": 4,
+        "bi_gram_counters": {
+            "to": 2,
+            "a": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "to"
+    },
+    "to": {
+        "word": "to",
+        "uni_gram_counter": 5,
+        "bi_gram_counters": {
+            "customize": 2,
+            "override": 2,
+            "be": 1
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "customize"
+    },
+    "customize": {
+        "word": "customize",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "the": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "the"
+    },
+    "the": {
+        "word": "the",
+        "uni_gram_counter": 13,
+        "bi_gram_counters": {
+            "functionality": 2,
+            "method": 2,
+            "class": 2,
+            "parent": 2,
+            "In": 1,
+            "dict": 1,
+            "UserDict": 1,
+            "quickest": 1,
+            "STOP": 1
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "functionality"
+    },
+    "functionality": {
+        "word": "functionality",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "of": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "of"
+    },
+    "of": {
+        "word": "of",
+        "uni_gram_counter": 8,
+        "bi_gram_counters": {
+            "any": 2,
+            "also": 2,
+            "Python": 2,
+            "this": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "any"
+    },
+    "any": {
+        "word": "any",
+        "uni_gram_counter": 4,
+        "bi_gram_counters": {
+            "other": 2,
+            "method": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "other"
+    },
+    "other": {
+        "word": "other",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "standard": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "standard"
+    },
+    "standard": {
+        "word": "standard",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "dictionary": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "dictionary"
+    },
+    "dictionary": {
+        "word": "dictionary",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "In": 1,
+            "a": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "In"
+    },
+    "In": {
+        "word": "In",
+        "uni_gram_counter": 3,
+        "bi_gram_counters": {
+            "that": 2,
+            "this": 1
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "that"
+    },
+    "that": {
+        "word": "that",
+        "uni_gram_counter": 6,
+        "bi_gram_counters": {
+            "have": 2,
+            "fulfills": 2,
+            "the": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "have"
+    },
+    "have": {
+        "word": "have",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "to": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "to"
+    },
+    "override": {
+        "word": "override",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "the": 1,
+            "a": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "the"
+    },
+    "method": {
+        "word": "method",
+        "uni_gram_counter": 4,
+        "bi_gram_counters": {
+            "at": 2,
+            "in": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "at"
+    },
+    "at": {
+        "word": "at",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "hand": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "hand"
+    },
+    "hand": {
+        "word": "hand",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "and": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "and"
+    },
+    "and": {
+        "word": "and",
+        "uni_gram_counter": 8,
+        "bi_gram_counters": {
+            "provide": 2,
+            "requires": 2,
+            "its": 1,
+            "the": 1,
+            "most": 1,
+            "pure": 1
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "provide"
+    },
+    "provide": {
+        "word": "provide",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "a": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "a"
+    },
+    "a": {
+        "word": "a",
+        "uni_gram_counter": 8,
+        "bi_gram_counters": {
+            "suitable": 1,
+            "fair": 2,
+            "class": 2,
+            "ggg": 3
+        },
+        "max_bi_gram_counter": 3,
+        "str_of_max_bi_gram_counter": "ggg"
+    },
+    "suitable": {
+        "word": "suitable",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "implementation": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "implementation"
+    },
+    "implementation": {
+        "word": "implementation",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "that": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "that"
+    },
+    "fulfills": {
+        "word": "fulfills",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "your": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "your"
+    },
+    "your": {
+        "word": "your",
+        "uni_gram_counter": 4,
+        "bi_gram_counters": {
+            "This": 2,
+            "custom": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "This"
+    },
+    "This": {
+        "word": "This",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "process": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "process"
+    },
+    "process": {
+        "word": "process",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "implies": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "implies"
+    },
+    "implies": {
+        "word": "implies",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "a": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "a"
+    },
+    "fair": {
+        "word": "fair",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "amount": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "amount"
+    },
+    "amount": {
+        "word": "amount",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "of": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "of"
+    },
+    "also": {
+        "word": "also",
+        "uni_gram_counter": 4,
+        "bi_gram_counters": {
+            "and": 2,
+            "imply": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "and"
+    },
+    "requires": {
+        "word": "requires",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "advanced": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "advanced"
+    },
+    "advanced": {
+        "word": "advanced",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "knowledge": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "knowledge"
+    },
+    "knowledge": {
+        "word": "knowledge",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "of": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "of"
+    },
+    "Python": {
+        "word": "Python",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "and": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "and"
+    },
+    "its": {
+        "word": "its",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "data": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "data"
+    },
+    "data": {
+        "word": "data",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "It": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "It"
+    },
+    "It": {
+        "word": "It",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "can": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "can"
+    },
+    "can": {
+        "word": "can",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "also": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "also"
+    },
+    "imply": {
+        "word": "imply",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "performance": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "performance"
+    },
+    "performance": {
+        "word": "performance",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "issues": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "issues"
+    },
+    "issues": {
+        "word": "issues",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "because": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "because"
+    },
+    "because": {
+        "word": "because",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "be": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "be"
+    },
+    "be": {
+        "word": "be",
+        "uni_gram_counter": 3,
+        "bi_gram_counters": {
+            "writing": 2,
+            "the": 1
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "writing"
+    },
+    "writing": {
+        "word": "writing",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "the": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "the"
+    },
+    "class": {
+        "word": "class",
+        "uni_gram_counter": 5,
+        "bi_gram_counters": {
+            "in": 2,
+            "fundamentally": 2,
+            "and": 1
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "in"
+    },
+    "in": {
+        "word": "in",
+        "uni_gram_counter": 4,
+        "bi_gram_counters": {
+            "pure": 2,
+            "your": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "pure"
+    },
+    "pure": {
+        "word": "pure",
+        "uni_gram_counter": 5,
+        "bi_gram_counters": {
+            "The": 2,
+            "pure": 2,
+            "its": 1
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "pure"
+    },
+    "The": {
+        "word": "The",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "main": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "main"
+    },
+    "main": {
+        "word": "main",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "advantage": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "advantage"
+    },
+    "advantage": {
+        "word": "advantage",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "of": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "of"
+    },
+    "this": {
+        "word": "this",
+        "uni_gram_counter": 5,
+        "bi_gram_counters": {
+            "strategy": 4,
+            "focus": 1
+        },
+        "max_bi_gram_counter": 4,
+        "str_of_max_bi_gram_counter": "strategy"
+    },
+    "strategy": {
+        "word": "strategy",
+        "uni_gram_counter": 4,
+        "bi_gram_counters": {
+            "is": 2,
+            "only": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "is"
+    },
+    "is": {
+        "word": "is",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "that": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "that"
+    },
+    "parent": {
+        "word": "parent",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "ABC": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "ABC"
+    },
+    "ABC": {
+        "word": "ABC",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "will": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "will"
+    },
+    "will": {
+        "word": "will",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "alert": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "alert"
+    },
+    "alert": {
+        "word": "alert",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "you": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "you"
+    },
+    "if": {
+        "word": "if",
+        "uni_gram_counter": 4,
+        "bi_gram_counters": {
+            "you": 4
+        },
+        "max_bi_gram_counter": 4,
+        "str_of_max_bi_gram_counter": "you"
+    },
+    "miss": {
+        "word": "miss",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "any": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "any"
+    },
+    "custom": {
+        "word": "custom",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "For": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "For"
+    },
+    "For": {
+        "word": "For",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "these": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "these"
+    },
+    "these": {
+        "word": "these",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "you": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "you"
+    },
+    "should": {
+        "word": "should",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "embrace": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "embrace"
+    },
+    "embrace": {
+        "word": "embrace",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "this": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "this"
+    },
+    "only": {
+        "word": "only",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "if": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "if"
+    },
+    "fundamentally": {
+        "word": "fundamentally",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "different": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "different"
+    },
+    "different": {
+        "word": "different",
+        "uni_gram_counter": 2,
+        "bi_gram_counters": {
+            "from": 2
+        },
+        "max_bi_gram_counter": 2,
+        "str_of_max_bi_gram_counter": "from"
+    },
+    "from": {
+        "word": "from",
+        "uni_gram_counter": 3,
+        "bi_gram_counters": {
+            "the": 3
+        },
+        "max_bi_gram_counter": 3,
+        "str_of_max_bi_gram_counter": "the"
+    },
+    "focus": {
+        "word": "focus",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "on": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "on"
+    },
+    "on": {
+        "word": "on",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "creating": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "creating"
+    },
+    "creating": {
+        "word": "creating",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "classes": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "classes"
+    },
+    "classes": {
+        "word": "classes",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "by": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "by"
+    },
+    "by": {
+        "word": "by",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "inheriting": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "inheriting"
+    },
+    "inheriting": {
+        "word": "inheriting",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "from": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "from"
+    },
+    "dict": {
+        "word": "dict",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "class": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "class"
+    },
+    "UserDict": {
+        "word": "UserDict",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "which": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "which"
+    },
+    "which": {
+        "word": "which",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "seem": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "seem"
+    },
+    "seem": {
+        "word": "seem",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "to": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "to"
+    },
+    "quickest": {
+        "word": "quickest",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "and": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "and"
+    },
+    "most": {
+        "word": "most",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "practical": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "practical"
+    },
+    "practical": {
+        "word": "practical",
+        "uni_gram_counter": 1,
+        "bi_gram_counters": {
+            "suppose": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "suppose"
+    },
+    "ggg": {
+        "word": "ggg",
+        "uni_gram_counter": 3,
+        "bi_gram_counters": {
+            "In": 1,
+            "the": 1,
+            "implementation": 1
+        },
+        "max_bi_gram_counter": 1,
+        "str_of_max_bi_gram_counter": "In"
+    }
+}
