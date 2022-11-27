@@ -46,8 +46,6 @@ def load_data(words_path, tags_path):
 
 
 def add_word(dict, word, type):
-    """ Increments the counter of a single Word to a given dictionary.
-    type must be """
     try:
         dict[word].increase_unigram_counter()
     except KeyError:
