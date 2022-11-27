@@ -39,9 +39,10 @@ def process_data_set():
             #add tag to Word
             words[word].increase_bigram_counter(tag)
 
-            # add prev tag to Tag
-            prev_tag = sentence[j-1][1].replace("*", "").replace("+", "").replace("-", "")
-            tags[prev_tag].increase_bigram_counter(tag)
+            # Add the bigrams
+            if j < len(sentence) - 1:
+                next_tag = sentence[j+1][1].replace("*", "").replace("+", "").replace("-", "")
+                tags[tag].increase_bigram_counter(next_tag)
             j += 1
         i += 1
     print(tags.values())
