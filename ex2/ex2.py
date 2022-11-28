@@ -2,9 +2,8 @@ import json
 import nltk
 import numpy as np
 from Word import *
-
 nltk.download('brown')
-
+START, STOP = "START", "STOP"
 
 # TODO: Yoav: Viterbi
 # TODO NADAVS: prepare training set
@@ -34,7 +33,7 @@ def load_data(words_path, tags_path):
     words = _load_data(words_path)
     corpus_size = 0
     for w in words.values():
-        if w.word not in ["*", "STOP"]:
+        if w.word not in [START, STOP]:
             corpus_size += w.uni_gram_counter
 
     # decode tags data
@@ -52,10 +51,22 @@ def add_word(dict, word, type):
         dict[word] = Word(word) if type == Word else Tag(word)
 
 
-def process_sentence(sentence):
-    for w in sentence:
-        w[1].replace("*", "").replace("+", "").replace("-", "")
-    return sentence
+def process_tag(tag):
+    tag = tag.replace("*", "")
+    if "-" in tag:
+        tag = tag.split("-")[0]
+    if "+" in tag:
+        tag = tag.split("+")[0]
+    return tag
+
+
+def process_sentence(pre_sentence):
+    pro_sentence = []
+    for j in range(len(pre_sentence)):
+        word = pre_sentence[j][0]
+        tag = process_tag(pre_sentence[j][1])
+        pro_sentence.append((word, tag))
+    return pro_sentence
 
 
 def process_data_set():
@@ -70,10 +81,11 @@ def process_data_set():
 
     i = 0
     while i < len(training_data):
-        sentence = [("START", "START")] + data[i] + [("STOP", "STOP")]
+        sentence = [(START, START)] + data[i] + [(STOP, STOP)]
         j = 0
         while j < len(sentence) - 1:
-            word, tag = sentence[j][0], sentence[j][1].replace("*", "").replace("+", "").replace("-", "")
+            tag = process_tag(sentence[j][1])
+            word = sentence[j][0]
             add_word(dict=words, word=word, type=Word)
             add_word(dict=tags, word=tag, type=Tag)
 
@@ -82,14 +94,14 @@ def process_data_set():
 
             # Add the bigrams
             if j < len(sentence) - 1:
-                next_tag = sentence[j + 1][1].replace("*", "").replace("+", "").replace("-", "")
+                next_tag = process_tag(sentence[j + 1][1])
                 tags[tag].increase_bigram_counter(next_tag)
             j += 1
         i += 1
 
     tags_set = set(tags.keys())
-    tags_set.remove("START")
-    return words, words["START"].corpus_size, tags, list(tags_set), test_data, training_data
+    tags_set.remove(START)
+    return words, words[START].corpus_size, tags, list(tags_set), test_data, training_data
 
 
 def calc_probabiliteis(tags_set, tags_dict, words_dict, sentence, S, N):
@@ -100,15 +112,20 @@ def calc_probabiliteis(tags_set, tags_dict, words_dict, sentence, S, N):
     for i in range(S):
         for j in range(S):
             transitions[i, j] = tags_dict[tags_set[i]].bi_prob(tags_set[j])
-        start_prob[i] = tags_dict["START"].bi_prob(tags_set[i])
-        stop_prob[i] = tags_dict[tags_set[i]].bi_prob("STOP")
+        start_prob[i] = tags_dict[START].bi_prob(tags_set[i])
+        stop_prob[i] = tags_dict[tags_set[i]].bi_prob(STOP)
 
     # prepare emissions matrix
     for i in range(N):
         word = sentence[i]
         for j in range(S):
             tag = tags_set[j]
-            emissions[j, i] = words_dict[word].bi_counter(tag) / tags_dict[tag].uni_counter()
+            try:
+                # for training phase, all words should success here
+                emissions[j, i] = words_dict[word].bi_counter(tag) / tags_dict[tag].uni_counter()
+            except KeyError:
+                # during test phase, preventing the emission vector from zeros
+                emissions[j, i] = 1.
 
     return start_prob.reshape(S, 1), transitions, stop_prob.reshape(S, 1), emissions
 
@@ -128,74 +145,97 @@ def viterbi(words_dict, corpus_size, tags_dict, tags_set, sentence: list):
             mult_prev_col = (prev_col * transition_vec) * emission_vec
             pi[j, k] = np.max(mult_prev_col)
             bp[j, k] = np.argmax(mult_prev_col)
+
     result_tags_idx = np.zeros(shape=(N))
     last_tag = int(np.argmax(pi[:, -1].reshape(S, 1) * stop_prob))
     result_tags_idx[-1] = last_tag
     for k in range(N - 2, 0, -1):
-        last_tag = int(bp[last_tag, k + 1])
+        last_tag = int(bp[last_tag, k])
         result_tags_idx[k] = last_tag
 
     return [tags_set[int(i)] for i in result_tags_idx]
 
-def analyze_viterbi(test_data, words, corpus_size, tags, tags_set,):
 
-    viterbi_predicted_result = 0
+def Qb_ii(words, test_data):
+    known_words_counter = 0
+    known_words_predicted_counter = 0
+    unknown_words_counter = 0
+    unknown_words_predicted_counter = 0
+    total_counter = 0
+    for sentence in test_data:
+        sentence = process_sentence(sentence)
+        sent_words = [w[0] for w in sentence]
+        sent_tags = [w[1] for w in sentence]
+        for word, tag in zip(sent_words, sent_tags):
+            try:
+                if words[word].MLE() == tag:
+                    known_words_predicted_counter += 1
+                known_words_counter += 1
+            except KeyError:
+                if "NN" == tag:
+                    unknown_words_predicted_counter += 1
+                unknown_words_counter += 1
+            finally:
+                total_counter += 1
+
+    known_err = 1 - (known_words_predicted_counter / known_words_counter)
+    unknown_err = 1 - (unknown_words_predicted_counter / unknown_words_counter)
+    total_err = 1 - ((known_words_predicted_counter + unknown_words_predicted_counter) / total_counter)
+
+    print("============== QUESTION B (ii): =============")
+    print("known words error rate:  ", known_err)
+    print("unknown words error rate:  ", unknown_err)
+    print("overall error rate:  ", total_err)
+    print()
+    print()
+
+    return total_counter
+
+
+def Qc_iii(test_data, words, corpus_size, tags, tags_set):
+    known_words_counter = 0
+    known_words_predicted_counter = 0
+    unknown_words_counter = 0
+    unknown_words_predicted_counter = 0
+    total_counter = 0
     for sentence in test_data:
         sentence = process_sentence(sentence)
         sent_words = [w[0] for w in sentence]
         sent_tags = [w[1] for w in sentence]
         viterbi_result = viterbi(words, corpus_size, tags, tags_set, sentence=sent_words)
         for i in range(len(sent_words)):
-            if sent_tags[i] == viterbi_result[i]:
-                viterbi_predicted_result += 1
+            real_word, real_tag, viterbi_tag = sent_words[i], sent_tags[i], viterbi_result[i]
+            if real_word in words.keys():
+                if viterbi_tag == real_tag:
+                    known_words_predicted_counter += 1
+                known_words_counter += 1
+            else:
+                if "NN" == real_tag:
+                    unknown_words_predicted_counter += 1
+                unknown_words_counter += 1
+            total_counter += 1
 
-    print("viterbi error rate:  " + str(1 - (viterbi_predicted_result / (known_words_predicted_counter +
-                                                                         unknown_words_predicted_counter))))
+    known_err = 1 - (known_words_predicted_counter / known_words_counter)
+    unknown_err = 1 - (unknown_words_predicted_counter / unknown_words_counter)
+    total_err = 1 - ((known_words_predicted_counter + unknown_words_predicted_counter) / total_counter)
+
+    print("============== QUESTION C (iii) =============")
+    print("known words error rate:  ", known_err)
+    print("unknown words error rate:  ", unknown_err)
+    print("overall error rate:  ", total_err)
+    print(known_words_counter)
+    print(known_words_predicted_counter)
+    print(unknown_words_counter)
+    print(unknown_words_predicted_counter)
+    print()
+    print()
 
 
 if __name__ == "__main__":
 
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
-    # # Viterby inference
-    # sentence = process_sentence(train_data[0])
-    # sent_words = [w[0] for w in sentence]
-    # sent_tags = [w[1] for w in sentence]
-    # print(sent_tags)
-    # print(viterbi(words, corpus_size, tags, tags_set, sentence=sent_words))
-
-    # b
-    # TODO: result a bit defferent from result in group
-    known_words_counter = 0
-    known_words_predicted_counter = 0
-    unknown_words_counter = 0
-    unknown_words_predicted_counter = 0
-    for sentence in test_data:
-        sentence = process_sentence(sentence)
-        sent_words = [w[0] for w in sentence]
-        sent_tags = [w[1] for w in sentence]
-        for i in range(len(sent_words)):
-            prediction = 0
-            try:
-                prediction = words[sent_words[i]].MLE()
-                known_words_counter += 1
-                if prediction == sent_tags[i]:
-                    known_words_predicted_counter += 1
-
-            except KeyError:
-                prediction = "NN"
-                unknown_words_counter += 1
-                if prediction == sent_tags[i]:
-                    unknown_words_predicted_counter += 1
-
-    print("known words error rate:  " + str(1 - known_words_predicted_counter / known_words_counter))
-    print("unknown words error rate:  " + str(1 - unknown_words_predicted_counter / unknown_words_counter))
-    print("overall error rate:  " + str(1 - ((known_words_predicted_counter + unknown_words_predicted_counter) /
-                                             (known_words_counter + unknown_words_counter))))
-
-    # c
-    # TODO: fix exeption for key error to return 'NN'
-
-    analyze_viterbi(test_data, words, corpus_size, tags, tags_set)
+    Qb_ii(words, test_data)
+    Qc_iii(test_data, words, corpus_size, tags, tags_set)
 
     # d laplace add-1
     # TODO: I am not sure if we should add 1 for each word for every tag ???????????????
@@ -205,4 +245,4 @@ if __name__ == "__main__":
         for tag in tags_set:
             words[word].increase_bigram_counter(tag)
 
-    analyze_viterbi(test_data, words_laplace, corpus_size, tags, tags_set)
+    Qc_iii(test_data, words_laplace, corpus_size, tags, tags_set)

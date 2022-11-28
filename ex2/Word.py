@@ -1,7 +1,6 @@
 from json import JSONEncoder
 from abc import abstractmethod
-import numpy as np
-
+from ex2 import START, STOP
 
 class WordAbs:
 
@@ -63,6 +62,7 @@ class WordAbs:
                "MLE probability: %.3f\n\n" % \
                (self.word, self.uni_gram_counter, self.MLE(), self.bi_prob(self.MLE()))
 
+
 class Word(WordAbs):
 
     # Automatically updating the corpus size
@@ -82,7 +82,7 @@ class Word(WordAbs):
 
     def increase_unigram_counter(self) -> None:
         self.uni_gram_counter += 1
-        if not self.word in ["START", "STOP"]:
+        if not self.word in [START, STOP]:
             self.corpus_size += 1
 
 
