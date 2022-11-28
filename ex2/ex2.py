@@ -154,6 +154,7 @@ def analyze_viterbi(test_data, words, corpus_size, tags, tags_set,):
 
 
 if __name__ == "__main__":
+    # a coom
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
     # # Viterby inference
     # sentence = process_sentence(train_data[0])
