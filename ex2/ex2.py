@@ -1,6 +1,7 @@
 import json
 import nltk
 import numpy as np
+import re
 from Word import *
 nltk.download('brown')
 START, STOP = "START", "STOP"
@@ -269,7 +270,33 @@ def Qd_iii(test_data, words, new_words_set, corpus_size, tags, tags_set):
     print()
     print()
 
+    def pseudo_func(word : str):
+        if word.endswith("ing"):
+            return "ING"
+        elif word.isupper():
+            return "APPER"
+        elif word[0].isupper():
+            return "NAME"
+        elif word.endswith("'s"):
+            return "BELONGING"
+        elif word.endswith("ed"):
+            return "PASSED"
+        elif "$" in word:
+            return "PRICE"
+        elif re.match(r"\w.\w(.\w)*", word):
+            return "INITIALS"
+        elif re.match(r"\d{2}[.\\-]\d{2}[.\\-]\d{4}", word):
+            return "DATE"
+        elif re.match(r"[A-Z\d]", word):
+            return "UPPER&DIGITS"
+        elif re.match(r"\d*[.-]\d*", word):
+            return"DIGITS-DIGITS"
+        else:
+            return "UNKNOWN"
+
+
 if __name__ == "__main__":
+
 
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
     # Qb_ii(words, test_data)
@@ -297,4 +324,12 @@ if __name__ == "__main__":
         tag.uni_gram_counter += different_words_size
 
     Qd_iii(test_data, words_laplace, new_words, corpus_size,tags_laplace,tags_set)
+
+    #e
+    for word in words.keys():
+        if words[word].uni_gram_counter < 5:
+            new_words.add(word)
+    print(new_words)
+
+
 
