@@ -369,16 +369,17 @@ if __name__ == "__main__":
     Qd_iii(test_data, words_laplace, new_words, corpus_size, tags_laplace, tags_set)
 
     # e
+    print("!!!!!!!!!!!!!!!!!!!!!!!!   QEii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("\n")
+
     for word in words.keys():
         if words[word].uni_gram_counter < 5:
             new_words.add(word)
 
-    print("!!!!!!!!!!!!!!!!!!!!!!!!   QEii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print("\n")
     pseudo_words, corpus_size, pseudo_tags, pseudo_tags_set, training_data = process_pseudo_data(train_data, new_words)
     Qd_iii(test_data, pseudo_words, new_words, corpus_size, pseudo_tags, pseudo_tags_set)
-    print("\n")
 
+    print("\n")
     print("!!!!!!!!!!!!!!!!!!!!!!!!   QEiii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     print("\n")
 
