@@ -344,7 +344,6 @@ if __name__ == "__main__":
     Qc_iii(test_data, words, corpus_size, tags, tags_set)
 
     # d laplace add-1
-    # TODO: I am not sure if we should add 1 for each word for every tag ???????????????
 
     new_words = set()
     words_laplace = words.copy()
