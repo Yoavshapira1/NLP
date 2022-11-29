@@ -231,18 +231,70 @@ def Qc_iii(test_data, words, corpus_size, tags, tags_set):
     print()
 
 
+def Qd_iii(test_data, words, new_words_set, corpus_size, tags, tags_set):
+    known_words_counter = 0
+    known_words_predicted_counter = 0
+    unknown_words_counter = 0
+    unknown_words_predicted_counter = 0
+    total_counter = 0
+    for sentence in test_data:
+        sentence = process_sentence(sentence)
+        sent_words = [w[0] for w in sentence]
+        sent_tags = [w[1] for w in sentence]
+        viterbi_result = viterbi(words, corpus_size, tags, tags_set, sentence=sent_words)
+        for i in range(len(sent_words)):
+            real_word, real_tag, viterbi_tag = sent_words[i], sent_tags[i], viterbi_result[i]
+            if real_word not in new_words_set:
+                if viterbi_tag == real_tag:
+                    known_words_predicted_counter += 1
+                known_words_counter += 1
+            else:
+                if viterbi_tag == real_tag:
+                    unknown_words_predicted_counter += 1
+                unknown_words_counter += 1
+            total_counter += 1
+
+    known_err = 1 - (known_words_predicted_counter / known_words_counter)
+    unknown_err = 1 - (unknown_words_predicted_counter / unknown_words_counter)
+    total_err = 1 - ((known_words_predicted_counter + unknown_words_predicted_counter) / total_counter)
+
+    print("============== QUESTION D (iii) =============")
+    print("known words error rate:  ", known_err)
+    print("unknown words error rate:  ", unknown_err)
+    print("overall error rate:  ", total_err)
+    print(known_words_counter)
+    print(known_words_predicted_counter)
+    print(unknown_words_counter)
+    print(unknown_words_predicted_counter)
+    print()
+    print()
+
 if __name__ == "__main__":
 
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
-    Qb_ii(words, test_data)
-    Qc_iii(test_data, words, corpus_size, tags, tags_set)
+    # Qb_ii(words, test_data)
+    # Qc_iii(test_data, words, corpus_size, tags, tags_set)
 
     # d laplace add-1
     # TODO: I am not sure if we should add 1 for each word for every tag ???????????????
 
+    new_words = set()
     words_laplace = words.copy()
+    tags_laplace = tags.copy()
+    for sentence in test_data:
+        for word in sentence:
+            if word[0] not in words_laplace.keys():
+                new_words.add(word[0])
+                add_word(dict=words_laplace, word=word[0], type=Word)
+
+
     for word in words_laplace.values():
         for tag in tags_set:
-            words[word].increase_bigram_counter(tag)
+            word.increase_bigram_counter(tag)
 
-    Qc_iii(test_data, words_laplace, corpus_size, tags, tags_set)
+    different_words_size = len(words.keys())
+    for tag in tags_laplace.values():
+        tag.uni_gram_counter += different_words_size
+
+    Qd_iii(test_data, words_laplace, new_words, corpus_size,tags_laplace,tags_set)
+
