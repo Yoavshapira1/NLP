@@ -270,37 +270,78 @@ def Qd_iii(test_data, words, new_words_set, corpus_size, tags, tags_set):
     print()
     print()
 
-    def pseudo_func(word : str):
-        if word.endswith("ing"):
-            return "ING"
-        elif word.isupper():
-            return "APPER"
-        elif word[0].isupper():
-            return "NAME"
-        elif word.endswith("'s"):
-            return "BELONGING"
-        elif word.endswith("ed"):
-            return "PASSED"
-        elif "$" in word:
-            return "PRICE"
-        elif re.match(r"\w.\w(.\w)*", word):
-            return "INITIALS"
-        elif re.match(r"\d{2}[.\\-]\d{2}[.\\-]\d{4}", word):
-            return "DATE"
-        elif re.match(r"[A-Z\d]", word):
-            return "UPPER&DIGITS"
-        elif re.match(r"\d*[.-]\d*", word):
-            return"DIGITS-DIGITS"
-        else:
-            return "UNKNOWN"
+def process_pseudo_data(training_data, new_words):
+    pseudo_words = {}
+    pseudo_tags = {}
+
+    i = 0
+    while i < len(training_data):
+        sentence = [(START, START)] + training_data[i] + [(STOP, STOP)]
+        j = 0
+        while j < len(sentence) - 1:
+            tag = process_tag(sentence[j][1])
+            word = sentence[j][0]
+            if word in new_words:
+                word = pseudo_func(word)
+            add_word(dict=pseudo_words, word=word, type=Word)
+            add_word(dict=pseudo_tags, word=tag, type=Tag)
+
+            # add tag to Word
+            pseudo_words[word].increase_bigram_counter(tag)
+
+            # Add the bigrams
+            if j < len(sentence) - 1:
+                next_tag = process_tag(sentence[j + 1][1])
+                pseudo_tags[tag].increase_bigram_counter(next_tag)
+            j += 1
+        i += 1
+
+    pseudo_tags_set = set(pseudo_tags.keys())
+    pseudo_tags_set.remove(START)
+    return pseudo_words, pseudo_words[START].corpus_size, pseudo_tags, list(pseudo_tags_set), training_data
+
+
+def pseudo_func(word : str):
+    if word.endswith("ing"):
+        return "ING"
+    elif word.isupper():
+        return "APPER"
+    elif word[0].isupper():
+        return "NAME"
+    elif word.endswith("'s"):
+        return "BELONGING"
+    elif word.endswith("ed"):
+        return "PASSED"
+    elif "$" in word:
+        return "PRICE"
+    elif re.match(r"\w.\w(.\w)*", word):
+        return "INITIALS"
+    elif re.match(r"\d{2}[.\\-]\d{2}[.\\-]\d{4}", word):
+        return "DATE"
+    elif re.match(r"[A-Z\d]", word):
+        return "UPPER&DIGITS"
+    elif re.match(r"\d*[.-]\d*", word):
+        return"DIGITS-DIGITS"
+    else:
+        return "UNKNOWN"
 
 
 if __name__ == "__main__":
 
 
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
-    # Qb_ii(words, test_data)
-    # Qc_iii(test_data, words, corpus_size, tags, tags_set)
+
+    print("\n")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!   QBii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("\n")
+
+    Qb_ii(words, test_data)
+
+    print("\n")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!   Qciii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+    print("\n")
+    Qc_iii(test_data, words, corpus_size, tags, tags_set)
 
     # d laplace add-1
     # TODO: I am not sure if we should add 1 for each word for every tag ???????????????
@@ -323,13 +364,39 @@ if __name__ == "__main__":
     for tag in tags_laplace.values():
         tag.uni_gram_counter += different_words_size
 
-    Qd_iii(test_data, words_laplace, new_words, corpus_size,tags_laplace,tags_set)
+    print("\n")
 
-    #e
+    Qd_iii(test_data, words_laplace, new_words, corpus_size, tags_laplace, tags_set)
+
+    # e
     for word in words.keys():
         if words[word].uni_gram_counter < 5:
             new_words.add(word)
-    print(new_words)
+
+    print("!!!!!!!!!!!!!!!!!!!!!!!!   QEii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("\n")
+    pseudo_words, corpus_size, pseudo_tags, pseudo_tags_set, training_data = process_pseudo_data(train_data, new_words)
+    Qd_iii(test_data, pseudo_words, new_words, corpus_size, pseudo_tags, pseudo_tags_set)
+    print("\n")
+
+    print("!!!!!!!!!!!!!!!!!!!!!!!!   QEiii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("\n")
+
+    pseudo_words_laplace = pseudo_words.copy()
+    pseudo_tags_laplace = pseudo_tags.copy()
+
+    for word in pseudo_words_laplace.values():
+        for tag in pseudo_tags_set:
+            word.increase_bigram_counter(tag)
+
+    different_words_size = len(pseudo_words.keys())
+    for tag in pseudo_tags_laplace.values():
+        tag.uni_gram_counter += different_words_size
+
+    Qd_iii(test_data, pseudo_words_laplace, new_words, corpus_size, pseudo_tags_laplace, pseudo_tags_set)
+
+
+
 
 
 
