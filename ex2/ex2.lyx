@@ -589,61 +589,185 @@ Return the sequence
 )א(
 \end_layout
 
-\begin_layout Subsection*
-)ב(
-\end_layout
-
-\begin_layout Subsection*
-)ג(
-\end_layout
-
-\begin_layout Section*
-שאלה
-\family roman
-\series bold
-\shape up
-\size larger
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
- 
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\numeric on
-\bar default
-\strikeout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
-4
-\end_layout
-
-\begin_layout Subsection*
-)א(
+\begin_layout Standard
+מימוש
 \end_layout
 
 \begin_layout Subsection*
 )ב(
 \end_layout
 
+\begin_layout Enumerate
+מימוש
+\end_layout
+
+\begin_layout Enumerate
+תוצאות ה
+\begin_inset Formula $erroe\ rates$
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 1.jpg
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection*
 )ג(
 \end_layout
 
-\begin_layout Section*
-שאלה
+\begin_layout Enumerate
+מימוש
+\end_layout
+
+\begin_layout Enumerate
+מימוש
+\end_layout
+
+\begin_layout Enumerate
+תוצאות ה
+\begin_inset Formula $erroe\ rates$
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 2.jpg
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ניתן לראות שהשגיאה עבור מילים לא ידועות נשארה זהה, כי גם כאן נתנו להן תג
+ שרירותי )
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Formula $NN$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+(
+\end_layout
+
+\begin_layout Subsection*
+)ד(
+\end_layout
+
+\begin_layout Enumerate
+מימוש
+\end_layout
+
+\begin_layout Enumerate
+תוצאות ה
+\begin_inset Formula $erroe\ rates$
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 3.jpg
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ראינו בהרצאה שהחלקה בשיטה הזו לא באמת מועילה בהרבה מקרים...
+ כנראה שזה אחד מהם
+\end_layout
+
+\begin_layout Subsection*
+)ה(
+\end_layout
+
+\begin_layout Enumerate
+הקטגוריות שמימשנו עבור 
+\begin_inset Formula $Pseudo-words$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+אותיות גדולות בלבד )לדוג' 
+\begin_inset Formula $TLV,KFC$
+\end_inset
+
+(
+\end_layout
+
+\begin_layout Enumerate
+תחילית אות גדולה 
+\end_layout
+
+\begin_layout Enumerate
+סיומת 
+\begin_inset Formula $ing$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+סיומת 
+\begin_inset Formula $ed$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+סיומת 
+\begin_inset Formula $'s$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+מכיל 
+\begin_inset Formula $\$$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+ראשית תיבות )לדוג' 
+\begin_inset Formula $a.b.c,r.t$
+\end_inset
+
+(
+\end_layout
+
+\begin_layout Enumerate
+תאריכים
 \family roman
-\series bold
+\series medium
 \shape up
-\size larger
+\size normal
 \emph off
 \bar no
 \strikeout off
@@ -658,7 +782,6 @@ Return the sequence
 \shape default
 \size default
 \emph default
-\numeric on
 \bar default
 \strikeout default
 \xout default
@@ -666,19 +789,153 @@ Return the sequence
 \uwave default
 \noun default
 \color inherit
-5
+)לדוג' 
+\begin_inset Formula $30.11.22,30/11/2022$
+\end_inset
+
+(
 \end_layout
 
-\begin_layout Subsection*
-)א(
+\begin_layout Enumerate
+ספרות עם מקף )לדוג' 
+\begin_inset Formula $556-1$
+\end_inset
+
+, 
+\begin_inset Formula $1-2$
+\end_inset
+
+(
 \end_layout
 
-\begin_layout Subsection*
-)ב(
+\end_deeper
+\begin_layout Enumerate
+תוצאות ה
+\begin_inset Formula $erroe\ rates$
+\end_inset
+
+ עבור שימוש בפסודו וורדס ללא החלקה:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 4.jpg
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Subsection*
-)ג(
+\begin_layout Enumerate
+תוצאות עם שימוש בהחלקה:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 5.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+המטריצה שיצאה לנו נראית כך:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Mt.png
+	scale 80
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+האלכסון די בולט כלומר בסה
+\begin_inset Quotes erd
+\end_inset
+
+כ המודל מצליח לחזות בצורה סבירה, עם זאת יש לא מעט שגיאות.
+ ניתוח בסיסי:
+\begin_inset Newline newline
+\end_inset
+
+צדקנו הכי הרבה בתיוג של 
+\begin_inset Formula $DT\$$
+\end_inset
+
+, 
+\begin_inset Formula $ABL$
+\end_inset
+
+ ו 
+\begin_inset Formula $BEN$
+\end_inset
+
+.
+ עם זאת השגיאות הכי נפוצות היו בתחזית שגויה של 
+\begin_inset Formula $DT\$$
+\end_inset
+
+, בייחוד למילים שהיו צריכות להיות מתויגות כ 
+\begin_inset Formula $CC$
+\end_inset
+
+ וכ 
+\begin_inset Formula $DT$
+\end_inset
+
+.
+ הסבר אפשרי: מניתוח של שכיחויות התגים, רואים שהתג 
+\begin_inset Formula $DT\$$
+\end_inset
+
+ מופיע הכי מעט פעמים.
+ אם נסתכל על על הנוסחה של ההחלקה: 
+\begin_inset Formula 
+\[
+Add1(x|y)=\frac{\#(x,y)+1}{\#(y)+1\cdot|K|}
+\]
+
+\end_inset
+
+כש
+\begin_inset Formula $|K|$
+\end_inset
+
+ הוא כמות התיוגים השונים הקיימים.
+ עבור מילה חדשה, כלומר כש 
+\begin_inset Formula $\#(x|y)=0$
+\end_inset
+
+, נקבל 
+\begin_inset Formula $\frac{1}{\#(y)+|K|}$
+\end_inset
+
+.
+ מכיוון ש 
+\begin_inset Formula $K$
+\end_inset
+
+ קבוע, נקבל ש
+\begin_inset Formula $add1$
+\end_inset
+
+ הכי גבוה יתקבל עבור התג 
+\begin_inset Formula $y$
+\end_inset
+
+ שמופיע הכי מעט פעמים! לכן מילים חדשות יתויגו כ
+\begin_inset Formula $DT\$$
+\end_inset
+
+
 \end_layout
 
 \end_body

@@ -2,12 +2,11 @@ import json
 import nltk
 import numpy as np
 import re
+import matplotlib.pyplot as plt
 from Word import *
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 nltk.download('brown')
 START, STOP = "START", "STOP"
-
-# TODO: Yoav: Viterbi
-# TODO NADAVS: prepare training set
 
 
 def save_data(data_dict, path):
@@ -224,15 +223,14 @@ def Qc_iii(test_data, words, corpus_size, tags, tags_set):
     print("known words error rate:  ", known_err)
     print("unknown words error rate:  ", unknown_err)
     print("overall error rate:  ", total_err)
-    print(known_words_counter)
-    print(known_words_predicted_counter)
-    print(unknown_words_counter)
-    print(unknown_words_predicted_counter)
     print()
     print()
 
 
-def Qd_iii(test_data, words, new_words_set, corpus_size, tags, tags_set):
+def Qd_e(test_data, words, new_words_set, corpus_size, tags, tags_set, conf_mat=False):
+    if conf_mat:
+        true = []
+        perd = []
     known_words_counter = 0
     known_words_predicted_counter = 0
     unknown_words_counter = 0
@@ -243,6 +241,9 @@ def Qd_iii(test_data, words, new_words_set, corpus_size, tags, tags_set):
         sent_words = [w[0] for w in sentence]
         sent_tags = [w[1] for w in sentence]
         viterbi_result = viterbi(words, corpus_size, tags, tags_set, sentence=sent_words)
+        if conf_mat:
+            true.extend(sent_tags)
+            perd.extend(viterbi_result)
         for i in range(len(sent_words)):
             real_word, real_tag, viterbi_tag = sent_words[i], sent_tags[i], viterbi_result[i]
             if real_word not in new_words_set:
@@ -259,14 +260,12 @@ def Qd_iii(test_data, words, new_words_set, corpus_size, tags, tags_set):
     unknown_err = 1 - (unknown_words_predicted_counter / unknown_words_counter)
     total_err = 1 - ((known_words_predicted_counter + unknown_words_predicted_counter) / total_counter)
 
-    print("============== QUESTION D (iii) =============")
     print("known words error rate:  ", known_err)
     print("unknown words error rate:  ", unknown_err)
     print("overall error rate:  ", total_err)
-    print(known_words_counter)
-    print(known_words_predicted_counter)
-    print(unknown_words_counter)
-    print(unknown_words_predicted_counter)
+    if conf_mat:
+        mat = confusion_matrix(y_true=true, y_pred=perd, labels=tags_set)
+        ConfusionMatrixDisplay(mat).plot(include_values=False, xticks_rotation='vertical')
     print()
     print()
 
@@ -328,23 +327,11 @@ def pseudo_func(word : str):
 
 if __name__ == "__main__":
 
-
     words, corpus_size, tags, tags_set, test_data, train_data = process_data_set()
-
-    print("\n")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!   QBii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print("\n")
-
     Qb_ii(words, test_data)
-
-    print("\n")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!   Qciii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-    print("\n")
     Qc_iii(test_data, words, corpus_size, tags, tags_set)
 
-    # d laplace add-1
-
+    print("============== QUESTION D (iii) =============")
     new_words = set()
     words_laplace = words.copy()
     tags_laplace = tags.copy()
@@ -354,7 +341,6 @@ if __name__ == "__main__":
                 new_words.add(word[0])
                 add_word(dict=words_laplace, word=word[0], type=Word)
 
-
     for word in words_laplace.values():
         for tag in tags_set:
             word.increase_bigram_counter(tag)
@@ -363,24 +349,18 @@ if __name__ == "__main__":
     for tag in tags_laplace.values():
         tag.uni_gram_counter += different_words_size
 
-    print("\n")
+    Qd_e(test_data, words_laplace, new_words, corpus_size, tags_laplace, tags_set)
 
-    Qd_iii(test_data, words_laplace, new_words, corpus_size, tags_laplace, tags_set)
-
-    # e
-    print("!!!!!!!!!!!!!!!!!!!!!!!!   QEii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print("\n")
+    print("============== QUESTION E (ii) =============")
 
     for word in words.keys():
         if words[word].uni_gram_counter < 5:
             new_words.add(word)
 
     pseudo_words, corpus_size, pseudo_tags, pseudo_tags_set, training_data = process_pseudo_data(train_data, new_words)
-    Qd_iii(test_data, pseudo_words, new_words, corpus_size, pseudo_tags, pseudo_tags_set)
+    Qd_e(test_data, pseudo_words, new_words, corpus_size, pseudo_tags, pseudo_tags_set)
 
-    print("\n")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!   QEiii    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print("\n")
+    print("============== QUESTION E (iii) =============")
 
     pseudo_words_laplace = pseudo_words.copy()
     pseudo_tags_laplace = pseudo_tags.copy()
@@ -393,7 +373,18 @@ if __name__ == "__main__":
     for tag in pseudo_tags_laplace.values():
         tag.uni_gram_counter += different_words_size
 
-    Qd_iii(test_data, pseudo_words_laplace, new_words, corpus_size, pseudo_tags_laplace, pseudo_tags_set)
+    Qd_e(test_data, pseudo_words_laplace, new_words, corpus_size, pseudo_tags_laplace, pseudo_tags_set, conf_mat=True)
+
+    print("-------------- Tags sorted by appearance (including pseudowords) -------------")
+
+    counters = {}
+    for tag in pseudo_tags_set:
+        counters[tag] = pseudo_tags_laplace[tag].uni_gram_counter
+    counters = dict(sorted(counters.items(), key=lambda item: item[1]))
+    for tag, c in counters.items():
+        print(tag, c)
+
+    plt.show()
 
 
 
