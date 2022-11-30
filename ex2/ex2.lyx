@@ -297,12 +297,60 @@ status open
 1
 \end_layout
 
+\begin_layout Standard
+נצייר את פונקציות המעברים:
+\end_layout
+
 \begin_layout Subsection*
-)א(
+\begin_inset Graphics
+	filename /home/oem/Desktop/nlp_a.jpeg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+כעת נחשב את המסלול המקסימלי:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename /home/oem/Desktop/nlp_b.jpeg
+	scale 50
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
 )ב(
+\end_layout
+
+\begin_layout Standard
+קיבלנו שהמסלול עם ההסתברות הגבוהה ביותר:
+\begin_inset Formula 
+\[
+HLHHHLHHL
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+בהסתברות:
+\begin_inset Formula 
+\[
+\frac{164025}{10^{12}}
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section*
