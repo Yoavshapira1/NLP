@@ -6,7 +6,7 @@ import numpy as np
 import os
 from torch.utils.data import DataLoader, TensorDataset, Dataset
 import operator
-import data_loader
+from data_loader import *
 import pickle
 import tqdm
 
@@ -125,8 +125,9 @@ def get_one_hot(size, ind):
     :param ind: the entry index to turn to 1
     :return: numpy ndarray which represents the one-hot vector
     """
-    return
-
+    vec = np.zeros(size)
+    vec[ind] = 1
+    return vec
 
 def average_one_hots(sent, word_to_ind):
     """
@@ -136,8 +137,11 @@ def average_one_hots(sent, word_to_ind):
     :param word_to_ind: a mapping between words to indices
     :return:
     """
-    return
-
+    size = len(list(word_to_ind.keys()))
+    avg = np.zeros(size)
+    for word in sent:
+        avg += get_one_hot(size, word_to_ind[word])
+    return avg / len(sent)
 
 def get_word_to_ind(words_list):
     """
@@ -146,7 +150,8 @@ def get_word_to_ind(words_list):
     :param words_list: a list of words
     :return: the dictionary mapping words to the index
     """
-    return
+    indice = [i for i in range(len(words_list))]
+    return dict(zip(words_list, indice))
 
 
 def sentence_to_embedding(sent, word_to_vec, seq_len, embedding_dim=300):
@@ -287,12 +292,15 @@ class LogLinear(nn.Module):
     general class for the log-linear models for sentiment analysis.
     """
     def __init__(self, embedding_dim):
-        return
+        super().__init__()
+        self.weights = np.random.random(embedding_dim)
 
     def forward(self, x):
+        # don't use a sigmoid here
         return
 
     def predict(self, x):
+        # use a sigmoid here
         return
 
 
@@ -307,8 +315,7 @@ def binary_accuracy(preds, y):
     :param y: a vector of true labels
     :return: scalar value - (<number of accurate predictions> / <number of examples>)
     """
-
-    return
+    return np.sum(np.rint(preds) == y) / len(y)
 
 
 def train_epoch(model, data_iterator, optimizer, criterion):
@@ -384,6 +391,11 @@ def train_lstm_with_w2v():
 
 
 if __name__ == '__main__':
-    train_log_linear_with_one_hot()
+    dataset = SentimentTreeBank()
+    toy_sent = dataset.get_train_set()[0]
+    print(toy_sent.text)
+    words_dict = get_word_to_ind(toy_sent.text)
+    print(average_one_hots(toy_sent.text, words_dict))
+    # train_log_linear_with_one_hot()
     # train_log_linear_with_w2v()
     # train_lstm_with_w2v()
