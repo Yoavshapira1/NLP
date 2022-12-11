@@ -346,10 +346,11 @@ if __name__ == '__main__':
     dataset = SentimentTreeBank()
     # get train set
     train_set = dataset.get_train_set()
-    setn1 = train_set[0]
-    print(setn1.text)
-    print(setn1.sentiment_val)
-    print(setn1.sentiment_class)
-    print(dataset.get_train_set()[0].sentiment_val)
-    # get word counts dictionary
-    print(len(list(dataset.get_word_counts().keys())))
+    print(len(train_set))
+    # setn1 = train_set[0]
+    # print(setn1.text)
+    # print(setn1.sentiment_val)
+    # print(setn1.sentiment_class)
+    # print(dataset.get_train_set()[0].sentiment_val)
+    # # get word counts dictionary
+    # print(len(list(dataset.get_word_counts().keys())))

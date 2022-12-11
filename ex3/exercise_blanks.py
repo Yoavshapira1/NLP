@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -6,7 +7,7 @@ import numpy as np
 import os
 from torch.utils.data import DataLoader, TensorDataset, Dataset
 import operator
-from data_loader import *
+import data_loader
 import pickle
 import tqdm
 
@@ -72,6 +73,44 @@ def load(model, path, optimizer):
     epoch = checkpoint['epoch']
     return model, optimizer, epoch
 
+
+class PerformenceAnalysis:
+    def __init__(self):
+        self.train_loss, self.train_acc, self.val_loss, self.val_acc = [], [], [], []
+
+    def append_train(self, train_loss, train_acc):
+        self.train_loss.append(train_loss)
+        self.train_acc.append(train_acc)
+
+    def append_validation(self, val_loss, val_acc):
+        self.val_loss.append(val_loss)
+        self.val_acc.append(val_acc)
+
+    def get_train_loss(self):
+        return self.train_loss
+
+    def get_train_acc(self):
+        return self.train_acc
+
+    def get_val_loss(self):
+        return self.val_loss
+
+    def get_val_acc(self):
+        return self.val_acc
+
+    def plot_accuracy(self):
+        plt.title("Accuracy")
+        plt.plot(self.train_acc, label='Training')
+        plt.plot(self.val_acc, label='Validation')
+        plt.legend()
+        plt.show()
+
+    def plot_loss(self):
+        plt.title("Loss")
+        plt.plot(self.train_loss, label='Training')
+        plt.plot(self.val_loss, label='Validation')
+        plt.legend()
+        plt.show()
 
 # ------------------------------------------ Data utilities ----------------------------------------
 
@@ -139,9 +178,10 @@ def average_one_hots(sent, word_to_ind):
     """
     size = len(list(word_to_ind.keys()))
     avg = np.zeros(size)
-    for word in sent:
+    text = sent.text
+    for word in text:
         avg += get_one_hot(size, word_to_ind[word])
-    return avg / len(sent)
+    return avg / len(text)
 
 def get_word_to_ind(words_list):
     """
@@ -292,16 +332,14 @@ class LogLinear(nn.Module):
     general class for the log-linear models for sentiment analysis.
     """
     def __init__(self, embedding_dim):
-        super().__init__()
-        self.weights = np.random.random(embedding_dim)
+        super(LogLinear, self).__init__()
+        self.layer = nn.Linear(embedding_dim, 1, dtype=torch.float64)
 
     def forward(self, x):
-        # don't use a sigmoid here
-        return
+        return self.layer(x)
 
     def predict(self, x):
-        # use a sigmoid here
-        return
+        return F.sigmoid(self.forward(x))
 
 
 # ------------------------- training functions -------------
@@ -327,8 +365,12 @@ def train_epoch(model, data_iterator, optimizer, criterion):
     :param optimizer: the optimizer object for the training process.
     :param criterion: the criterion object for the training process.
     """
-
-    return
+    for batch_X, batch_y in data_iterator:
+        pred = model(batch_X)
+        loss = criterion(pred, batch_y.reshape(pred.shape))
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
 
 
 def evaluate(model, data_iterator, criterion):
@@ -339,7 +381,14 @@ def evaluate(model, data_iterator, criterion):
     :param criterion: the loss criterion used for evaluation
     :return: tuple of (average loss over all examples, average accuracy over all examples)
     """
-    return
+    loss_lst, acc_lst = [], []
+    for batch_X, batch_y in data_iterator:
+        pred = model(batch_X)
+        y_shaped = batch_y.reshape(pred.shape)
+        loss, acc = criterion(pred, y_shaped), binary_accuracy(pred, y_shaped)
+        loss_lst.append(loss)
+        acc_lst.append(acc)
+    return np.average(loss_lst), np.average(acc_lst)
 
 
 def get_predictions_for_data(model, data_iter):
@@ -352,8 +401,19 @@ def get_predictions_for_data(model, data_iter):
     :param data_iter: torch iterator as given by the DataManager
     :return:
     """
-    return
+    tensors = []
+    for batch_X, batch_y in data_iter:
+        tensors.append(model.predict(batch_X))
+    return torch.cat(tensors)
 
+
+def test_model(model, data_manager):
+    test_iter, test_labels = data_manager.get_torch_iterator(data_subset=TEST), \
+                             data_manager.get_labels(data_subset=TEST)
+    # negated_polarity_iter = ??
+    # rare_words_iter = ??
+    test_pred = get_predictions_for_data(model=model, data_iter=test_iter)
+    print("All-Test accuracy: ", binary_accuracy(test_pred, test_labels))
 
 def train_model(model, data_manager, n_epochs, lr, weight_decay=0.):
     """
@@ -365,14 +425,27 @@ def train_model(model, data_manager, n_epochs, lr, weight_decay=0.):
     :param lr: learning rate to be used for optimization
     :param weight_decay: parameter for l2 regularization
     """
-    return
+    analysis = PerformenceAnalysis()
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
+    criterion = nn.BCEWithLogitsLoss()
+    for i in range(n_epochs):
+        train_epoch(model=model, data_iterator=data_manager.get_torch_iterator(), optimizer=optimizer, criterion=criterion)
+        train_loss, train_acc = evaluate(model=model, data_iterator=data_manager.get_torch_iterator(), criterion = criterion)
+        analysis.append_train(train_loss, train_acc)
+        val_loss, val_acc = evaluate(model=model, data_iterator=data_manager.get_torch_iterator(data_subset=VAL), criterion = criterion)
+        analysis.append_validation(val_loss, val_acc)
 
+    return analysis
 
 def train_log_linear_with_one_hot():
     """
     Here comes your code for training and evaluation of the log linear model with one hot representation.
     """
-    return
+    dm = DataManager(batch_size=64)
+    model = LogLinear(dm.get_input_shape()[0])
+    analysis = train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001)
+    analysis.plot_loss()
+    analysis.plot_accuracy()
 
 
 def train_log_linear_with_w2v():
@@ -391,11 +464,11 @@ def train_lstm_with_w2v():
 
 
 if __name__ == '__main__':
-    dataset = SentimentTreeBank()
-    toy_sent = dataset.get_train_set()[0]
-    print(toy_sent.text)
-    words_dict = get_word_to_ind(toy_sent.text)
-    print(average_one_hots(toy_sent.text, words_dict))
-    # train_log_linear_with_one_hot()
+    # toy_sent = data_loader.dataset.get_train_set()[0]
+    # print(toy_sent.text)
+    # words_dict = get_word_to_ind(toy_sent.text)
+    # print(average_one_hots(toy_sent.text, words_dict))
+
+    train_log_linear_with_one_hot()
     # train_log_linear_with_w2v()
     # train_lstm_with_w2v()
