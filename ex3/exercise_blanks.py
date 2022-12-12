@@ -1,3 +1,5 @@
+import time
+
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
@@ -176,12 +178,13 @@ def average_one_hots(sent, word_to_ind):
     :param word_to_ind: a mapping between words to indices
     :return:
     """
-    size = len(list(word_to_ind.keys()))
+    size = len(word_to_ind)
     avg = np.zeros(size)
-    text = sent.text
+    text = set(sent.text)
     for word in text:
-        avg += get_one_hot(size, word_to_ind[word])
-    return avg / len(text)
+        avg[word_to_ind[word]] += 1
+    return avg
+
 
 def get_word_to_ind(words_list):
     """
@@ -353,7 +356,7 @@ def binary_accuracy(preds, y):
     :param y: a vector of true labels
     :return: scalar value - (<number of accurate predictions> / <number of examples>)
     """
-    return np.sum(np.rint(preds) == y) / len(y)
+    return torch.sum(torch.round(preds) == y) / len(y)
 
 
 def train_epoch(model, data_iterator, optimizer, criterion):
@@ -365,12 +368,17 @@ def train_epoch(model, data_iterator, optimizer, criterion):
     :param optimizer: the optimizer object for the training process.
     :param criterion: the criterion object for the training process.
     """
-    for batch_X, batch_y in data_iterator:
+    size = len(data_iterator)
+    for batch, (batch_X, batch_y) in enumerate(data_iterator):
         pred = model(batch_X)
         loss = criterion(pred, batch_y.reshape(pred.shape))
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+        if batch % 100 == 0:
+            loss, current = loss.item(), batch * len(batch_X)
+            print(f"loss: {loss:>7f}  [{current:>5d}/{size*len(batch_X):>5d}]")
 
 
 def evaluate(model, data_iterator, criterion):
@@ -388,7 +396,7 @@ def evaluate(model, data_iterator, criterion):
         loss, acc = criterion(pred, y_shaped), binary_accuracy(pred, y_shaped)
         loss_lst.append(loss)
         acc_lst.append(acc)
-    return np.average(loss_lst), np.average(acc_lst)
+    return torch.mean(torch.Tensor(loss_lst)), torch.mean(torch.Tensor(acc_lst))
 
 
 def get_predictions_for_data(model, data_iter):
@@ -408,12 +416,16 @@ def get_predictions_for_data(model, data_iter):
 
 
 def test_model(model, data_manager):
+    dataset = data_loader.SentimentTreeBank()
     test_iter, test_labels = data_manager.get_torch_iterator(data_subset=TEST), \
                              data_manager.get_labels(data_subset=TEST)
-    # negated_polarity_iter = ??
-    # rare_words_iter = ??
+    test_sent = dataset.get_test_set()
+    negated_polarity_iter = data_loader.get_negated_polarity_examples(test_sent)
+    rare_words_iter = data_loader.get_rare_words_examples(test_sent, dataset)
     test_pred = get_predictions_for_data(model=model, data_iter=test_iter)
     print("All-Test accuracy: ", binary_accuracy(test_pred, test_labels))
+    print("Negated polarity test accuracy: ", binary_accuracy(test_pred[negated_polarity_iter], test_labels[negated_polarity_iter]))
+    print("Rare words test accuracy: ", binary_accuracy(test_pred[rare_words_iter], test_labels[rare_words_iter]))
 
 def train_model(model, data_manager, n_epochs, lr, weight_decay=0.):
     """
@@ -429,11 +441,14 @@ def train_model(model, data_manager, n_epochs, lr, weight_decay=0.):
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     criterion = nn.BCEWithLogitsLoss()
     for i in range(n_epochs):
+        start = time.time()
+        print(f"Epoch {i + 1}\n-------------------------------")
         train_epoch(model=model, data_iterator=data_manager.get_torch_iterator(), optimizer=optimizer, criterion=criterion)
         train_loss, train_acc = evaluate(model=model, data_iterator=data_manager.get_torch_iterator(), criterion = criterion)
         analysis.append_train(train_loss, train_acc)
         val_loss, val_acc = evaluate(model=model, data_iterator=data_manager.get_torch_iterator(data_subset=VAL), criterion = criterion)
         analysis.append_validation(val_loss, val_acc)
+        print("Total time: %.3f" % (time.time() - start))
 
     return analysis
 
@@ -443,6 +458,7 @@ def train_log_linear_with_one_hot():
     """
     dm = DataManager(batch_size=64)
     model = LogLinear(dm.get_input_shape()[0])
+    test_model(model, dm)
     analysis = train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001)
     analysis.plot_loss()
     analysis.plot_accuracy()
@@ -468,6 +484,13 @@ if __name__ == '__main__':
     # print(toy_sent.text)
     # words_dict = get_word_to_ind(toy_sent.text)
     # print(average_one_hots(toy_sent.text, words_dict))
+
+    # word_to_ind = }{}
+    # size = len(list(word_to_ind.keys()))
+    # idx = np.array([[word_to_ind[word]] for word in sent.text])
+    # avg = np.zeros(shape=(idx.size, size))
+    # avg[np.arange(idx.size), idx] = 1
+    # return avg.mean(axis=0)
 
     train_log_linear_with_one_hot()
     # train_log_linear_with_w2v()
