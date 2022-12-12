@@ -77,7 +77,8 @@ def load(model, path, optimizer):
 
 
 class PerformenceAnalysis:
-    def __init__(self):
+    def __init__(self, title):
+        self.title = title
         self.train_loss, self.train_acc, self.val_loss, self.val_acc = [], [], [], []
 
     def append_train(self, train_loss, train_acc):
@@ -101,14 +102,14 @@ class PerformenceAnalysis:
         return self.val_acc
 
     def plot_accuracy(self):
-        plt.title("Accuracy")
+        plt.title("%s Accuracy" % self.title)
         plt.plot(self.train_acc, label='Training')
         plt.plot(self.val_acc, label='Validation')
         plt.legend()
         plt.show()
 
     def plot_loss(self):
-        plt.title("Loss")
+        plt.title("%s Loss" % self.title)
         plt.plot(self.train_loss, label='Training')
         plt.plot(self.val_loss, label='Validation')
         plt.legend()
@@ -123,13 +124,13 @@ def load_word2vec():
     """
     import gensim.downloader as api
     wv_from_bin = api.load("word2vec-google-news-300")
-    vocab = list(wv_from_bin.vocab.keys())
-    print(wv_from_bin.vocab[vocab[0]])
+    vocab = list(wv_from_bin.key_to_index.keys())
+    print(wv_from_bin.key_to_index[vocab[0]])
     print("Loaded vocab size %i" % len(vocab))
     return wv_from_bin
 
 
-def create_or_load_slim_w2v(words_list, cache_w2v=False):
+def create_or_load_slim_w2v(words_list, cache_w2v=True):
     """
     returns word2vec dict only for words which appear in the dataset.
     :param words_list: list of words to use for the w2v dict
@@ -156,8 +157,14 @@ def get_w2v_average(sent, word_to_vec, embedding_dim):
     :param embedding_dim: the dimension of the word embedding vectors
     :return The average embedding vector as numpy ndarray.
     """
-    return
-
+    avg = np.zeros(embedding_dim)
+    text = sent.text
+    for word in text:
+        try:
+            avg += word_to_vec[word]
+        except KeyError:
+            continue
+    return avg / len(text)
 
 def get_one_hot(size, ind):
     """
@@ -180,10 +187,10 @@ def average_one_hots(sent, word_to_ind):
     """
     size = len(word_to_ind)
     avg = np.zeros(size)
-    text = set(sent.text)
+    text = sent.text
     for word in text:
         avg[word_to_ind[word]] += 1
-    return avg
+    return avg / len(text)
 
 
 def get_word_to_ind(words_list):
@@ -342,7 +349,7 @@ class LogLinear(nn.Module):
         return self.layer(x)
 
     def predict(self, x):
-        return F.sigmoid(self.forward(x))
+        return torch.sigmoid(self.forward(x))
 
 
 # ------------------------- training functions -------------
@@ -391,9 +398,9 @@ def evaluate(model, data_iterator, criterion):
     """
     loss_lst, acc_lst = [], []
     for batch_X, batch_y in data_iterator:
-        pred = model(batch_X)
-        y_shaped = batch_y.reshape(pred.shape)
-        loss, acc = criterion(pred, y_shaped), binary_accuracy(pred, y_shaped)
+        pred_loss, pred_acc = model(batch_X), model.predict(batch_X)
+        y_shaped = batch_y.reshape(pred_loss.shape)
+        loss, acc = criterion(pred_loss, y_shaped), binary_accuracy(pred_acc, y_shaped)
         loss_lst.append(loss)
         acc_lst.append(acc)
     return torch.mean(torch.Tensor(loss_lst)), torch.mean(torch.Tensor(acc_lst))
@@ -415,7 +422,7 @@ def get_predictions_for_data(model, data_iter):
     return torch.cat(tensors)
 
 
-def test_model(model, data_manager):
+def test_model(model, data_manager, title):
     dataset = data_loader.SentimentTreeBank()
     test_iter, test_labels = data_manager.get_torch_iterator(data_subset=TEST), \
                              data_manager.get_labels(data_subset=TEST)
@@ -423,11 +430,14 @@ def test_model(model, data_manager):
     negated_polarity_iter = data_loader.get_negated_polarity_examples(test_sent)
     rare_words_iter = data_loader.get_rare_words_examples(test_sent, dataset)
     test_pred = get_predictions_for_data(model=model, data_iter=test_iter)
+    test_labels = torch.Tensor(test_labels).reshape(test_pred.shape)
+    print("TEST module %s:" % title)
     print("All-Test accuracy: ", binary_accuracy(test_pred, test_labels))
+    print("All-Test loss: ", evaluate(model=model, data_iterator=test_iter, criterion=nn.BCEWithLogitsLoss()))
     print("Negated polarity test accuracy: ", binary_accuracy(test_pred[negated_polarity_iter], test_labels[negated_polarity_iter]))
     print("Rare words test accuracy: ", binary_accuracy(test_pred[rare_words_iter], test_labels[rare_words_iter]))
 
-def train_model(model, data_manager, n_epochs, lr, weight_decay=0.):
+def train_model(model, data_manager, n_epochs, lr, weight_decay=0., analysis=PerformenceAnalysis(None)):
     """
     Runs the full training procedure for the given model. The optimization should be done using the Adam
     optimizer with all parameters but learning rate and weight decay set to default.
@@ -437,7 +447,6 @@ def train_model(model, data_manager, n_epochs, lr, weight_decay=0.):
     :param lr: learning rate to be used for optimization
     :param weight_decay: parameter for l2 regularization
     """
-    analysis = PerformenceAnalysis()
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     criterion = nn.BCEWithLogitsLoss()
     for i in range(n_epochs):
@@ -448,7 +457,7 @@ def train_model(model, data_manager, n_epochs, lr, weight_decay=0.):
         analysis.append_train(train_loss, train_acc)
         val_loss, val_acc = evaluate(model=model, data_iterator=data_manager.get_torch_iterator(data_subset=VAL), criterion = criterion)
         analysis.append_validation(val_loss, val_acc)
-        print("Total time: %.3f" % (time.time() - start))
+        print("Total time: %.3f\n" % (time.time() - start))
 
     return analysis
 
@@ -458,10 +467,12 @@ def train_log_linear_with_one_hot():
     """
     dm = DataManager(batch_size=64)
     model = LogLinear(dm.get_input_shape()[0])
-    analysis = train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001)
+    title = "Log Linear with one hot vector"
+    analysis = PerformenceAnalysis(title)
+    train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001, analysis=analysis)
     analysis.plot_loss()
     analysis.plot_accuracy()
-    test_model(model=model, data_manager=dm)
+    test_model(model=model, data_manager=dm, title=title)
 
 
 def train_log_linear_with_w2v():
@@ -469,7 +480,14 @@ def train_log_linear_with_w2v():
     Here comes your code for training and evaluation of the log linear model with word embeddings
     representation.
     """
-    return
+    dm = DataManager(data_type=W2V_AVERAGE, batch_size=64, embedding_dim=W2V_EMBEDDING_DIM)
+    model = LogLinear(W2V_EMBEDDING_DIM)
+    title = "Log Linear with W2V"
+    analysis = PerformenceAnalysis(title)
+    train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001, analysis=analysis)
+    analysis.plot_loss()
+    analysis.plot_accuracy()
+    test_model(model=model, data_manager=dm, title=title)
 
 
 def train_lstm_with_w2v():
@@ -480,18 +498,6 @@ def train_lstm_with_w2v():
 
 
 if __name__ == '__main__':
-    # toy_sent = data_loader.dataset.get_train_set()[0]
-    # print(toy_sent.text)
-    # words_dict = get_word_to_ind(toy_sent.text)
-    # print(average_one_hots(toy_sent.text, words_dict))
-
-    # word_to_ind = }{}
-    # size = len(list(word_to_ind.keys()))
-    # idx = np.array([[word_to_ind[word]] for word in sent.text])
-    # avg = np.zeros(shape=(idx.size, size))
-    # avg[np.arange(idx.size), idx] = 1
-    # return avg.mean(axis=0)
-
     train_log_linear_with_one_hot()
-    # train_log_linear_with_w2v()
+    train_log_linear_with_w2v()
     # train_lstm_with_w2v()
