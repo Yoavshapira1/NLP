@@ -458,10 +458,10 @@ def train_log_linear_with_one_hot():
     """
     dm = DataManager(batch_size=64)
     model = LogLinear(dm.get_input_shape()[0])
-    test_model(model, dm)
     analysis = train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001)
     analysis.plot_loss()
     analysis.plot_accuracy()
+    test_model(model=model, data_manager=dm)
 
 
 def train_log_linear_with_w2v():
