@@ -36,6 +36,7 @@ def get_available_device():
     Given a device, one can use module.to(device)
     and criterion.to(device) so that all the computations will be done on the GPU.
     """
+    print(torch.cuda.is_available())
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
@@ -214,7 +215,18 @@ def sentence_to_embedding(sent, word_to_vec, seq_len, embedding_dim=300):
     :param embedding_dim: the dimension of the w2v embedding
     :return: numpy ndarray of shape (seq_len, embedding_dim) with the representation of the sentence
     """
-    return
+    mat = np.zeros(shape=(seq_len, embedding_dim))
+    i = 0
+    for word in sent.text:
+        if i >= seq_len:
+            break
+        try:
+            mat[i] = word_to_vec[word]
+        except:
+            pass
+        finally:
+            i += 1
+    return mat
 
 
 class OnlineDataset(Dataset):
@@ -328,13 +340,26 @@ class LSTM(nn.Module):
     An LSTM for sentiment analysis with architecture as described in the exercise description.
     """
     def __init__(self, embedding_dim, hidden_dim, n_layers, dropout):
-        return
+        super(LSTM, self).__init__()
+        self.hidden_size = hidden_dim
+        self.n_layers = n_layers
+        self.rnn = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_dim, num_layers=n_layers, dropout=dropout,
+                           bidirectional=True, dtype=torch.float64)
+        self.dropout = nn.Dropout(dropout)
+        self.linear = nn.Linear(2 * hidden_dim, 1, dtype=torch.float64)
+        device = get_available_device()
+        self.h0 = torch.zeros(self.n_layers * 2, 52, self.hidden_size, dtype=torch.float64)
+        self.c0 = torch.zeros(self.n_layers * 2, 52, self.hidden_size, dtype=torch.float64)
+
 
     def forward(self, text):
-        return
+        out, _ = self.rnn(text, (self.h0, self.c0))
+        out = self.dropout(out)
+        out = self.linear(out[:, -1, :])
+        return out
 
     def predict(self, text):
-        return
+        return torch.sigmoid(self.forward(text))
 
 
 class LogLinear(nn.Module):
@@ -448,7 +473,7 @@ def train_model(model, data_manager, n_epochs, lr, weight_decay=0., analysis=Per
     :param weight_decay: parameter for l2 regularization
     """
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
-    criterion = nn.BCEWithLogitsLoss()
+    criterion = nn.BCEWithLogitsLoss().to(device=get_available_device())
     for i in range(n_epochs):
         start = time.time()
         print(f"Epoch {i + 1}\n-------------------------------")
@@ -466,7 +491,7 @@ def train_log_linear_with_one_hot():
     Here comes your code for training and evaluation of the log linear model with one hot representation.
     """
     dm = DataManager(batch_size=64)
-    model = LogLinear(dm.get_input_shape()[0])
+    model = LogLinear(dm.get_input_shape()[0]).to(device=get_available_device())
     title = "Log Linear with one hot vector"
     analysis = PerformenceAnalysis(title)
     train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001, analysis=analysis)
@@ -481,7 +506,7 @@ def train_log_linear_with_w2v():
     representation.
     """
     dm = DataManager(data_type=W2V_AVERAGE, batch_size=64, embedding_dim=W2V_EMBEDDING_DIM)
-    model = LogLinear(W2V_EMBEDDING_DIM)
+    model = LogLinear(W2V_EMBEDDING_DIM).to(device=get_available_device())
     title = "Log Linear with W2V"
     analysis = PerformenceAnalysis(title)
     train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001, analysis=analysis)
@@ -494,10 +519,17 @@ def train_lstm_with_w2v():
     """
     Here comes your code for training and evaluation of the LSTM model.
     """
-    return
+    dm = DataManager(data_type=W2V_SEQUENCE, batch_size=64, embedding_dim=W2V_EMBEDDING_DIM)
+    model = LSTM(embedding_dim=W2V_EMBEDDING_DIM, hidden_dim=100, n_layers=1, dropout=0.5).to(device=get_available_device())
+    title = "LSTM with W2V"
+    analysis = PerformenceAnalysis(title)
+    train_model(model=model, data_manager=dm, n_epochs=20, lr=0.001, weight_decay=0.0001, analysis=analysis)
+    analysis.plot_loss()
+    analysis.plot_accuracy()
+    test_model(model=model, data_manager=dm, title=title)
 
 
 if __name__ == '__main__':
-    train_log_linear_with_one_hot()
-    train_log_linear_with_w2v()
-    # train_lstm_with_w2v()
+    # train_log_linear_with_one_hot()
+    # train_log_linear_with_w2v()
+    train_lstm_with_w2v()

@@ -71,7 +71,7 @@ class SentimentTreeBank(object):
     The main object that represents the stanfordSentimentTreeBank dataset. Can be used to access the
     examples and some other utilities.
     """
-    def __init__(self, path="stanfordSentimentTreebank", split_ratios=(0.8,0.1,0.1), split_words=True):
+    def __init__(self, path="stanfordSentimentTreebank", split_ratios=(0.1,0.1,0.8), split_words=True):
         """
 
         :param path: relative or absolute path to the datset directory
