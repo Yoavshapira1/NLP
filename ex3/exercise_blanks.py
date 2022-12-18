@@ -36,7 +36,6 @@ def get_available_device():
     Given a device, one can use module.to(device)
     and criterion.to(device) so that all the computations will be done on the GPU.
     """
-    print(torch.cuda.is_available())
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
@@ -343,23 +342,24 @@ class LSTM(nn.Module):
         super(LSTM, self).__init__()
         self.hidden_size = hidden_dim
         self.n_layers = n_layers
-        self.rnn = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_dim, num_layers=n_layers, dropout=dropout,
-                           bidirectional=True, dtype=torch.float64)
+        self.rnn = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_dim, num_layers=n_layers, batch_first=True,
+                           dropout=dropout, bidirectional=True, dtype=torch.float64)
         self.dropout = nn.Dropout(dropout)
         self.linear = nn.Linear(2 * hidden_dim, 1, dtype=torch.float64)
-        device = get_available_device()
-        self.h0 = torch.zeros(self.n_layers * 2, 52, self.hidden_size, dtype=torch.float64)
-        self.c0 = torch.zeros(self.n_layers * 2, 52, self.hidden_size, dtype=torch.float64)
-
 
     def forward(self, text):
-        out, _ = self.rnn(text, (self.h0, self.c0))
+        h0 = torch.zeros(self.n_layers * 2, text.shape[0], self.hidden_size, dtype=torch.float64)
+        c0 = torch.zeros(self.n_layers * 2, text.shape[0], self.hidden_size, dtype=torch.float64)
+        out, _ = self.rnn(text, (h0, c0))
         out = self.dropout(out)
         out = self.linear(out[:, -1, :])
         return out
 
     def predict(self, text):
         return torch.sigmoid(self.forward(text))
+
+    def get_name(self):
+        return "LSTM"
 
 
 class LogLinear(nn.Module):
@@ -375,6 +375,9 @@ class LogLinear(nn.Module):
 
     def predict(self, x):
         return torch.sigmoid(self.forward(x))
+
+    def __repr__(self):
+        return "LogLinear"
 
 
 # ------------------------- training functions -------------
@@ -400,10 +403,15 @@ def train_epoch(model, data_iterator, optimizer, criterion):
     :param optimizer: the optimizer object for the training process.
     :param criterion: the criterion object for the training process.
     """
+    loss_lst, acc_lst = [], []
     size = len(data_iterator)
     for batch, (batch_X, batch_y) in enumerate(data_iterator):
         pred = model(batch_X)
-        loss = criterion(pred, batch_y.reshape(pred.shape))
+        y_shaped = batch_y.reshape(pred.shape)
+        loss, acc = criterion(pred, batch_y.reshape(pred.shape)), binary_accuracy(pred, y_shaped)
+        loss_lst.append(loss / batch_X.shape[0])
+        acc_lst.append(acc / batch_X.shape[0])
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -412,6 +420,7 @@ def train_epoch(model, data_iterator, optimizer, criterion):
             loss, current = loss.item(), batch * len(batch_X)
             print(f"loss: {loss:>7f}  [{current:>5d}/{size*len(batch_X):>5d}]")
 
+    return torch.mean(torch.Tensor(loss_lst)), torch.mean(torch.Tensor(acc_lst))
 
 def evaluate(model, data_iterator, criterion):
     """
@@ -426,8 +435,8 @@ def evaluate(model, data_iterator, criterion):
         pred_loss, pred_acc = model(batch_X), model.predict(batch_X)
         y_shaped = batch_y.reshape(pred_loss.shape)
         loss, acc = criterion(pred_loss, y_shaped), binary_accuracy(pred_acc, y_shaped)
-        loss_lst.append(loss)
-        acc_lst.append(acc)
+        loss_lst.append(loss / batch_X.shape[0])
+        acc_lst.append(acc / batch_X.shape[0])
     return torch.mean(torch.Tensor(loss_lst)), torch.mean(torch.Tensor(acc_lst))
 
 
@@ -477,10 +486,11 @@ def train_model(model, data_manager, n_epochs, lr, weight_decay=0., analysis=Per
     for i in range(n_epochs):
         start = time.time()
         print(f"Epoch {i + 1}\n-------------------------------")
-        train_epoch(model=model, data_iterator=data_manager.get_torch_iterator(), optimizer=optimizer, criterion=criterion)
-        train_loss, train_acc = evaluate(model=model, data_iterator=data_manager.get_torch_iterator(), criterion = criterion)
+        train_loss, train_acc = train_epoch(model=model, data_iterator=data_manager.get_torch_iterator(),
+                                            optimizer=optimizer, criterion=criterion)
         analysis.append_train(train_loss, train_acc)
-        val_loss, val_acc = evaluate(model=model, data_iterator=data_manager.get_torch_iterator(data_subset=VAL), criterion = criterion)
+        val_loss, val_acc = evaluate(model=model, data_iterator=data_manager.get_torch_iterator(data_subset=VAL),
+                                            criterion = criterion)
         analysis.append_validation(val_loss, val_acc)
         print("Total time: %.3f\n" % (time.time() - start))
 
@@ -523,7 +533,8 @@ def train_lstm_with_w2v():
     model = LSTM(embedding_dim=W2V_EMBEDDING_DIM, hidden_dim=100, n_layers=1, dropout=0.5).to(device=get_available_device())
     title = "LSTM with W2V"
     analysis = PerformenceAnalysis(title)
-    train_model(model=model, data_manager=dm, n_epochs=20, lr=0.001, weight_decay=0.0001, analysis=analysis)
+    train_model(model=model, data_manager=dm, n_epochs=1, lr=0.001, weight_decay=0.0001, analysis=analysis)
+    save_pickle(model, "lstm_with_w2v_pkl")
     analysis.plot_loss()
     analysis.plot_accuracy()
     test_model(model=model, data_manager=dm, title=title)
