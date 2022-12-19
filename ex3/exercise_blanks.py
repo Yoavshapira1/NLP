@@ -403,24 +403,26 @@ def train_epoch(model, data_iterator, optimizer, criterion):
     :param optimizer: the optimizer object for the training process.
     :param criterion: the criterion object for the training process.
     """
-    loss_lst, acc_lst = [], []
+    epoch_loss, epoch_acc, epoch_size = 0, [], 0
     size = len(data_iterator)
     for batch, (batch_X, batch_y) in enumerate(data_iterator):
         pred = model(batch_X)
         y_shaped = batch_y.reshape(pred.shape)
-        loss, acc = criterion(pred, batch_y.reshape(pred.shape)), binary_accuracy(pred, y_shaped)
-        loss_lst.append(loss / batch_X.shape[0])
-        acc_lst.append(acc / batch_X.shape[0])
+        loss, acc = criterion(pred, batch_y.reshape(pred.shape)), binary_accuracy(torch.sigmoid(pred), y_shaped)
 
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
+        epoch_loss += loss.item()
+        epoch_acc.append(acc.item())
+        epoch_size += len(batch_X)
+
         if batch % 100 == 0:
             loss, current = loss.item(), batch * len(batch_X)
             print(f"loss: {loss:>7f}  [{current:>5d}/{size*len(batch_X):>5d}]")
 
-    return torch.mean(torch.Tensor(loss_lst)), torch.mean(torch.Tensor(acc_lst))
+    return epoch_loss / epoch_size, np.average(epoch_acc)
 
 def evaluate(model, data_iterator, criterion):
     """
@@ -430,14 +432,17 @@ def evaluate(model, data_iterator, criterion):
     :param criterion: the loss criterion used for evaluation
     :return: tuple of (average loss over all examples, average accuracy over all examples)
     """
-    loss_lst, acc_lst = [], []
+    epoch_loss, epoch_acc, epoch_size = 0, [], 0
     for batch_X, batch_y in data_iterator:
         pred_loss, pred_acc = model(batch_X), model.predict(batch_X)
         y_shaped = batch_y.reshape(pred_loss.shape)
         loss, acc = criterion(pred_loss, y_shaped), binary_accuracy(pred_acc, y_shaped)
-        loss_lst.append(loss / batch_X.shape[0])
-        acc_lst.append(acc / batch_X.shape[0])
-    return torch.mean(torch.Tensor(loss_lst)), torch.mean(torch.Tensor(acc_lst))
+
+        epoch_loss += loss.item()
+        epoch_acc.append(acc.item())
+        epoch_size += len(batch_X)
+
+    return epoch_loss / epoch_size, np.average(epoch_acc)
 
 
 def get_predictions_for_data(model, data_iter):
@@ -467,7 +472,7 @@ def test_model(model, data_manager, title):
     test_labels = torch.Tensor(test_labels).reshape(test_pred.shape)
     print("TEST module %s:" % title)
     print("All-Test accuracy: ", binary_accuracy(test_pred, test_labels))
-    print("All-Test loss: ", evaluate(model=model, data_iterator=test_iter, criterion=nn.BCEWithLogitsLoss()))
+    print("All-Test loss: ", evaluate(model=model, data_iterator=test_iter, criterion=nn.BCEWithLogitsLoss())[0])
     print("Negated polarity test accuracy: ", binary_accuracy(test_pred[negated_polarity_iter], test_labels[negated_polarity_iter]))
     print("Rare words test accuracy: ", binary_accuracy(test_pred[rare_words_iter], test_labels[rare_words_iter]))
 
@@ -504,10 +509,14 @@ def train_log_linear_with_one_hot():
     model = LogLinear(dm.get_input_shape()[0]).to(device=get_available_device())
     title = "Log Linear with one hot vector"
     analysis = PerformenceAnalysis(title)
+
+    print("=========================== START %s =============================" % title)
     train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001, analysis=analysis)
+    save_pickle(model, "%s.pkl" % title.replace(" ", "_"))
     analysis.plot_loss()
     analysis.plot_accuracy()
     test_model(model=model, data_manager=dm, title=title)
+    print("=========================== END %s =============================" % title)
 
 
 def train_log_linear_with_w2v():
@@ -519,10 +528,14 @@ def train_log_linear_with_w2v():
     model = LogLinear(W2V_EMBEDDING_DIM).to(device=get_available_device())
     title = "Log Linear with W2V"
     analysis = PerformenceAnalysis(title)
+
+    print("=========================== START %s =============================" % title)
     train_model(model=model, data_manager=dm, n_epochs=20, lr=0.01, weight_decay=0.001, analysis=analysis)
+    save_pickle(model, "%s.pkl" % title.replace(" ", "_"))
     analysis.plot_loss()
     analysis.plot_accuracy()
     test_model(model=model, data_manager=dm, title=title)
+    print("=========================== END %s =============================" % title)
 
 
 def train_lstm_with_w2v():
@@ -533,14 +546,18 @@ def train_lstm_with_w2v():
     model = LSTM(embedding_dim=W2V_EMBEDDING_DIM, hidden_dim=100, n_layers=1, dropout=0.5).to(device=get_available_device())
     title = "LSTM with W2V"
     analysis = PerformenceAnalysis(title)
-    train_model(model=model, data_manager=dm, n_epochs=1, lr=0.001, weight_decay=0.0001, analysis=analysis)
-    save_pickle(model, "lstm_with_w2v_pkl")
+
+    print("=========================== START %s =============================" % title)
+    train_model(model=model, data_manager=dm, n_epochs=4, lr=0.001, weight_decay=0.0001, analysis=analysis)
+    save_pickle(model, "%s.pkl" % title.replace(" ", "_"))
     analysis.plot_loss()
     analysis.plot_accuracy()
     test_model(model=model, data_manager=dm, title=title)
+    print("=========================== END %s =============================" % title)
+
 
 
 if __name__ == '__main__':
-    # train_log_linear_with_one_hot()
-    # train_log_linear_with_w2v()
+    train_log_linear_with_one_hot()
+    train_log_linear_with_w2v()
     train_lstm_with_w2v()
