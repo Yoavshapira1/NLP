@@ -322,7 +322,7 @@ status open
 \begin_layout Enumerate
 \begin_inset Formula 
 \[
-All-Test\ accuracy:0.5457
+All-Test\ accuracy:0.5468
 \]
 
 \end_inset
@@ -330,7 +330,7 @@ All-Test\ accuracy:0.5457
 
 \begin_inset Formula 
 \[
-All-Test\ Loss:0.6737
+All-Test\ Loss:0.0111
 \]
 
 \end_inset
@@ -338,7 +338,7 @@ All-Test\ Loss:0.6737
 
 \begin_inset Formula 
 \[
-Negated\ Polarity\ Test\,Accuracy:0.4839
+Negated\ Polarity\ Test\,Accuracy:0.5
 \]
 
 \end_inset
@@ -346,7 +346,7 @@ Negated\ Polarity\ Test\,Accuracy:0.4839
 
 \begin_inset Formula 
 \[
-Rare\ Words\ Test\,Accuracy:0.3
+Rare\ Words\ Test\,Accuracy:0.32
 \]
 
 \end_inset
@@ -389,7 +389,7 @@ Rare\ Words\ Test\,Accuracy:0.3
 \begin_layout Enumerate
 \begin_inset Formula 
 \[
-All-Test\ accuracy:0.8191
+All-Test\ accuracy:0.8004
 \]
 
 \end_inset
@@ -397,7 +397,7 @@ All-Test\ accuracy:0.8191
 
 \begin_inset Formula 
 \[
-All-Test\ Loss:0.4846
+All-Test\ Loss:0.008
 \]
 
 \end_inset
@@ -405,7 +405,7 @@ All-Test\ Loss:0.4846
 
 \begin_inset Formula 
 \[
-Negated\ Polarity\ Test\,Accuracy:0.5484
+Negated\ Polarity\ Test\,Accuracy:0.5806
 \]
 
 \end_inset
@@ -413,7 +413,7 @@ Negated\ Polarity\ Test\,Accuracy:0.5484
 
 \begin_inset Formula 
 \[
-Rare\ Words\ Test\,Accuracy:0.72
+Rare\ Words\ Test\,Accuracy:0.68
 \]
 
 \end_inset
