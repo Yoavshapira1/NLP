@@ -342,18 +342,33 @@ class LSTM(nn.Module):
         super(LSTM, self).__init__()
         self.hidden_size = hidden_dim
         self.n_layers = n_layers
-        self.rnn = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_dim, num_layers=n_layers, batch_first=True,
-                           dropout=dropout, bidirectional=True, dtype=torch.float64)
+        self.rnn = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_dim, num_layers=n_layers,
+                           batch_first=True, dtype=torch.float64)
         self.dropout = nn.Dropout(dropout)
         self.linear = nn.Linear(2 * hidden_dim, 1, dtype=torch.float64)
 
     def forward(self, text):
-        h0 = torch.zeros(self.n_layers * 2, text.shape[0], self.hidden_size, dtype=torch.float64)
-        c0 = torch.zeros(self.n_layers * 2, text.shape[0], self.hidden_size, dtype=torch.float64)
+        # h0 = torch.zeros(self.n_layers * 2, text.shape[0], self.hidden_size, dtype=torch.float64)
+        # c0 = torch.zeros(self.n_layers * 2, text.shape[0], self.hidden_size, dtype=torch.float64)
+        # out, _ = self.rnn(text, (h0, c0))
+        # out = self.dropout(out)
+        # out = self.linear(out[:, -1, :])
+        # return out
+
+        h0 = torch.zeros(self.n_layers, text.shape[0], self.hidden_size, dtype=torch.float64)
+        c0 = torch.zeros(self.n_layers, text.shape[0], self.hidden_size, dtype=torch.float64)
+        h0_r = torch.zeros(self.n_layers, text.shape[0], self.hidden_size, dtype=torch.float64)
+        c0_r = torch.zeros(self.n_layers, text.shape[0], self.hidden_size, dtype=torch.float64)
+
         out, _ = self.rnn(text, (h0, c0))
+        out_r, _ = self.rnn(np.flip(text, axis=1), (h0_r, c0_r))
+        out = out[:, -1, :]
+        out_r = out_r[:, -1, :]
+        out = torch.cat([out, out_r], dim=1)
         out = self.dropout(out)
-        out = self.linear(out[:, -1, :])
+        out = self.linear(out)
         return out
+
 
     def predict(self, text):
         return torch.sigmoid(self.forward(text))
@@ -376,7 +391,7 @@ class LogLinear(nn.Module):
     def predict(self, x):
         return torch.sigmoid(self.forward(x))
 
-    def __repr__(self):
+    def get_name(self):
         return "LogLinear"
 
 
@@ -558,6 +573,17 @@ def train_lstm_with_w2v():
 
 
 if __name__ == '__main__':
-    train_log_linear_with_one_hot()
-    train_log_linear_with_w2v()
+    a = torch.Tensor(np.arange(12).reshape(2,2,3))
+    b = torch.Tensor(np.arange(12).reshape(2, 2, 3) * -1)
+    print(a)
+    print(b)
+    print(a[:,-1,:])
+    print(b[:, -1, :])
+    a = a[:,-1,:]
+    b = b[:, -1, :]
+    print(torch.cat([a, b], dim=1))
+    exit()
+
+    # train_log_linear_with_one_hot()
+    # train_log_linear_with_w2v()
     train_lstm_with_w2v()
