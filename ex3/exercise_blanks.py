@@ -361,7 +361,7 @@ class LSTM(nn.Module):
         c0_r = torch.zeros(self.n_layers, text.shape[0], self.hidden_size, dtype=torch.float64)
 
         out, _ = self.rnn(text, (h0, c0))
-        out_r, _ = self.rnn(np.flip(text, axis=1), (h0_r, c0_r))
+        out_r, _ = self.rnn(torch.flip(text, [1]), (h0_r, c0_r))
         out = out[:, -1, :]
         out_r = out_r[:, -1, :]
         out = torch.cat([out, out_r], dim=1)
