@@ -573,17 +573,6 @@ def train_lstm_with_w2v():
 
 
 if __name__ == '__main__':
-    a = torch.Tensor(np.arange(12).reshape(2,2,3))
-    b = torch.Tensor(np.arange(12).reshape(2, 2, 3) * -1)
-    print(a)
-    print(b)
-    print(a[:,-1,:])
-    print(b[:, -1, :])
-    a = a[:,-1,:]
-    b = b[:, -1, :]
-    print(torch.cat([a, b], dim=1))
-    exit()
-
     # train_log_linear_with_one_hot()
     # train_log_linear_with_w2v()
     train_lstm_with_w2v()
