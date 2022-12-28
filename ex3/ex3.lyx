@@ -275,51 +275,34 @@ status open
 :
 \end_layout
 
-\begin_layout Enumerate
-מימוש
-\end_layout
-
-\begin_layout Enumerate
-מימוש
-\end_layout
-
-\begin_layout Enumerate
-מימוש
-\end_layout
-
-\begin_layout Enumerate
-מימוש
-\end_layout
-
-\begin_layout Enumerate
-מימוש
-\end_layout
-
-\begin_layout Enumerate
+\begin_layout Standard
 \begin_inset space \space{}
 \end_inset
 
 
 \end_layout
 
-\begin_deeper
-\begin_layout Enumerate
-גרפים של 
-\begin_inset Formula $loss$
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/loss1.png
+	scale 50
+
 \end_inset
 
 
 \end_layout
 
-\begin_layout Enumerate
-גרפים של 
-\begin_inset Formula $accuracy$
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/acc1.png
+	scale 50
+
 \end_inset
 
 
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
 \begin_inset Formula 
 \[
 All-Test\ accuracy:0.5468
@@ -354,7 +337,6 @@ Rare\ Words\ Test\,Accuracy:0.32
 
 \end_layout
 
-\end_deeper
 \begin_layout Section*
 \begin_inset Formula $LogLinear\ with\ word-2-vec$
 \end_inset
@@ -362,31 +344,34 @@ Rare\ Words\ Test\,Accuracy:0.32
 :
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
 \begin_inset space \space{}
 \end_inset
 
 
 \end_layout
 
-\begin_deeper
-\begin_layout Enumerate
-גרפים של 
-\begin_inset Formula $loss$
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/loss2.png
+	scale 50
+
 \end_inset
 
 
 \end_layout
 
-\begin_layout Enumerate
-גרפים של 
-\begin_inset Formula $accuracy$
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/acc2.png
+	scale 50
+
 \end_inset
 
 
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
 \begin_inset Formula 
 \[
 All-Test\ accuracy:0.8004
@@ -421,128 +406,73 @@ Rare\ Words\ Test\,Accuracy:0.68
 
 \end_layout
 
-\end_deeper
 \begin_layout Section*
-שאלה
-\family roman
-\series bold
-\shape up
-\size larger
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
- 
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\numeric on
-\bar default
-\strikeout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
-2
+\begin_inset Formula $LSTM$
+\end_inset
+
+:
 \end_layout
 
-\begin_layout Subsection*
-)א(
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
 \end_layout
 
-\begin_layout Subsection*
-)ב(
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/loss3.png
+	scale 50
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Subsection*
-)ג(
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/acc3.png
+	scale 50
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Section*
-שאלה
-\family roman
-\series bold
-\shape up
-\size larger
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
- 
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\numeric on
-\bar default
-\strikeout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
-3
-\end_layout
+\begin_layout Standard
+\begin_inset Formula 
+\[
+All-Test\ accuracy:0.8711
+\]
 
-\begin_layout Subsection*
-)א(
-\end_layout
+\end_inset
 
-\begin_layout Subsection*
-)ב(
-\end_layout
 
-\begin_layout Subsection*
-)ג(
-\end_layout
+\begin_inset Formula 
+\[
+All-Test\ Loss:0.0051
+\]
 
-\begin_layout Section*
-שאלה
-\family roman
-\series bold
-\shape up
-\size larger
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
- 
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\numeric on
-\bar default
-\strikeout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
-4
-\end_layout
+\end_inset
 
-\begin_layout Subsection*
-)א(
-\end_layout
 
-\begin_layout Subsection*
-)ב(
-\end_layout
+\begin_inset Formula 
+\[
+Negated\ Polarity\ Test\,Accuracy:0.6290
+\]
 
-\begin_layout Subsection*
-)ג(
+\end_inset
+
+
+\begin_inset Formula 
+\[
+Rare\ Words\ Test\,Accuracy:0.82
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section*
@@ -573,20 +503,468 @@ Rare\ Words\ Test\,Accuracy:0.68
 \uwave default
 \noun default
 \color inherit
-5
+9
 \end_layout
 
-\begin_layout Subsection*
-)א(
+\begin_layout Enumerate
+
+\series bold
+המודל הטוב יותר 
+\series default
+הוא 
+\begin_inset Formula $Log\ Linear\ with\ w2v$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+ב
+\begin_inset Formula $Log\ Linear$
+\end_inset
+
+ הפשוט, אחוזי ההצלחה היו קצת מעל
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+0.5
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+שזה הישג לא משהו - לעומת 
+\begin_inset Formula $Log\ Linear$
+\end_inset
+
+ עם 
+\begin_inset Formula $w2v$
+\end_inset
+
+, שהשיג תוצאות של
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\begin_inset Formula $80\%$
+\end_inset
+
+ הצלחה ב
+\begin_inset Formula $test\ set$
+\end_inset
+
+ )ו
+\begin_inset Formula $validation\ set$
+\end_inset
+
+ גם סביב זה בממוצע(.
+ 
+\family default
+\series bold
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+בשניהם
+\series default
+, בקושי נצפתה מגמת לימוד אמיתית - היה צעד אחד בהתחלה אך מאז ה
+\begin_inset Formula $accuracy$
+\end_inset
+
+ לא מאוד השתפר, וניתן לראות שיקוף של זה בגרף של 
+\begin_inset Formula $validation$
+\end_inset
+
+: בשני המודלים הוא מאוד מתנדנד ולא רחוק מהתוצאה באפוק הראשון, ואת ההתנדנדות
+ הזאת אפשר לראות כבר ב
+\numeric on
+4
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפוקים הראשונים.
+ 
+\series bold
+)בהשוואה ל
+\begin_inset Formula $LSTM$
+\end_inset
+
+ 
+\series default
+למשל - שבו רואים מגמת עלייה מונוטונית, למרות שזה רק
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+4
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפוקים(.
+\begin_inset Newline newline
+\end_inset
+
+
+\series bold
+הסבר אפשרי לתוצאה: 
+\series default
+וקטור
+\series bold
+ 
+\series default
+
+\begin_inset Formula $w2v$
+\end_inset
+
+ של מילה הוא בעצם ייצוג של הסמנטיקה של המילה )כמו שלמדנו בכיתה(.
+ סביר להניח שהסנטימנט של משפט שלם תלוי גם בסמנטיקה של המילים שנמצאות בו,
+ ולכן השימוש בוקטורים האלה יעיל יותר מאשר ממוצע פשוט של 
+\begin_inset Formula $one-hot$
+\end_inset
+
+.
 \end_layout
 
-\begin_layout Subsection*
-)ב(
+\begin_layout Enumerate
+
+\series bold
+המודל הטוב יותר 
+\series default
+הוא 
+\begin_inset Formula $LSTM$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+אחוזי ההצלחה עלו ל
+\begin_inset Formula $87\%$
+\end_inset
+
+ בהשוואה ל
+\begin_inset Formula $Log\,Linear$
+\end_inset
+
+ עם 
+\begin_inset Formula $w2v$
+\end_inset
+
+.
+ בנוסף, ניתן לראות שה
+\begin_inset Formula $validation\ set$
+\end_inset
+
+ גם כן עולה בצורה מונוטונית )כאמור, למרות שהיו רק
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+4
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפוקים, את המגמה ההפוכה ניתן לראות במודלים האחרים כבר ב
+\numeric on
+4
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+האפוקים הראשונים(.
+\begin_inset Newline newline
+\end_inset
+
+
+\series bold
+הסבר אפשרי: 
+\series default
+היעילות של 
+\begin_inset Formula $LSTM$
+\end_inset
+
+ נובעת מזה שהוא בעצם 
+\begin_inset Formula $RNN$
+\end_inset
+
+: רשתות שבמובן מסוים מממשות זיכרון: כל 
+\begin_inset Formula $state$
+\end_inset
+
+ פנימי שלה בתהליך הלמידה מושפע מה
+\begin_inset Formula $states$
+\end_inset
+
+ הקודמים, ובכך היא יכולה לתפוס קשרים סמנטיים בין מילה למילה רחוקה ממנה.
+ בנוסף, בהיותה דו-כיוונית היא יכולה במובן מסוים לתפוס 'היפוך' משמעות )למשל
+ במשפט שבסופו מופיעה המילה 
+\begin_inset Quotes eld
+\end_inset
+
+לכאורה
+\begin_inset Quotes erd
+\end_inset
+
+(.
 \end_layout
 
-\begin_layout Subsection*
-)ג(
+\begin_layout Enumerate
+\begin_inset space \space{}
+\end_inset
+
+
 \end_layout
 
+\begin_deeper
+\begin_layout Enumerate
+
+\series bold
+\begin_inset Formula $rare\ words$
+\end_inset
+
+
+\series default
+: 
+\begin_inset Formula $LSTM$
+\end_inset
+
+ הראה ביצועים הכי טובים ו
+\begin_inset Formula $Simple\ Log\ Linear$
+\end_inset
+
+ הכי גרועים.
+ 
+\series bold
+הסבר אפשרי
+\series default
+ הוא ששלושת המודלים באופן כללי סלחניים לגבי מילים לא מוכרות - כי כולם עושים
+ שקלול של כל המשפט.
+ לכן הביצועים של כל אחד מהם יפחתו אם מופיעה מילה לא מוכרת שמאוד חשובה לסנטימנט
+ של המשפט - מקרה נדיר באופן כללי.
+ ובכל אופן, הגיוני שהיחסים בין הביצועים שלהם כשיש מילים לא מוכרות, יישמרו
+ לעומת מצב שבו כל המילים מוכרות.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $negated\ polarity$
+\end_inset
+
+: באופן לא מפתיע - כנ
+\begin_inset Quotes erd
+\end_inset
+
+ל.
+ 
+\series bold
+ההסבר המתבקש 
+\series default
+הוא כמו שהסברנו בגרפים של 
+\begin_inset Formula $LSTM$
+\end_inset
+
+: ע
+\begin_inset Quotes erd
+\end_inset
+
+י מימוש זכרון כלשהו של הרשת, היא יכולה לתפוס קשרים רחוקים מאוד בתוך המשפט
+ וככה לייחס את החשיבות הראויה למילים הקריטיות במשפטים האלה )שמופיעות בסוף
+ למשל(.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
