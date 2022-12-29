@@ -21,16 +21,18 @@ class MSTparser():
         self.n_iteration = n_iterations
 
     def forward(self, t):
-        pass
+        max_tree = min_spanning_arborescence_nx(self.get_all_possible_edges(t))
+
+        # TO DO:  update teta according to gold T
+
     def predict(self, t):
         pass
 
     def train_model(self, train_set):
         for i in range(self.n_iteration):
             for t in train_set:
-                max_tree = min_spanning_arborescence_nx(self.get_all_possible_edges(t))
+                self.forward(t)
 
-                # TO DO:  update teta according to gold T
 
 
     def test_model(self, test_set):
