@@ -4,6 +4,26 @@ from nltk import DependencyGraph
 nltk.download('dependency_treebank')
 from nltk.corpus import dependency_treebank
 
+
+def create_bi_dict(corpus):
+    word_set = set()
+    pos_set = set()
+    for sentence in corpus:
+        splited = sentence.to_conll(3).split()
+        words = splited[0::3]
+        poses = splited[1::3]
+        for word in words:
+            word_set.add(word)
+        for pos in poses:
+            pos_set.add(pos)
+    #    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!              TO DO           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    # create  a dict from the sets  for hashing words to index in vec
+
+
+def phi(s, u, v):
+    pass
+
 if __name__ == "__main__":
     corpus = dependency_treebank.parsed_sents()
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
