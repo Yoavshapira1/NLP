@@ -21,7 +21,9 @@ class MSTparser():
         self.n_iteration = n_iterations
 
     def forward(self, t):
-        max_tree = min_spanning_arborescence_nx(self.get_all_possible_edges(t))
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in forward model         !!!!!!!!!!!!!!!!!!!")
+        max_tree = min_spanning_arborescence_nx(self.get_all_possible_edges(t), 0)
+        print(max_tree)
 
         # TO DO:  update teta according to gold T
 
@@ -29,6 +31,7 @@ class MSTparser():
         pass
 
     def train_model(self, train_set):
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in train model         !!!!!!!!!!!!!!!!!!!")
         for i in range(self.n_iteration):
             for t in train_set:
                 self.forward(t)
@@ -55,26 +58,23 @@ class MSTparser():
         """
             get all possible edges to be sent to chu lie algorithm
         """
-        temp_dict = t.__dict__["nodes"]
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in get_all_possible_edges        !!!!!!!!!!!!!!!!!!!")
+
         weighted_edges = []
-        edges = permutations(temp_dict.keys(), 2)
+        edges = permutations(range(len(t.nodes)), 2)
         for edge in edges:
-            score = -self.teta_vec * self.phi(temp_dict[edge[0]], temp_dict[edge[1]])
-            weighted_edges.append((temp_dict[edge[0]], temp_dict[edge[1]], score))
+            score = -np.dot(self.teta_vec, self.phi(t.nodes[edge[0]], t.nodes[edge[1]]))  #!!!!!!!!!!!!!! instead of dot take only the the indexes and multiply with teta
+            weighted_edges.append((t.nodes[edge[0]], t.nodes[edge[1]], score))  #!!!!!!!!!!!!!!!!!!!!!!!  change this to edge that we  can send to chu lie algorithm
         return weighted_edges
-
-
-
 
 
 def get_dicts(corpus):
     word_set = set()
     pos_set = set()
     for sentence in corpus:
-        temp_dict = sentence.__dict__['nodes']
-        for key in temp_dict.keys():
-            word_set.add(temp_dict[key]['word'])
-            pos_set.add(temp_dict[key]['ctag'])
+        for i in range(len(sentence.nodes)):
+            word_set.add(sentence.nodes[i]["word"])
+            pos_set.add(sentence.nodes[i]["tag"])
 
     words_dict = dict()
     pos_dict = dict()
@@ -107,11 +107,12 @@ if __name__ == "__main__":
     corpus = dependency_treebank.parsed_sents()
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
 
-    print((corpus[0]))
+    word_dict, pos_dict = get_dicts(corpus)
+    print(len(word_dict))
+    print(len(pos_dict))
+    model = MSTparser(word_dict,pos_dict, 2)
+    model.train_model(corpus[0:2])
 
-    # word_dict, pos_dict = get_dicts(corpus)
-    # print(len(word_dict))
-    # print(len(pos_dict))
 
 
 
