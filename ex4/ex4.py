@@ -29,19 +29,25 @@ class MSTparser():
 
     def phi(self, s, u, v):
         vec = np.zeros(self.vec_dim, dtype=bool)
+        words_index = self.get_feature_index(u['word'], v['word'], True)
+        pos_index = self.get_feature_index(u['tag'], v['tag'], False)
+        vec[words_index] = True
+        vec[pos_index] = True
+        return vec
 
 
 
 def get_dicts(corpus):
     word_set = set()
     pos_set = set()
-    words_dict = dict()
-    pos_dict = dict()
     for sentence in corpus:
         temp_dict = sentence.__dict__['nodes']
         for key in temp_dict.keys():
             word_set.add(temp_dict[key]['word'])
             pos_set.add(temp_dict[key]['ctag'])
+
+    words_dict = dict()
+    pos_dict = dict()
     i = 0
     for word in word_set:
         words_dict[word] = i
@@ -56,14 +62,15 @@ if __name__ == "__main__":
     corpus = dependency_treebank.parsed_sents()
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
 
-    word_dict, pos_dict = get_dicts(corpus)
-    print(len(word_dict))
-    print(len(pos_dict))
-    # dict = corpus[0].__dict__['nodes']
-    # print(dict)
-    # for key in dict.keys():
-    #     print(dict[key]['word'])
-    # print(corpus[0].__dict__['nodes'][0])
+    # word_dict, pos_dict = get_dicts(corpus)
+    # print(len(word_dict))
+    # print(len(pos_dict))
+
+
+
+
+
+
 
 
     # 1. Implement Phi: Input: S sentence, u word, v word. Output: Vector F, shape=?
