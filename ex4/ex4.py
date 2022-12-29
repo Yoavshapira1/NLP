@@ -1,9 +1,8 @@
 import nltk
-from itertools import product
-from nltk import DependencyGraph
 
 nltk.download('dependency_treebank')
 from nltk.corpus import dependency_treebank
+import numpy as np
 
 
 class MSTparser():
@@ -16,6 +15,7 @@ class MSTparser():
         self.pos_dict = pos_dict
         self.words_dict_size = len(words_dic)
         self.pos_dict_size = len(pos_dict)
+        self.vec_dim = self.words_dict_size ** 2 + self.pos_dict_size ** 2
 
     def forward(self, text):
         pass
@@ -28,7 +28,9 @@ class MSTparser():
         return self.words_dict_size ** 2 + self.pos_dict[u] * self.pos_dict_size + self.pos_dict[v]
 
     def phi(self, s, u, v):
-        pass
+        vec = np.zeros(self.vec_dim, dtype=bool)
+
+
 
 def get_dicts(corpus):
     word_set = set()
@@ -36,19 +38,16 @@ def get_dicts(corpus):
     words_dict = dict()
     pos_dict = dict()
     for sentence in corpus:
-        splited = sentence.to_conll(3).split()
-        words = splited[0::3]
-        poses = splited[1::3]
-        for word in words:
-            word_set.add(word)
-        for pos in poses:
-            pos_set.add(pos)
+        temp_dict = sentence.__dict__['nodes']
+        for key in temp_dict.keys():
+            word_set.add(temp_dict[key]['word'])
+            pos_set.add(temp_dict[key]['ctag'])
     i = 0
     for word in word_set:
         words_dict[word] = i
         i += 1
     i = 0
-    for pos in pos_dict:
+    for pos in pos_set:
         pos_dict[pos] = i
         i += 1
     return words_dict, pos_dict
@@ -57,7 +56,14 @@ if __name__ == "__main__":
     corpus = dependency_treebank.parsed_sents()
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
 
-    # word_dict, pos_dict = get_dicts(corpus)
+    word_dict, pos_dict = get_dicts(corpus)
+    print(len(word_dict))
+    print(len(pos_dict))
+    # dict = corpus[0].__dict__['nodes']
+    # print(dict)
+    # for key in dict.keys():
+    #     print(dict[key]['word'])
+    # print(corpus[0].__dict__['nodes'][0])
 
 
     # 1. Implement Phi: Input: S sentence, u word, v word. Output: Vector F, shape=?
