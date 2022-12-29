@@ -1,13 +1,40 @@
 import nltk
+from itertools import product
 from nltk import DependencyGraph
 
 nltk.download('dependency_treebank')
 from nltk.corpus import dependency_treebank
 
 
-def create_bi_dict(corpus):
+class MSTparser():
+    """
+    An MSTparser.
+    """
+    def __init__(self, corpus, words_dic, pos_dict):
+        self.corpus = corpus
+        self.words_dict = words_dic
+        self.pos_dict = pos_dict
+        self.words_dict_size = len(words_dic)
+        self.pos_dict_size = len(pos_dict)
+
+    def forward(self, text):
+        pass
+    def predict(self, text):
+        pass
+
+    def get_feature_index(self, u, v, is_word):
+        if is_word:
+            return self.words_dict[u] * self.words_dict_size + self.words_dict[v]
+        return self.words_dict_size ** 2 + self.pos_dict[u] * self.pos_dict_size + self.pos_dict[v]
+
+    def phi(self, s, u, v):
+        pass
+
+def get_dicts(corpus):
     word_set = set()
     pos_set = set()
+    words_dict = dict()
+    pos_dict = dict()
     for sentence in corpus:
         splited = sentence.to_conll(3).split()
         words = splited[0::3]
@@ -16,17 +43,22 @@ def create_bi_dict(corpus):
             word_set.add(word)
         for pos in poses:
             pos_set.add(pos)
-    #    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!              TO DO           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    # create  a dict from the sets  for hashing words to index in vec
-
-
-def phi(s, u, v):
-    pass
+    i = 0
+    for word in word_set:
+        words_dict[word] = i
+        i += 1
+    i = 0
+    for pos in pos_dict:
+        pos_dict[pos] = i
+        i += 1
+    return words_dict, pos_dict
 
 if __name__ == "__main__":
     corpus = dependency_treebank.parsed_sents()
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
+
+    # word_dict, pos_dict = get_dicts(corpus)
+
 
     # 1. Implement Phi: Input: S sentence, u word, v word. Output: Vector F, shape=?
     #
