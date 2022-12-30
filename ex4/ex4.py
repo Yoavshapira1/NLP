@@ -131,7 +131,8 @@ if __name__ == "__main__":
     print(len(word_dict))
     print(len(pos_dict))
     model = MSTparser(word_dict,pos_dict, 2)
-    model.train_model(train_set)
+    model.train_model(train_set[0:5])
+    model.train_model(test_set[0:5])
 
 
 
