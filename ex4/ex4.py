@@ -9,10 +9,16 @@ from Chu_Liu_Edmonds_algorithm import min_spanning_arborescence_nx
 
 
 class Arc():
+    """
+        An Ark obj to be sent to Chu_Liu_Edmonds_algorithm.
+        """
     def __init__(self, head, tail, weight):
         self.head = head
         self.tail = tail
         self.weight = weight
+
+    def __str__(self):
+        print("(" + str(self.head) + ', ' + str(self.tail) + ', ' + str(self.weight) + ')')
 
 
 class MSTparser():
@@ -27,6 +33,7 @@ class MSTparser():
         self.vec_dim = self.words_dict_size ** 2 + self.pos_dict_size ** 2
         self.teta_vec = np.zeros(self.vec_dim, dtype=float) # dtype = float ???????????????
         self.n_iteration = n_iterations
+
 
     def forward(self, t):
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in forward model         !!!!!!!!!!!!!!!!!!!")
