@@ -7,6 +7,14 @@ from itertools import permutations
 from Chu_Liu_Edmonds_algorithm import min_spanning_arborescence_nx
 
 
+
+class Arc():
+    def __init__(self, head, tail, weight):
+        self.head = head
+        self.tail = tail
+        self.weight = weight
+
+
 class MSTparser():
     """
     An MSTparser.
@@ -47,12 +55,9 @@ class MSTparser():
         return self.words_dict_size ** 2 + self.pos_dict[u] * self.pos_dict_size + self.pos_dict[v]
 
     def phi(self, u, v):
-        vec = np.zeros(self.vec_dim, dtype=bool)
         words_index = self.get_feature_index(u['word'], v['word'], True)
         pos_index = self.get_feature_index(u['tag'], v['tag'], False)
-        vec[words_index] = True
-        vec[pos_index] = True
-        return vec
+        return self.teta_vec[words_index] + self.teta_vec[pos_index]
 
     def get_all_possible_edges(self, t):
         """
@@ -63,8 +68,8 @@ class MSTparser():
         weighted_edges = []
         edges = permutations(range(len(t.nodes)), 2)
         for edge in edges:
-            score = -np.dot(self.teta_vec, self.phi(t.nodes[edge[0]], t.nodes[edge[1]]))  #!!!!!!!!!!!!!! instead of dot take only the the indexes and multiply with teta
-            weighted_edges.append((t.nodes[edge[0]], t.nodes[edge[1]], score))  #!!!!!!!!!!!!!!!!!!!!!!!  change this to edge that we  can send to chu lie algorithm
+            score = -self.phi(t.nodes[edge[0]], t.nodes[edge[1]])
+            weighted_edges.append(Arc(t.nodes[edge[0]]["address"], t.nodes[edge[1]]["address"], score))
         return weighted_edges
 
 
