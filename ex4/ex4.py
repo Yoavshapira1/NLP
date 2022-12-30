@@ -18,7 +18,7 @@ class Arc():
         self.weight = weight
 
     def __str__(self):
-        print("(" + str(self.head) + ', ' + str(self.tail) + ', ' + str(self.weight) + ')')
+        return "(" + str(self.head) + ', ' + str(self.tail) + ', ' + str(self.weight) + ')'
 
 
 class MSTparser():
@@ -36,22 +36,26 @@ class MSTparser():
 
 
     def forward(self, t):
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in forward model         !!!!!!!!!!!!!!!!!!!")
-        max_tree = min_spanning_arborescence_nx(self.get_all_possible_edges(t), 0)
-        print(max_tree)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in forward         !!!!!!!!!!!!!!!!!!!")
 
-        # TO DO:  update teta according to gold T
+        max_tree = min_spanning_arborescence_nx(self.get_all_possible_arcs(t), 0)
+        gold_arcs = get_gold_arcs(t)
+        score_vec = self.get_vec_score_of_t(t, gold_arcs)
+        score_vec -= self.get_vec_score_of_t(t, max_tree.values())
+        self.teta_vec += score_vec
 
     def predict(self, t):
-        pass
+        max_edges = [(value.head, value.tail) for value in
+                     min_spanning_arborescence_nx(self.get_all_possible_arcs(t), 0).values()]
+        gold_edges = [(value.head, value.tail) for value in get_gold_arcs(t)]
+
+        # TO DO evaluate accuracy.
 
     def train_model(self, train_set):
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in train model         !!!!!!!!!!!!!!!!!!!")
         for i in range(self.n_iteration):
             for t in train_set:
                 self.forward(t)
-
-
+        self.teta_vec /= (self.n_iteration/len(train_set))
 
     def test_model(self, test_set):
         pass
@@ -66,18 +70,23 @@ class MSTparser():
         pos_index = self.get_feature_index(u['tag'], v['tag'], False)
         return self.teta_vec[words_index] + self.teta_vec[pos_index]
 
-    def get_all_possible_edges(self, t):
+    def get_vec_score_of_t(self, t, arcs):
+        result = np.zeros(self.vec_dim, dtype=float)
+        for arc in arcs:
+            result[self.get_feature_index(t.nodes[arc.head]["word"], t.nodes[arc.tail]["word"],True)] += 1
+            result[self.get_feature_index(t.nodes[arc.head]["tag"], t.nodes[arc.tail]["tag"], False)] += 1
+        return result
+
+    def get_all_possible_arcs(self, t):
         """
             get all possible edges to be sent to chu lie algorithm
         """
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in get_all_possible_edges        !!!!!!!!!!!!!!!!!!!")
-
-        weighted_edges = []
-        edges = permutations(range(len(t.nodes)), 2)
-        for edge in edges:
-            score = -self.phi(t.nodes[edge[0]], t.nodes[edge[1]])
-            weighted_edges.append(Arc(t.nodes[edge[0]]["address"], t.nodes[edge[1]]["address"], score))
-        return weighted_edges
+        weighted_arcs = []
+        arcs = permutations(range(len(t.nodes)), 2)
+        for arc in arcs:
+            score = -self.phi(t.nodes[arc[0]], t.nodes[arc[1]])
+            weighted_arcs.append(Arc(t.nodes[arc[0]]["address"], t.nodes[arc[1]]["address"], score))
+        return weighted_arcs
 
 
 def get_dicts(corpus):
@@ -100,17 +109,16 @@ def get_dicts(corpus):
         i += 1
     return words_dict, pos_dict
 
-def get_edges(t):
+def get_gold_arcs(t):
     """
      This function gets a tree and return all edges.
      """
-    edges = []
-    temp_dict = t.__dict__['nodes']
-    for key in temp_dict.keys():
-        head = temp_dict[key]['head']
+    arcs = []
+    for i in range(len(t.nodes)):
+        head = t.nodes[i]['head']
         if head:
-            edges.append((head, key))
-    return edges
+            arcs.append(Arc(head, i, 0))
+    return arcs
 
 
 
@@ -123,7 +131,7 @@ if __name__ == "__main__":
     print(len(word_dict))
     print(len(pos_dict))
     model = MSTparser(word_dict,pos_dict, 2)
-    model.train_model(corpus[0:2])
+    model.train_model(train_set)
 
 
 

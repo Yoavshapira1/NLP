@@ -10,6 +10,7 @@ def min_spanning_arborescence_nx(arcs, sink):
     :param sink: unused argument. We assume that 0 is the only possible root over the set of edges given to
      the algorithm.
     """
+
     G = DiGraph()
     for arc in arcs:
         G.add_edge(arc.head, arc.tail, weight=arc.weight)
