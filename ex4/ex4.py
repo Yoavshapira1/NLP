@@ -41,9 +41,7 @@ class MSTparser():
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in forward         !!!!!!!!!!!!!!!!!!!")
         max_tree = min_spanning_arborescence_nx(self.get_all_possible_arcs(t), 0)
         gold_arcs = get_gold_arcs(t)
-        score_vec = self.get_vec_score_of_t(t, gold_arcs)
-        score_vec -= self.get_vec_score_of_t(t, max_tree.values())
-        self.teta_vec += score_vec
+        self.teta_vec += self.get_vec_score_of_t(t, gold_arcs, max_tree.values())
         self.acumulative_teta += self.teta_vec
 
     def predict(self, t):
@@ -83,13 +81,19 @@ class MSTparser():
         else:
             return self.acumulative_teta[words_index] + self.acumulative_teta[pos_index]
 
-    def get_vec_score_of_t(self, t, arcs):
+    def get_vec_score_of_t(self, t, arcs_gold,  arcs_max):
         result = np.zeros(self.vec_dim, dtype=float)
-        for arc in arcs:
+        for arc in arcs_gold:
             word_index = self.get_feature_index(t.nodes[arc.head]["word"], t.nodes[arc.tail]["word"], is_word=True)
             tag_index = self.get_feature_index(t.nodes[arc.head]["tag"], t.nodes[arc.tail]["tag"], is_word=False)
             result[word_index] += self.teta_vec[word_index]
             result[tag_index] += self.teta_vec[tag_index]
+
+        for arc in arcs_max:
+            word_index = self.get_feature_index(t.nodes[arc.head]["word"], t.nodes[arc.tail]["word"], is_word=True)
+            tag_index = self.get_feature_index(t.nodes[arc.head]["tag"], t.nodes[arc.tail]["tag"], is_word=False)
+            result[word_index] -= self.teta_vec[word_index]
+            result[tag_index] -= self.teta_vec[tag_index]
         return result
 
     def get_all_possible_arcs(self, t):
