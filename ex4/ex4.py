@@ -7,7 +7,6 @@ from itertools import permutations
 from Chu_Liu_Edmonds_algorithm import min_spanning_arborescence_nx
 
 
-
 class Arc():
     """
         An Ark obj to be sent to Chu_Liu_Edmonds_algorithm.
@@ -35,7 +34,6 @@ class MSTparser():
         self.acumulative_teta = np.zeros(self.vec_dim, dtype=float)
         self.n_iteration = n_iterations
         self.mode_is_train = True
-
 
     def forward(self, t):
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in forward         !!!!!!!!!!!!!!!!!!!")
@@ -144,6 +142,7 @@ def get_dicts(corpus):
         i += 1
     return words_dict, pos_dict
 
+
 def get_gold_arcs(t):
     """
      This function gets a tree and return all edges.
@@ -156,50 +155,12 @@ def get_gold_arcs(t):
     return arcs
 
 
-
-
 if __name__ == "__main__":
     corpus = dependency_treebank.parsed_sents()
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
-
 
     word_dict, pos_dict = get_dicts(corpus)
     print(len(corpus))
     model = MSTparser(word_dict,pos_dict, 2)
     model.train_model(train_set[:1500])
     print(model.test_model(test_set))
-
-
-
-
-
-
-
-
-
-    # 1. Implement Phi: Input: S sentence, u word, v word. Output: Vector F, shape=?
-    #
-    # 2. Implement Perceptron:
-    #     w = vector(same shape of F)
-    #     W_avg = w
-    #     repeate 2 times:
-    #         for every sentence S, RealTree T:
-    #             E = {}
-    #             for every u,v in S:
-    #                 p = w * Phi(S, u, v)
-    #                 add (u,v) with score p to E
-    #             T_tag = MST algorithm(E) (Dont forget to negate the scores p -> -p)
-    #             T_sum = Sum(Phi(S, e)) for e in T
-    #             T_tag_sum = Sum(Phi(S, e)) for e in T_tag
-    #             w = w + eta*(T_sum - T_tag_sum)
-    #             W += w
-    #     return W / (2 * # of sentences)
-    #
-    # 3. Evaluate:
-    #     Define accuaracy as: shared edges from real graph and predicted graph, divided by # of words in the sentence
-    #     Compute accuracy over all test set
-
-
-
-    # concerns:
-    # root node doesn't have a word.
