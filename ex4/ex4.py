@@ -49,7 +49,11 @@ class MSTparser():
                      min_spanning_arborescence_nx(self.get_all_possible_arcs(t), 0).values()]
         gold_edges = [(value.head, value.tail) for value in get_gold_arcs(t)]
 
-        # TO DO evaluate accuracy.
+        accuracy = 0
+        for edge in max_edges:
+            if edge in gold_edges:
+                accuracy += 1
+        return accuracy / len(t.nodes)
 
     def train_model(self, train_set):
         for i in range(self.n_iteration):
@@ -58,7 +62,10 @@ class MSTparser():
         self.teta_vec /= (self.n_iteration/len(train_set))
 
     def test_model(self, test_set):
-        pass
+        accuracy = 0
+        for t in test_set:
+            accuracy += self.predict(t)
+        return accuracy / len(test_set)
 
     def get_feature_index(self, u, v, is_word):
         if is_word:
@@ -131,8 +138,8 @@ if __name__ == "__main__":
     print(len(word_dict))
     print(len(pos_dict))
     model = MSTparser(word_dict,pos_dict, 2)
-    model.train_model(train_set[0:5])
-    model.train_model(test_set[0:5])
+    model.train_model(train_set[0:500])
+    print(model.test_model(test_set[0:20]))
 
 
 
