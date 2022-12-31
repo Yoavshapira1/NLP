@@ -41,7 +41,9 @@ class MSTparser():
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in forward         !!!!!!!!!!!!!!!!!!!")
         max_tree = min_spanning_arborescence_nx(self.get_all_possible_arcs(t), 0)
         gold_arcs = get_gold_arcs(t)
-        self.teta_vec += self.get_vec_score_of_t(t, gold_arcs, max_tree.values())
+        index_dict = self.get_vec_score_of_t(t, gold_arcs, max_tree.values())
+        for index, val in index_dict.items():
+            self.teta_vec[index] += val
         self.acumulative_teta += self.teta_vec
 
     def predict(self, t):
@@ -56,10 +58,12 @@ class MSTparser():
         return accuracy / len(t.nodes)
 
     def train_model(self, train_set):
+        size = len(train_set)
         for i in range(self.n_iteration):
-            for t in train_set:
-                self.forward(t)
-        self.acumulative_teta /= (self.n_iteration/len(train_set))
+            shuff = np.random.permutation(size)
+            for s in shuff:
+                self.forward(train_set[s])
+        self.acumulative_teta /= (self.n_iteration/size)
 
     def test_model(self, test_set):
         self.mode_is_train = False
@@ -82,18 +86,30 @@ class MSTparser():
             return self.acumulative_teta[words_index] + self.acumulative_teta[pos_index]
 
     def get_vec_score_of_t(self, t, arcs_gold,  arcs_max):
-        result = np.zeros(self.vec_dim, dtype=float)
+        result = {}
         for arc in arcs_gold:
             word_index = self.get_feature_index(t.nodes[arc.head]["word"], t.nodes[arc.tail]["word"], is_word=True)
             tag_index = self.get_feature_index(t.nodes[arc.head]["tag"], t.nodes[arc.tail]["tag"], is_word=False)
-            result[word_index] += self.teta_vec[word_index]
-            result[tag_index] += self.teta_vec[tag_index]
+            try:
+                result[word_index] += 1
+            except KeyError:
+                result[word_index] = 1
+            try:
+                result[tag_index] += 1
+            except KeyError:
+                result[tag_index] = 1
 
         for arc in arcs_max:
             word_index = self.get_feature_index(t.nodes[arc.head]["word"], t.nodes[arc.tail]["word"], is_word=True)
             tag_index = self.get_feature_index(t.nodes[arc.head]["tag"], t.nodes[arc.tail]["tag"], is_word=False)
-            result[word_index] -= self.teta_vec[word_index]
-            result[tag_index] -= self.teta_vec[tag_index]
+            try:
+                result[word_index] -= 1
+            except KeyError:
+                result[word_index] = -1
+            try:
+                result[tag_index] -= 1
+            except KeyError:
+                result[tag_index] = -1
         return result
 
     def get_all_possible_arcs(self, t):
@@ -146,11 +162,11 @@ if __name__ == "__main__":
     corpus = dependency_treebank.parsed_sents()
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
 
+
     word_dict, pos_dict = get_dicts(corpus)
-    print(len(word_dict))
-    print(len(pos_dict))
+    print(len(corpus))
     model = MSTparser(word_dict,pos_dict, 2)
-    model.train_model(train_set[0:1000])
+    model.train_model(train_set[:1500])
     print(model.test_model(test_set))
 
 
