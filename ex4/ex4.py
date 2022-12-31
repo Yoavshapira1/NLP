@@ -32,7 +32,9 @@ class MSTparser():
         self.pos_dict_size = len(pos_dict)
         self.vec_dim = self.words_dict_size ** 2 + self.pos_dict_size ** 2
         self.teta_vec = np.zeros(self.vec_dim, dtype=float) # dtype = float ???????????????
+        self.acumulative_teta = np.zeros(self.vec_dim, dtype=float)
         self.n_iteration = n_iterations
+        self.mode_is_train = True
 
 
     def forward(self, t):
@@ -43,6 +45,7 @@ class MSTparser():
         score_vec = self.get_vec_score_of_t(t, gold_arcs)
         score_vec -= self.get_vec_score_of_t(t, max_tree.values())
         self.teta_vec += score_vec
+        self.acumulative_teta += self.teta_vec
 
     def predict(self, t):
         max_edges = [(value.head, value.tail) for value in
@@ -59,9 +62,10 @@ class MSTparser():
         for i in range(self.n_iteration):
             for t in train_set:
                 self.forward(t)
-        self.teta_vec /= (self.n_iteration/len(train_set))
+        self.acumulative_teta /= (self.n_iteration/len(train_set))
 
     def test_model(self, test_set):
+        self.mode_is_train = False
         accuracy = 0
         for t in test_set:
             accuracy += self.predict(t)
@@ -73,15 +77,18 @@ class MSTparser():
         return self.words_dict_size ** 2 + self.pos_dict[u] * self.pos_dict_size + self.pos_dict[v]
 
     def phi(self, u, v):
-        words_index = self.get_feature_index(u['word'], v['word'], True)
-        pos_index = self.get_feature_index(u['tag'], v['tag'], False)
-        return self.teta_vec[words_index] + self.teta_vec[pos_index]
+        words_index = self.get_feature_index(u['word'], v['word'], is_word=True)
+        pos_index = self.get_feature_index(u['tag'], v['tag'], is_word=False)
+        if self.mode_is_train:
+            return self.teta_vec[words_index] + self.teta_vec[pos_index]
+        else:
+            return self.acumulative_teta[words_index] + self.acumulative_teta[pos_index]
 
-    def get_vec_score_of_t(self, t, arcs):
+    def get_vec_score_of_t(self, t, arcs):   # need to fixt it to use teta !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         result = np.zeros(self.vec_dim, dtype=float)
         for arc in arcs:
-            result[self.get_feature_index(t.nodes[arc.head]["word"], t.nodes[arc.tail]["word"],True)] += 1
-            result[self.get_feature_index(t.nodes[arc.head]["tag"], t.nodes[arc.tail]["tag"], False)] += 1
+            result[self.get_feature_index(t.nodes[arc.head]["word"], t.nodes[arc.tail]["word"], is_word=True)] += 1
+            result[self.get_feature_index(t.nodes[arc.head]["tag"], t.nodes[arc.tail]["tag"], is_word=False)] += 1
         return result
 
     def get_all_possible_arcs(self, t):
@@ -138,7 +145,7 @@ if __name__ == "__main__":
     print(len(word_dict))
     print(len(pos_dict))
     model = MSTparser(word_dict,pos_dict, 2)
-    model.train_model(train_set[0:500])
+    model.train_model(train_set[0:100])
     print(model.test_model(test_set[0:20]))
 
 
