@@ -1,3 +1,5 @@
+import time
+
 import nltk
 
 nltk.download('dependency_treebank')
@@ -30,13 +32,12 @@ class MSTparser():
         self.words_dict_size = len(words_dic)
         self.pos_dict_size = len(pos_dict)
         self.vec_dim = self.words_dict_size ** 2 + self.pos_dict_size ** 2
-        self.teta_vec = np.zeros(self.vec_dim, dtype=float) # dtype = float ???????????????
-        self.acumulative_teta = np.zeros(self.vec_dim, dtype=float)
+        self.teta_vec = np.zeros(self.vec_dim)
+        self.acumulative_teta = np.zeros(self.vec_dim)
         self.n_iteration = n_iterations
         self.mode_is_train = True
 
     def forward(self, t):
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!        in forward         !!!!!!!!!!!!!!!!!!!")
         max_tree = min_spanning_arborescence_nx(self.get_all_possible_arcs(t), 0)
         gold_arcs = get_gold_arcs(t)
         index_dict = self.get_vec_score_of_t(t, gold_arcs, max_tree.values())
@@ -56,12 +57,20 @@ class MSTparser():
         return accuracy / len(t.nodes)
 
     def train_model(self, train_set):
+        print("============================= START training ==============================")
+        it, start = 0, time.time()
         size = len(train_set)
         for i in range(self.n_iteration):
             shuff = np.random.permutation(size)
             for s in shuff:
                 self.forward(train_set[s])
+                it += 1
+                if it % 30 == 0:
+                    print("Done: %.2f%s, time: %.2f" % ((it / (2*size), '%', time.time() - start)))
         self.acumulative_teta /= (self.n_iteration/size)
+        print("============================= END training ==============================")
+        np.save('weights.npy', self.acumulative_teta)
+        print("============================= SAVED MODEL ==============================")
 
     def test_model(self, test_set):
         self.mode_is_train = False
@@ -163,7 +172,7 @@ if __name__ == "__main__":
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
 
     word_dict, pos_dict = get_dicts(corpus)
-    print(len(corpus))
+    print("Corpus size: %d. Train: %d, Test: %d" % (len(corpus), len(train_set), len(test_set)))
     model = MSTparser(word_dict,pos_dict, 2)
     model.train_model(train_set)
     print(model.test_model(test_set))
