@@ -10,7 +10,7 @@ from Chu_Liu_Edmonds_algorithm import min_spanning_arborescence_nx
 class Arc():
     """
         An Ark obj to be sent to Chu_Liu_Edmonds_algorithm.
-        """
+    """
     def __init__(self, head, tail, weight):
         self.head = head
         self.tail = tail
@@ -117,6 +117,8 @@ class MSTparser():
         weighted_arcs = []
         arcs = permutations(range(len(t.nodes)), 2)
         for arc in arcs:
+            if arc[1] == 0:
+                continue
             score = -self.phi(t.nodes[arc[0]], t.nodes[arc[1]])
             weighted_arcs.append(Arc(t.nodes[arc[0]]["address"], t.nodes[arc[1]]["address"], score))
         return weighted_arcs
@@ -150,17 +152,27 @@ def get_gold_arcs(t):
     arcs = []
     for i in range(len(t.nodes)):
         head = t.nodes[i]['head']
-        if head:
+        if head is not None:
             arcs.append(Arc(head, i, 0))
     return arcs
 
 
 if __name__ == "__main__":
     corpus = dependency_treebank.parsed_sents()
+    del corpus[1854]
     train_set, test_set = corpus[:int(0.9 * len(corpus))], corpus[int(0.9 * len(corpus)):]
 
     word_dict, pos_dict = get_dicts(corpus)
     print(len(corpus))
     model = MSTparser(word_dict,pos_dict, 2)
-    model.train_model(train_set[:1500])
+    model.train_model(train_set)
     print(model.test_model(test_set))
+
+    # print(corpus[0].nodes[0]["word"])
+    # print(word_dict[corpus[0].nodes[0]["word"]])
+    #
+    # print(len(corpus[0].nodes))
+    # print(len(get_gold_arcs(corpus[0])))
+    # for i in get_gold_arcs(corpus[0]):
+    #     print(i)
+    # print(corpus[0])
