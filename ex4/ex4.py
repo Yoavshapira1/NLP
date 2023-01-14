@@ -39,7 +39,8 @@ class MSTparser():
         self.vec_dim = self.words_dict_size ** 2 + self.pos_dict_size ** 2
         if self.bonus:
             self.max_dist = 30
-            self.vec_dim += (4 * self.pos_dict_size) + 4 + (self.max_dist * 2) + 1
+            self.num_of_adj_pos = 8
+            self.vec_dim += (self.num_of_adj_pos * (self.pos_dict_size+1)) + (self.max_dist * 2) + 1 + self.pos_dict_size
         self.teta_vec = np.zeros(self.vec_dim)
         self.acumulative_teta = np.zeros(self.vec_dim)
         self.n_iteration = n_iterations
@@ -90,40 +91,32 @@ class MSTparser():
             return self.words_dict[u] * self.words_dict_size + self.words_dict[v]
         return self.words_dict_size ** 2 + self.pos_dict[u] * self.pos_dict_size + self.pos_dict[v]
 
-    def get_bonus_feature_index(self, u_left_pos, u_right_pos, v_left_pos, v_right_pos, distance):
+    def get_bonus_feature_index(self, adjecant_pos_list, inbetween_pos_list, distance):
         base = self.words_dict_size ** 2 + self.pos_dict_size ** 2
-        if u_left_pos is None:
-            u_left = base + self.pos_dict_size + 1
-        else:
-            u_left = base + self.pos_dict[u_left_pos]
+        result_idx = []
+        # add index corresponding to the adjacent PoS
+        for adj_pos in adjecant_pos_list:
+            if adj_pos is None:
+                result_idx.append(base + self.pos_dict_size + 1)
+            else:
+                result_idx.append(base + self.pos_dict[adj_pos])
+            base += self.pos_dict_size + 1
 
-        base += self.pos_dict_size + 1
-        if u_right_pos is None:
-            u_right = base + self.pos_dict_size + 1
-        else:
-            u_right = base + self.pos_dict[u_right_pos]
+        for in_pos in inbetween_pos_list:
+            result_idx.append(base + self.pos_dict[in_pos])
+        base += self.pos_dict_size
 
-        base += self.pos_dict_size + 1
-        if v_left_pos is None:
-            v_left = base + self.pos_dict_size + 1
-        else:
-            v_left = base + self.pos_dict[v_left_pos]
-
-        base += self.pos_dict_size + 1
-        if v_right_pos is None:
-            v_right = base + self.pos_dict_size + 1
-        else:
-            v_right = base + self.pos_dict[v_right_pos]
-
-        base += self.pos_dict_size + 1
+        # add index for the distance between the words
         if distance <= self.max_dist and distance >= 0:
-            dist = base + distance
+            result_idx.append(base + distance)
         elif distance >-self.max_dist and distance < 0:
-            dist = base + self.max_dist + abs(distance)
+            result_idx.append(base + self.max_dist + abs(distance))
         else:
-            dist = base + (2 * self.max_dist)
+            result_idx.append(base + (2 * self.max_dist))
 
-        return u_left, u_right, v_left, v_right, dist
+        # add index for PoS of in-between words
+
+        return result_idx
 
     def get_words_adj(self, u, v, t):
         size = len(t.nodes)
@@ -132,29 +125,57 @@ class MSTparser():
         else:
             u_left_pos = None
 
+        if u['address'] - 2 >= 0:
+            u_left_left_pos = t.nodes[u['address'] - 2]["tag"]
+        else:
+            u_left_left_pos = None
+
         if u['address'] + 1 < size:
             u_right_pos = t.nodes[u['address'] + 1]["tag"]
         else:
             u_right_pos = None
+
+        if u['address'] + 2 < size:
+            u_right_right_pos = t.nodes[u['address'] + 2]["tag"]
+        else:
+            u_right_right_pos = None
 
         if v['address'] - 1 >= 0:
             v_left_pos = t.nodes[v['address'] - 1]["tag"]
         else:
             v_left_pos = None
 
+        if v['address'] - 2 >= 0:
+            v_left_left_pos = t.nodes[v['address'] - 2]["tag"]
+        else:
+            v_left_left_pos = None
+
         if v['address'] + 1 < size:
             v_right_pos = t.nodes[v['address'] + 1]["tag"]
         else:
             v_right_pos = None
 
-        return u_left_pos, u_right_pos, v_left_pos, v_right_pos
+        if v['address'] + 2 < size:
+            v_right_right_pos = t.nodes[v['address'] + 2]["tag"]
+        else:
+            v_right_right_pos = None
 
+        return [u_left_pos, u_left_left_pos, u_right_pos, u_right_right_pos,
+                v_left_pos, v_left_left_pos, v_right_pos, v_right_right_pos]
+
+    def get_inbetween_pos(self, u, v, t):
+        results = []
+        first, second = min(u['address'], v['address']), max(u['address'], v['address'])
+        if second - first >= 1:
+            for address in range(second - first):
+                results.append(t.nodes[first+address+1]['tag'])
+        return results
 
     def get_bonus_index(self, u, v, t):
-        u_left_pos_idx, u_right_pos_idx, v_left_pos_idx, v_right_pos_idx = self.get_words_adj(u, v, t)
+        adjecant_pos_list = self.get_words_adj(u, v, t)
+        inbetween_pos_list = self.get_inbetween_pos(u, v, t)
         distance = u['address'] - v['address']
-        bonus_index = self.get_bonus_feature_index(u_left_pos_idx, u_right_pos_idx, v_left_pos_idx, v_right_pos_idx,
-                                                   distance)
+        bonus_index = self.get_bonus_feature_index(adjecant_pos_list, inbetween_pos_list, distance)
         return bonus_index
 
     def phi(self, arc, t):
