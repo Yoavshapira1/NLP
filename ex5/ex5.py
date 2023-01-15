@@ -56,7 +56,7 @@ def linear_classification(portion=1.):
     x_train, y_train, x_test, y_test = get_data(categories=category_dict.keys(), portion=portion)
 
     x_train = tf.fit_transform(x_train)
-    x_test = tf.fit_transform(x_test)
+    x_test = tf.transform(x_test)
     log_reg = LogisticRegression().fit(x_train, y_train)
 
     return accuracy_score(y_test, log_reg.predict(x_test))
