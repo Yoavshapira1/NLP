@@ -100,13 +100,28 @@ def transformer_classification(portion=1.):
                                                                cache_dir=None,
                                                                num_labels=len(category_dict),
                                                                problem_type="single_label_classification")
+    training_args = TrainingArguments(
+        output_dir="path/to/save/folder/",
+        learning_rate=5e-5,
+        per_device_train_batch_size=16,
+        per_device_eval_batch_size=16,
+        num_train_epochs=5)
 
     x_train, y_train, x_test, y_test = get_data(categories=category_dict.keys(), portion=portion)
+    training_dataset = Dataset(tokenizer(x_train, padding='longest', truncation=True)["input_ids"], y_train)
+    test_dataset = Dataset(tokenizer(x_test, padding='longest', truncation=True)["input_ids"], y_test)
 
-    # Add your code here
-    # see https://huggingface.co/docs/transformers/v4.25.1/en/quicktour#trainer-a-pytorch-optimized-training-loop
-    # Use the DataSet object defined above. No need for a DataCollator
-    return
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=training_dataset,
+        eval_dataset=test_dataset,
+        tokenizer=tokenizer,
+        compute_metrics=compute_metrics)
+
+    trainer.train()
+
+    return trainer.evaluate()
 
 
 # Q3
@@ -120,27 +135,46 @@ def zeroshot_classification(portion=1.):
     from sklearn.metrics import accuracy_score
     import torch
     x_train, y_train, x_test, y_test = get_data(categories=category_dict.keys(), portion=portion)
-    clf = pipeline("zero-shot-classification", model='cross-encoder/nli-MiniLM2-L6-H768')
+    clf = pipeline("zero-shot-classification", model='cross-encoder/nli-MiniLM2-L6-H768',
+                   device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'))
     candidate_labels = list(category_dict.values())
+    candidates_dict = dict(zip(candidate_labels, [i for i in range(len(candidate_labels))]))
+    print(candidates_dict)
+    res = clf(x_test[:10], candidate_labels)
+    y_pred = []
+    for r in res:
+        y_pred.append(candidates_dict[r['labels'][0]])
+    return accuracy_score(y_test, y_pred)
 
-    # Add your code here
-    # see https://huggingface.co/docs/transformers/v4.25.1/en/main_classes/pipelines#transformers.ZeroShotClassificationPipeline
-    return
-
+def plot(portions, acc):
+    plt.yticks(acc)
+    plt.xticks(portions)
+    plt.plot(portions, acc)
+    plt.show()
 
 if __name__ == "__main__":
+    from matplotlib import pyplot as plt
     portions = [0.1, 0.5, 1.]
+
     # Q1
+    acc = []
     print("Logistic regression results:")
     for p in portions:
         print(f"Portion: {p}")
-        print(linear_classification(p))
+        accuracy = linear_classification(p)
+        print(accuracy)
+        acc.append(accuracy)
+    plot(portions, acc)
 
     # Q2
+    acc = []
     print("\nFinetuning results:")
     for p in portions:
         print(f"Portion: {p}")
-        print(transformer_classification(portion=p))
+        accuracy = transformer_classification(portion=p)
+        print(accuracy)
+        acc.append(accuracy)
+    plot(portions, acc)
 
     # Q3
     print("\nZero-shot result:")
